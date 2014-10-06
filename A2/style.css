@@ -8,18 +8,14 @@
 
 html,
 body {
-  height: 100%;}
+  height: 100%;
+  overflow: hidden;
+}
 
 body {
   background: #000;
   color: #fff;
   font: 16px/20px 'VT323', sans-serif;
-  overflow: hidden;
-  transition: transform 0.4s;
-}
-
-body.game {
-  transform: translateY(-100%);
 }
 
 h1 {
@@ -40,9 +36,16 @@ a {
   background: #2c3e41;
   display: table;
   height: 100%;
+  position: fixed;
   text-align: center;
+  top: 0;
+  transition: transform 0.4s;
   width: 100%;
 }
+
+  body.game #game-menu{
+    transform: translateY(-100%);
+  }
 
   #game-menu-content {
     display: table-cell;

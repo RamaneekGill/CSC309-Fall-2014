@@ -17,7 +17,7 @@ function GameState(canvas, interval) {
 GameState.prototype.draw = function() {
   var ctx = this.ctx;
 
-  clear();
+  // clear();
 }
 
 
@@ -94,16 +94,16 @@ Ball.prototype.draw = function() {
 Ball.prototype.testHit = function() {
   // Hit an edge?
   // Left edge
-  if (this.x <= )
+  // if (this.x <= )
 
-  // Right edge
-  if (this.x >= )
+  // // Right edge
+  // if (this.x >= )
 
-  // Top edge
-  if (this.y <= )
+  // // Top edge
+  // if (this.y <= )
 
-  // Bottom edge: die
-  if (this.y >= )
+  // // Bottom edge: die
+  // if (this.y >= )
 
   // Hit the paddle?
 
