@@ -14,7 +14,7 @@ function GameState(canvas, ctx, interval) {
   this.score = 0;
 
   // Initialize all the game elements
-  this.bricks = new Bricks();
+  this.bricks = new Bricks(ctx);
 
   // this.paddle = new Paddle(ctx,
   //                          cvsWidth / 2 - brickWidth / 2 + game.paddleOffset,
@@ -23,6 +23,11 @@ function GameState(canvas, ctx, interval) {
   //                          brickHeight / 2);
 
   // this.ball   = new Ball(ctx, cvsWidth / 2, cvsHeight - brickHeight - 10, 10);
+}
+
+GameState.prototype.updateCanvasDim = function(canvas) {
+  this.cvsWidth  = canvas.width;
+  this.cvsHeight = canvas.height;
 }
 
 GameState.prototype.draw = function() {
@@ -39,7 +44,7 @@ GameState.prototype.clearCanvas = function() {
 
   // Use the identity matrix while clearing the canvas
   ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.clearRect(0, 0, cvsWidth, cvsHeight);
+  ctx.clearRect(0, 0, this.cvsWidth, this.cvsHeight);
 
   // Restore the transform
   ctx.restore();
@@ -62,7 +67,9 @@ GameState.prototype.getBall = function() {
  *
  */
 
-function Bricks() {
+function Bricks(ctx) {
+  this.ctx = ctx;
+
   // Holds the status of the bricks (8 rows of 10 bricks each).
   // A 1 means that it's still there, 0 means it's been hit.
   this.bricks = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -73,6 +80,10 @@ function Bricks() {
                  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]];
+
+  // Colours for the rows of bricks
+  this.colours = ["#d63912", "#eda703", "#fbdd0b", "#64ac02",
+                  "#04ce92", "#04a5fb", "#6f17ff", "#b501c9"];
 
   // this.brickWidth  = window.innerWidth / 10 - 11;
   // this.brickHeight = cvsHeight / 25;
@@ -86,6 +97,26 @@ Bricks.prototype.resetBricks = function() {
   for (var i = 0; i < this.bricks.length; i++) {
     for (var j = 0; j < this.bricks[j].length; j++) {
       this.bricks[i][j] = 1;
+    }
+  }
+}
+
+Bricks.prototype.draw = function() {
+  var bricks = this.bricks;
+  var ctx    = this.ctx;
+
+  for (var row = 0; row < bricks.length; row++) {
+    ctx.fillStyle = this.colours[row];
+
+    for (var col = 0; col < bricks[row].length; col++) {
+
+      // Only draw the bricks that haven't been hit!
+      if (bricks[row][col] == 1) {
+        ctx.fillRect(col * brickWidth + (col + 1) * 10,
+                     row * brickHeight + (row + 1) * 10,
+                     brickWidth,
+                     brickHeight);
+      }
     }
   }
 }

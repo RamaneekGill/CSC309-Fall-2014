@@ -27,28 +27,6 @@ var game;
 // Brick width/height
 var brickWidth, brickHeight;
 
-// Colours for the rows of bricks
-var colours = ["#d63912", "#eda703", "#fbdd0b", "#64ac02",
-               "#04ce92", "#04a5fb", "#6f17ff", "#b501c9"];
-
-/**
- * Draws the ball at location (x, y). The ball has a radius of 10px.
- */
-function drawBall(ctx, x, y) {
-  ctx.fillStyle = "#777777";
-  ctx.beginPath();
-  ctx.arc(x, y, 10, 0, 2 * Math.PI);
-  ctx.fill();
-}
-
-/**
- * Draws the paddle at location (x, y). The paddle is the same width as a brick,
- * but half the height.
- */
-function drawPaddle(ctx, x, y) {
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(x, y, brickWidth, brickHeight / 2);
-}
 
 /**
  * Draws everything to start the game -- the bricks, paddle, and ball.
@@ -56,23 +34,7 @@ function drawPaddle(ctx, x, y) {
 function draw() {
   game.clearCanvas();
 
-  // The bricks
-  var bricks = game.getBricks().getBricks();
-  for (var row = 0; row < bricks.length; row++) {
-    ctx.fillStyle = colours[row];
-
-    for (var col = 0; col < bricks[row].length; col++) {
-
-      // Only draw the bricks that haven't been hit!
-      if (bricks[row][col] == 1) {
-        ctx.fillRect(col * brickWidth + (col + 1) * 10,
-                     row * brickHeight + (row + 1) * 10,
-                     brickWidth,
-                     brickHeight);
-      }
-    }
-  }
-
+  game.getBricks().draw();
   // game.getPaddle().draw();
   // game.getBall().draw();
 }
@@ -87,11 +49,10 @@ function resizeCanvas() {
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight - document.getElementById('game-nav').offsetHeight;
 
-  cvsWidth  = canvas.width;
-  cvsHeight = canvas.height;
+  game.updateCanvasDim(canvas);
 
   brickWidth  = window.innerWidth / 10 - 11;
-  brickHeight = cvsHeight / 25;
+  brickHeight = game.cvsHeight / 25;
 
   // So the canvas isn't cleared upon resizing the browser window.
   draw();
