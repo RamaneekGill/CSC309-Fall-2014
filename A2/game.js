@@ -7,27 +7,50 @@ function GameState(canvas, ctx, interval) {
   this.cvsHeight = canvas.height;
   this.ctx = ctx;
 
-  this.interval = interval || 30;
+  this.state = this;
+  this.interval = interval || 50;
   // setInterval(function() { state.draw(); }, state.interval);
 
-  this.lives = 5;
-  this.score = 0;
+  this.playing = false;
+  this.lives   = 5;
+  this.score   = 0;
 
   // Initialize all the game elements
-  this.bricks = new Bricks(ctx);
+  this.bricks = new Bricks(ctx,
+                           window.innerWidth / 10 - 11,
+                           this.cvsHeight / 25);
 
-  // this.paddle = new Paddle(ctx,
-  //                          cvsWidth / 2 - brickWidth / 2 + game.paddleOffset,
-  //                          cvsHeight - brickHeight.
-  //                          brickWidth,
-  //                          brickHeight / 2);
+  this.paddle = new Paddle(ctx,
+                           this.cvsWidth / 2 - this.bricks.getBrickWidth() / 2,
+                           this.cvsHeight - this.bricks.getBrickHeight(),
+                           this.bricks.getBrickWidth(),
+                           6);
 
-  // this.ball   = new Ball(ctx, cvsWidth / 2, cvsHeight - brickHeight - 10, 10);
+  this.ball   = new Ball(ctx,
+                         this.cvsWidth / 2,
+                         this.cvsHeight - this.bricks.getBrickHeight() - 10,
+                         10);
+}
+
+GameState.prototype.restart = function() {
+  this.playing = true;
+  this.lives   = 5;
+  this.score   = 0;
 }
 
 GameState.prototype.updateCanvasDim = function(canvas) {
   this.cvsWidth  = canvas.width;
   this.cvsHeight = canvas.height;
+
+  this.bricks.updateBricksDim(window.innerWidth / 10 - 11, this.cvsHeight / 25)
+}
+
+GameState.prototype.getCanvasWidth = function() {
+  return this.cvsWidth;
+}
+
+GameState.prototype.getCanvasHeight = function() {
+  return this.cvsHeight;
 }
 
 GameState.prototype.draw = function() {
@@ -67,8 +90,10 @@ GameState.prototype.getBall = function() {
  *
  */
 
-function Bricks(ctx) {
+function Bricks(ctx, brickWidth, brickHeight) {
   this.ctx = ctx;
+  this.brickWidth  = brickWidth;
+  this.brickHeight = brickHeight;
 
   // Holds the status of the bricks (8 rows of 10 bricks each).
   // A 1 means that it's still there, 0 means it's been hit.
@@ -84,13 +109,18 @@ function Bricks(ctx) {
   // Colours for the rows of bricks
   this.colours = ["#d63912", "#eda703", "#fbdd0b", "#64ac02",
                   "#04ce92", "#04a5fb", "#6f17ff", "#b501c9"];
-
-  // this.brickWidth  = window.innerWidth / 10 - 11;
-  // this.brickHeight = cvsHeight / 25;
 }
 
 Bricks.prototype.getBricks = function() {
   return this.bricks;
+}
+
+Bricks.prototype.getBrickWidth = function() {
+  return this.brickWidth;
+}
+
+Bricks.prototype.getBrickHeight = function() {
+  return this.brickHeight;
 }
 
 Bricks.prototype.resetBricks = function() {
@@ -99,6 +129,11 @@ Bricks.prototype.resetBricks = function() {
       this.bricks[i][j] = 1;
     }
   }
+}
+
+Bricks.prototype.updateBricksDim = function(brickWidth, brickHeight) {
+  this.brickWidth  = brickWidth;
+  this.brickHeight = brickHeight;
 }
 
 Bricks.prototype.draw = function() {
@@ -112,10 +147,10 @@ Bricks.prototype.draw = function() {
 
       // Only draw the bricks that haven't been hit!
       if (bricks[row][col] == 1) {
-        ctx.fillRect(col * brickWidth + (col + 1) * 10,
-                     row * brickHeight + (row + 1) * 10,
-                     brickWidth,
-                     brickHeight);
+        ctx.fillRect(col * this.brickWidth + (col + 1) * 10,
+                     row * this.brickHeight + (row + 1) * 10,
+                     this.brickWidth,
+                     this.brickHeight);
       }
     }
   }
@@ -138,7 +173,7 @@ Paddle.prototype.draw = function() {
   var ctx = this.ctx;
 
   ctx.fillStyle = "#ffffff";
-  ctx.fillRect(x, y, width, height);
+  ctx.fillRect(this.x, this.y, this.width, this.height);
 }
 
 
@@ -158,7 +193,7 @@ Ball.prototype.draw = function() {
 
   ctx.fillStyle = "#777777";
   ctx.beginPath();
-  ctx.arc(x, y, radius, 0, 2 * Math.PI);
+  ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
   ctx.fill();
 }
 

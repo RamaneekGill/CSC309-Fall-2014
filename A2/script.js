@@ -1,4 +1,4 @@
-  /**
+/**
  * Handle menu stuff.
  */
 var btnPlay = document.getElementById('game-menu-play');
@@ -15,46 +15,81 @@ document.getElementById('game-pause').onclick = function() {
 /**
  * Actual game canvas logic.
  */
-// Canvas object, its width/height, and the context.
-var canvas, cvsWidth, cvsHeight, ctx;
+// Canvas object and the context.
+var canvas, ctx;
 
-var score;
-score = document.getElementById('game-score-num');
+var nav   = document.getElementById('game-nav');
+var score = document.getElementById('game-score-num');
 
-// Game object
+// GameState object
 var game;
-
-// Brick width/height
-var brickWidth, brickHeight;
 
 
 /**
- * Draws everything to start the game -- the bricks, paddle, and ball.
+ * Draws everything -- the bricks, paddle, and ball.
  */
 function draw() {
   game.clearCanvas();
 
   game.getBricks().draw();
-  // game.getPaddle().draw();
-  // game.getBall().draw();
+  game.getPaddle().draw();
+  game.getBall().draw();
 }
 
 
 /**
- * Handle window resizing, so the canvas always takes up the available space.
+ * Handle window resizing, so the canvas always takes up the available space,
+ * and everything scales properly.
  */
 window.addEventListener('resize', resizeCanvas, false);
 
 function resizeCanvas() {
   canvas.width  = window.innerWidth;
-  canvas.height = window.innerHeight - document.getElementById('game-nav').offsetHeight;
+  canvas.height = window.innerHeight - nav.offsetHeight;
 
   game.updateCanvasDim(canvas);
+  draw();
+}
 
-  brickWidth  = window.innerWidth / 10 - 11;
-  brickHeight = game.cvsHeight / 25;
 
-  // So the canvas isn't cleared upon resizing the browser window.
+/**
+ * Keyboard events
+ */
+document.body.onkeydown = function(event) { keyEvent(event); };
+
+// Keyboard events
+function keyEvent(event) {
+  var key = event.keyCode || event.which;
+
+  var skip = game.getCanvasWidth() / 50;
+  var cvsWidth = game.getCanvasWidth();
+  var cvsHeight = game.getCanvasHeight();
+  var brickWidth = game.getBricks().getBrickWidth();
+  var brickHeight = game.getBricks().getBrickHeight();
+
+  if (key == 13) {
+    // Enter key
+    document.body.className = (document.body.className == '') ? 'game' : '';
+  }
+
+  if (key == 37) {
+    // Left arrow key
+    // game.paddleOffset -= skip;
+
+    // if (game.paddleOffset + (cvsWidth / 2) - (brickWidth / 2) < 0) {
+    //   game.paddleOffset = 1 - (cvsWidth / 2) + (brickWidth / 2);
+    // }
+
+  } else if (key == 39) {
+    // Right arrow key
+    // game.paddleOffset += skip;
+
+    // if (game.paddleOffset + (cvsWidth / 2) + (brickWidth / 2) > cvsWidth) {
+    //   game.paddleOffset = (cvsWidth / 2) - (brickWidth / 2);
+    // }
+
+  }
+
   draw();
 }
 
@@ -72,39 +107,13 @@ if (!canvas.getContext) {
 
 } else {
 
+  // Resize the canvas properly first
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight - nav.offsetHeight;
+
   // If all is well, let's get the context for the canvas and get on our way.
   ctx = canvas.getContext('2d');
   game = new GameState(canvas, ctx, 30);
 
   resizeCanvas();
 }
-
-
-var skip = cvsWidth / 50;
-
-// Keyboard events
-function keyEvent(event) {
-  var key = event.keyCode || event.which;
-
-  if (key == 37) {
-    // left arrow
-    game.paddleOffset -= skip;
-
-    if (game.paddleOffset + (cvsWidth / 2) - (brickWidth / 2) < 0) {
-      game.paddleOffset = 1 - (cvsWidth / 2) + (brickWidth / 2);
-    }
-
-  } else if (key == 39) {
-    // right arrow
-    game.paddleOffset += skip;
-
-    if (game.paddleOffset + (cvsWidth / 2) + (brickWidth / 2) > cvsWidth) {
-      game.paddleOffset = (cvsWidth / 2) - (brickWidth / 2);
-    }
-
-  }
-
-  draw();
-}
-
-document.body.onkeydown = function(event) { keyEvent(event); };
