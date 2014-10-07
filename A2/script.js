@@ -18,6 +18,9 @@ document.getElementById('game-pause').onclick = function() {
 // Canvas object, its width/height, and the context.
 var canvas, cvsWidth, cvsHeight, ctx;
 
+var score;
+score = document.getElementById('game-score-num');
+
 // Game object
 var game;
 
@@ -63,24 +66,24 @@ function drawPaddle(ctx, x, y) {
  * Draws everything to start the game -- the bricks, paddle, and ball.
  */
 function draw() {
-  // clearCanvas(ctx);
+  clearCanvas(ctx);
 
-  // // The bricks
-  // var bricks = game.getBricks();
-  // for (var row = 0; row < bricks.length; row++) {
-  //   ctx.fillStyle = colours[row];
+  // The bricks
+  var bricks = game.getBricks();
+  for (var row = 0; row < bricks.length; row++) {
+    ctx.fillStyle = colours[row];
 
-  //   for (var col = 0; col < bricks[row].length; col++) {
+    for (var col = 0; col < bricks[row].length; col++) {
 
-  //     // Only draw the bricks that haven't been hit!
-  //     if (bricks[row][col] == 1) {
-  //       ctx.fillRect(col * brickWidth + (col + 1) * 10,
-  //                    row * brickHeight + (row + 1) * 10,
-  //                    brickWidth,
-  //                    brickHeight);
-  //     }
-  //   }
-  // }
+      // Only draw the bricks that haven't been hit!
+      if (bricks[row][col] == 1) {
+        ctx.fillRect(col * brickWidth + (col + 1) * 10,
+                     row * brickHeight + (row + 1) * 10,
+                     brickWidth,
+                     brickHeight);
+      }
+    }
+  }
 
   // // The paddle
   // new Paddle(ctx,
@@ -129,7 +132,7 @@ if (!canvas.getContext) {
 
   // If all is well, let's get the context for the canvas and get on our way.
   ctx = canvas.getContext('2d');
-  // game = new Game();
+  game = new GameState(canvas, 30);
 
   resizeCanvas();
 

@@ -5,19 +5,27 @@
 function GameState(canvas, interval) {
   this.state = this;
   this.interval = interval || 30;
-  setInterval(function() { state.draw(); }, state.interval);
+  // setInterval(function() { state.draw(); }, state.interval);
 
   this.lives = 5;
   this.score = 0;
 
   this.cvsWidth  = canvas.width;
   this.cvsHeight = canvas.height;
+
+  this.bricks = new Bricks();
+  this.paddle = new Paddle();
+  this.ball   = new Ball();
 }
 
 GameState.prototype.draw = function() {
   var ctx = this.ctx;
 
   // clear();
+}
+
+GameState.prototype.getBricks = function() {
+  return this.bricks.getBricks();
 }
 
 
