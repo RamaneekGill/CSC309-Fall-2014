@@ -55,16 +55,16 @@ function resizeCanvas() {
 /**
  * Keyboard events
  */
-document.body.onkeydown = function(event) { keyEvent(event); };
+window.addEventListener('keydown', function(e) { keyEvent(e); }, true);
 
 // Keyboard events
-function keyEvent(event) {
-  var key = event.keyCode || event.which;
+function keyEvent(e) {
+  var key = e.keyCode || e.which;
 
-  var skip = game.getCanvasWidth() / 50;
-  var cvsWidth = game.getCanvasWidth();
-  var cvsHeight = game.getCanvasHeight();
-  var brickWidth = game.getBricks().getBrickWidth();
+  var cvsWidth    = game.getCanvasWidth();
+  var cvsHeight   = game.getCanvasHeight();
+  var skip        = cvsWidth / 50;
+  var brickWidth  = game.getBricks().getBrickWidth();
   var brickHeight = game.getBricks().getBrickHeight();
 
   if (key == 13) {
@@ -74,20 +74,10 @@ function keyEvent(event) {
 
   if (key == 37) {
     // Left arrow key
-    // game.paddleOffset -= skip;
-
-    // if (game.paddleOffset + (cvsWidth / 2) - (brickWidth / 2) < 0) {
-    //   game.paddleOffset = 1 - (cvsWidth / 2) + (brickWidth / 2);
-    // }
-
+    game.getPaddle().move(-skip);
   } else if (key == 39) {
     // Right arrow key
-    // game.paddleOffset += skip;
-
-    // if (game.paddleOffset + (cvsWidth / 2) + (brickWidth / 2) > cvsWidth) {
-    //   game.paddleOffset = (cvsWidth / 2) - (brickWidth / 2);
-    // }
-
+    game.getPaddle().move(skip);
   }
 
   draw();
