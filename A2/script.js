@@ -15,7 +15,7 @@ document.getElementById('game-pause').onclick = function() {
 /**
  * Actual game canvas logic.
  */
-// Canvas object and the context.
+
 var canvas, ctx;
 
 var nav   = document.getElementById('game-nav');
@@ -23,18 +23,6 @@ var score = document.getElementById('game-score-num');
 
 // GameState object
 var game;
-
-
-/**
- * Draws everything -- the bricks, paddle, and ball.
- */
-function draw() {
-  game.clearCanvas();
-
-  game.getBricks().draw();
-  game.getPaddle().draw();
-  game.getBall().draw();
-}
 
 
 /**
@@ -48,7 +36,7 @@ function resizeCanvas() {
   canvas.height = window.innerHeight - nav.offsetHeight;
 
   game.updateCanvasDim(canvas);
-  draw();
+  game.draw();
 }
 
 
@@ -80,7 +68,7 @@ function keyEvent(e) {
     game.getPaddle().move(skip);
   }
 
-  draw();
+  game.draw();
 }
 
 
@@ -102,7 +90,7 @@ if (!canvas.getContext) {
   canvas.height = window.innerHeight - nav.offsetHeight;
 
   // If all is well, let's get the context for the canvas and get on our way.
-  ctx = canvas.getContext('2d');
+  ctx  = canvas.getContext('2d');
   game = new GameState(canvas, ctx, 30);
 
   resizeCanvas();
