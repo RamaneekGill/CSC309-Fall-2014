@@ -15,21 +15,22 @@ function GameState(canvas, ctx, interval) {
   this.lives   = 5;
   this.score   = 0;
 
-  // Initialize all the game elements
+  // Initialize all the game elements (needs to be in order)
   this.bricks = new Bricks(ctx,
                            window.innerWidth / 10 - 11,
                            this.cvsHeight / 25);
-
-  this.paddle = new Paddle(ctx,
-                           this.cvsWidth / 2 - this.bricks.getBrickWidth() / 2,
-                           this.cvsHeight - this.bricks.getBrickHeight(),
-                           this.bricks.getBrickWidth(),
-                           6);
 
   this.ball   = new Ball(ctx,
                          this.cvsWidth / 2,
                          this.cvsHeight - this.bricks.getBrickHeight() - 10,
                          10);
+
+  this.paddle = new Paddle(ctx,
+                           this.cvsWidth / 2 - this.bricks.getBrickWidth() / 2,
+                           this.cvsHeight - this.bricks.getBrickHeight(),
+                           this.bricks.getBrickWidth(),
+                           6,
+                           this.ball);
 }
 
 GameState.prototype.restart = function() {
@@ -161,12 +162,13 @@ Bricks.prototype.draw = function() {
  *
  */
 
-function Paddle(ctx, x, y, width, height) {
+function Paddle(ctx, x, y, width, height, ball) {
   this.ctx    = ctx;
   this.x      = x;
   this.y      = y;
   this.width  = width;
   this.height = height;
+  this.ball   = ball;
 }
 
 Paddle.prototype.draw = function() {
@@ -180,10 +182,16 @@ Paddle.prototype.move = function(amount) {
   // Take into consideration the window boundaries
   if (this.x + amount <= 0) {
     this.x = 0;
+
+    if (this.ball.sticky) { this.ball.x = this.width / 2; }
   } else if (this.x + amount >= window.innerWidth - this.width) {
     this.x = window.innerWidth - this.width;
+
+    if (this.ball.sticky) { this.ball.x = this.x + this.width / 2; }
   } else {
     this.x += amount;
+
+    if (this.ball.sticky) { this.ball.x += amount; }
   }
 }
 
@@ -197,6 +205,7 @@ function Ball(ctx, x, y, radius) {
   this.x      = x;
   this.y      = y;
   this.radius = radius;
+  this.sticky = true;
 }
 
 Ball.prototype.draw = function() {
