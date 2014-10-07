@@ -31,18 +31,6 @@ var brickWidth, brickHeight;
 var colours = ["#d63912", "#eda703", "#fbdd0b", "#64ac02",
                "#04ce92", "#04a5fb", "#6f17ff", "#b501c9"];
 
-function clearCanvas(ctx) {
-  // Store the current transformation matrix
-  ctx.save();
-
-  // Use the identity matrix while clearing the canvas
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.clearRect(0, 0, cvsWidth, cvsHeight);
-
-  // Restore the transform
-  ctx.restore();
-}
-
 /**
  * Draws the ball at location (x, y). The ball has a radius of 10px.
  */
@@ -66,10 +54,10 @@ function drawPaddle(ctx, x, y) {
  * Draws everything to start the game -- the bricks, paddle, and ball.
  */
 function draw() {
-  clearCanvas(ctx);
+  game.clearCanvas();
 
   // The bricks
-  var bricks = game.getBricks();
+  var bricks = game.getBricks().getBricks();
   for (var row = 0; row < bricks.length; row++) {
     ctx.fillStyle = colours[row];
 
@@ -85,15 +73,8 @@ function draw() {
     }
   }
 
-  // // The paddle
-  // new Paddle(ctx,
-  //            cvsWidth / 2 - brickWidth / 2 + game.paddleOffset,
-  //            cvsHeight - brickHeight.
-  //            brickWidth,
-  //            brickHeight / 2);
-
-  // // The ball
-  // new Ball(ctx, cvsWidth / 2, cvsHeight - brickHeight - 10, 10);
+  // game.getPaddle().draw();
+  // game.getBall().draw();
 }
 
 
@@ -132,10 +113,9 @@ if (!canvas.getContext) {
 
   // If all is well, let's get the context for the canvas and get on our way.
   ctx = canvas.getContext('2d');
-  game = new GameState(canvas, 30);
+  game = new GameState(canvas, ctx, 30);
 
   resizeCanvas();
-
 }
 
 
