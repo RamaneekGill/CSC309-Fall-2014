@@ -19,40 +19,51 @@ Ball.prototype.draw = function() {
 }
 
 Ball.prototype.move = function() {
+  var dx = this.speed * this.dx;
+  var dy = this.speed * this.dy;
+
   // Bounce off of walls
-  if (this.x + this.dx > canvas.width - this.radius ||
-        this.x + this.dx < this.radius)
+  if (this.x + dx + this.radius > canvas.width ||
+        this.x + dx - this.radius < 0)
     this.dx = -this.dx;
-  if (this.y + this.dy > canvas.height - this.radius ||
-    this.y + this.dy < this.radius)
+  if (this.y + dy + this.radius > canvas.height ||
+    this.y + dy - this.radius < 0)
     this.dy = -this.dy;
 
-  this.x += this.speed * this.dx;
-  this.y += this.speed * this.dy;
+  this.x += dx;
+  this.y += dy;
 
   this.testHit();
 }
 
 Ball.prototype.testHit = function() {
-  // Hit an edge?
-  // Left edge
-  if (this.x <= 0) {
-
-  }
-
-  // Right edge
-  if (this.x - this.radius >= window.innerWidth) {
-
-  }
-
   // Top edge
-  if (this.y <= 0) {
+  if (this.y - this.radius < 0) {
 
   }
 
   // Bottom edge: die
-  if (this.y - this.radius >= window.innerHeight) {
+  if (this.y + this.radius > canvas.height) {
+    // Reset position
+    this.x = canvas.width / 2;
+    this.y = canvas.height - 10;
 
+    this.dx = -this.dx;
+
+    // Reset paddle position
+
+
+    // Decrement live, pause for a second
+    game.playing = false;
+    game.lives--;
+
+    game.updateScore();
+
+    if (game.lives == 0) {
+      alert('Game over!');
+    } else {
+      setTimeout(function() { game.playing = true; }, 1000);
+    }
   }
 
   // Hit the paddle?

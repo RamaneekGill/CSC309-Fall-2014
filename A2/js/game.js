@@ -2,7 +2,7 @@
  * Keeps track of the game state.
  */
 
-function GameState(canvas, ctx, interval) {
+function GameState(canvas, ctx, interval, elLives, elScore) {
   this.cvsWidth  = canvas.width;
   this.cvsHeight = canvas.height;
   this.ctx = ctx;
@@ -10,6 +10,9 @@ function GameState(canvas, ctx, interval) {
   var state = this;
   this.interval = interval || 10;
   setInterval(function() { state.draw(); }, state.interval);
+
+  this.elLives = elLives;
+  this.elScore = elScore;
 
   this.playing = false;
   this.lives   = 3;
@@ -39,6 +42,33 @@ GameState.prototype.restart = function() {
   this.playing = true;
   this.lives   = 3;
   this.score   = 0;
+
+  this.updateScore();
+}
+
+GameState.prototype.updateScore = function() {
+  this.elScore.innerHTML = this.score;
+
+  switch (this.lives) {
+    case 0:
+      this.elLives.innerHTML = 'x x x';
+      break;
+
+    case 1:
+      this.elLives.innerHTML = 'x x o';
+      break;
+
+    case 2:
+      this.elLives.innerHTML = 'x o o';
+      break;
+
+    case 3:
+      this.elLives.innerHTML = 'o o o';
+      break;
+
+    default:
+      break;
+  }
 }
 
 GameState.prototype.updateCanvasDim = function(canvas) {

@@ -46,7 +46,7 @@ function resizeCanvas() {
 /**
  * Keyboard events
  */
-window.addEventListener('keydown', function(e) { keyEvent(e); }, true);
+window.addEventListener('keydown', function(e) { keyEvent(e); }, false);
 
 // Keyboard events
 function keyEvent(e) {
@@ -58,22 +58,24 @@ function keyEvent(e) {
   var brickWidth  = game.getBricks().getBrickWidth();
   var brickHeight = game.getBricks().getBrickHeight();
 
-  if (key == 13) {
-    // Enter key
+  if (key == 13 || key == 27 || key == 32) {
+    // Enter/Escape/Space keys
     var is_menu = document.body.className == '';
     document.body.className = is_menu ? 'game' : '';
     game.playing = is_menu;
   }
 
-  if (key == 37) {
-    // Left arrow key
-    game.getPaddle().move(-skip);
-  } else if (key == 39) {
-    // Right arrow key
-    game.getPaddle().move(skip);
-  }
+  if (game.playing) {
+    if (key == 37) {
+      // Left arrow key
+      game.getPaddle().move(-skip);
+    } else if (key == 39) {
+      // Right arrow key
+      game.getPaddle().move(skip);
+    }
 
-  game.draw();
+    game.draw();
+  }
 }
 
 
@@ -96,7 +98,7 @@ if (!canvas.getContext) {
 
   // If all is well, let's get the context for the canvas and get on our way.
   ctx  = canvas.getContext('2d');
-  game = new GameState(canvas, ctx, 30);
+  game = new GameState(canvas, ctx, 30, lives, score);
 
   resizeCanvas();
 }
