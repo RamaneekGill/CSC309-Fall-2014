@@ -32,7 +32,7 @@ function GameState(canvas, ctx, interval, elLives, elScore) {
 
   this.paddle = new Paddle(ctx,
                            this.cvsWidth / 2 - this.bricks.getBrickWidth() / 2,
-                           this.cvsHeight - this.bricks.getBrickHeight(),
+                           this.cvsHeight - 6,
                            this.bricks.getBrickWidth(),
                            6,
                            this.ball);

@@ -37,28 +37,28 @@ Ball.prototype.move = function() {
 }
 
 Ball.prototype.testHit = function() {
-  // Paddle
-  if (this.y + this.radius >= game.getPaddle().y) {
-    if (this.x > game.getPaddle().x && this.x < game.getPaddle().x + game.getPaddle().width) {
+
+  // Hit a brick?
+
+
+  // Bottom edge
+  if (this.y + this.radius > canvas.height - 3) {
+    // Hit paddle: bounce
+    if (this.x > game.paddle.x && this.x < game.paddle.x + game.paddle.width) {
       dy = -dy;
     }
   }
 
-  // Top edge
-  if (this.y - this.radius < 0) {
-
-  }
-
-  // Bottom edge: die
+  // Or die
   if (this.y + this.radius > canvas.height) {
     // Reset position
     this.x = canvas.width / 2;
-    this.y = canvas.height - 10;
+    this.y = canvas.height - 16;
 
     this.dx = -this.dx;
 
     // Reset paddle position
-
+    game.paddle.x = canvas.width / 2 - (game.paddle.width / 2);
 
     // Decrement lives, pause for a second (or Game Over)
     game.playing = false;
@@ -74,7 +74,8 @@ Ball.prototype.testHit = function() {
     }
   }
 
-  // Hit the paddle?
+  // Top edge
+  if (this.y - this.radius < 0) {
 
-  // Hit a brick?
+  }
 }
