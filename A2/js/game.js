@@ -9,7 +9,7 @@ function GameState(canvas, ctx, interval, elLives, elScore) {
 
   var state = this;
   this.interval = interval || 10;
-  setInterval(function() { state.draw(); }, state.interval);
+  this.anim = setInterval(function() { state.draw(); }, state.interval);
 
   this.elLives = elLives;
   this.elScore = elScore;

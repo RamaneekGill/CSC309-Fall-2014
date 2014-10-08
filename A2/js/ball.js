@@ -37,6 +37,13 @@ Ball.prototype.move = function() {
 }
 
 Ball.prototype.testHit = function() {
+  // Paddle
+  if (this.y + this.radius >= game.getPaddle().y) {
+    if (this.x > game.getPaddle().x && this.x < game.getPaddle().x + game.getPaddle().width) {
+      dy = -dy;
+    }
+  }
+
   // Top edge
   if (this.y - this.radius < 0) {
 
@@ -53,7 +60,7 @@ Ball.prototype.testHit = function() {
     // Reset paddle position
 
 
-    // Decrement live, pause for a second
+    // Decrement lives, pause for a second (or Game Over)
     game.playing = false;
     game.lives--;
 
@@ -61,6 +68,7 @@ Ball.prototype.testHit = function() {
 
     if (game.lives == 0) {
       alert('Game over!');
+      clearInterval(game.anim);
     } else {
       setTimeout(function() { game.playing = true; }, 1000);
     }
