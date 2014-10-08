@@ -57,9 +57,11 @@ GameState.prototype.getCanvasHeight = function() {
 }
 
 GameState.prototype.draw = function() {
-  this.clearCanvas();
+  if (this.playing) {
+    this.ball.move();
+  }
 
-  this.ball.move();
+  this.clearCanvas();
 
   this.bricks.draw();
   this.paddle.draw();

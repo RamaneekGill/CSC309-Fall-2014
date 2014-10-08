@@ -5,10 +5,12 @@ var btnPlay = document.getElementById('game-menu-play');
 
 btnPlay.onclick = function() {
   document.body.className = 'game';
+  game.playing = true;
 }
 
 document.getElementById('game-pause').onclick = function() {
   document.body.className = '';
+  game.playing = false;
 }
 
 
@@ -58,7 +60,9 @@ function keyEvent(e) {
 
   if (key == 13) {
     // Enter key
-    document.body.className = (document.body.className == '') ? 'game' : '';
+    var is_menu = document.body.className == '';
+    document.body.className = is_menu ? 'game' : '';
+    game.playing = is_menu;
   }
 
   if (key == 37) {
