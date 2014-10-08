@@ -123,7 +123,7 @@ a {
       width: 25%;
     }
 
-    @media all and (max-width: 550px) {
+    @media all and (max-width: 700px) {
       #game-score-text { display: none; }
     }
 

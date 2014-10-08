@@ -7,15 +7,17 @@ function GameState(canvas, ctx, interval) {
   this.cvsHeight = canvas.height;
   this.ctx = ctx;
 
-  this.state = this;
-  this.interval = interval || 50;
-  // setInterval(function() { state.draw(); }, state.interval);
+  var state = this;
+  this.interval = interval || 10;
+  setInterval(function() { state.draw(); }, state.interval);
 
   this.playing = false;
-  this.lives   = 5;
+  this.lives   = 3;
   this.score   = 0;
 
-  // Initialize all the game elements (needs to be in order)
+  this.hits    = 0;
+
+  // Initialize all the game elements (needs to be in this order!)
   this.bricks = new Bricks(ctx,
                            window.innerWidth / 10 - 11,
                            this.cvsHeight / 25);
@@ -35,7 +37,7 @@ function GameState(canvas, ctx, interval) {
 
 GameState.prototype.restart = function() {
   this.playing = true;
-  this.lives   = 5;
+  this.lives   = 3;
   this.score   = 0;
 }
 
@@ -55,9 +57,9 @@ GameState.prototype.getCanvasHeight = function() {
 }
 
 GameState.prototype.draw = function() {
-  var ctx = this.ctx;
-
   this.clearCanvas();
+
+  this.ball.move();
 
   this.bricks.draw();
   this.paddle.draw();
@@ -65,17 +67,7 @@ GameState.prototype.draw = function() {
 }
 
 GameState.prototype.clearCanvas = function() {
-  var ctx = this.ctx;
-
-  // Store the current transformation matrix
-  ctx.save();
-
-  // Use the identity matrix while clearing the canvas
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.clearRect(0, 0, this.cvsWidth, this.cvsHeight);
-
-  // Restore the transform
-  ctx.restore();
+  this.ctx.clearRect(0, 0, this.cvsWidth, this.cvsHeight);
 }
 
 GameState.prototype.getBricks = function() {
@@ -83,7 +75,7 @@ GameState.prototype.getBricks = function() {
 }
 
 GameState.prototype.getPaddle = function() {
-  return this.paddle;;
+  return this.paddle;
 }
 
 GameState.prototype.getBall = function() {

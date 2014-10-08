@@ -1,7 +1,3 @@
-/**
- *
- */
-
 function Paddle(ctx, x, y, width, height, ball) {
   this.ctx    = ctx;
   this.x      = x;
@@ -22,15 +18,9 @@ Paddle.prototype.move = function(amount) {
   // Take into consideration the window boundaries
   if (this.x + amount <= 0) {
     this.x = 0;
-
-    if (this.ball.sticky) { this.ball.x = this.width / 2; }
   } else if (this.x + amount >= window.innerWidth - this.width) {
     this.x = window.innerWidth - this.width;
-
-    if (this.ball.sticky) { this.ball.x = this.x + this.width / 2; }
   } else {
     this.x += amount;
-
-    if (this.ball.sticky) { this.ball.x += amount; }
   }
 }

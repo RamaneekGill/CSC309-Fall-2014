@@ -1,13 +1,12 @@
-/**
- *
- */
-
 function Ball(ctx, x, y, radius) {
   this.ctx    = ctx;
   this.x      = x;
   this.y      = y;
   this.radius = radius;
-  this.sticky = true;
+  this.speed  = 1;
+
+  this.dx = 2;
+  this.dy = -4;
 }
 
 Ball.prototype.draw = function() {
@@ -19,19 +18,42 @@ Ball.prototype.draw = function() {
   ctx.fill();
 }
 
+Ball.prototype.move = function() {
+  // Bounce off of walls
+  if (this.x + this.dx > canvas.width - this.radius ||
+        this.x + this.dx < this.radius)
+    this.dx = -this.dx;
+  if (this.y + this.dy > canvas.height - this.radius ||
+    this.y + this.dy < this.radius)
+    this.dy = -this.dy;
+
+  this.x += this.speed * this.dx;
+  this.y += this.speed * this.dy;
+
+  this.testHit();
+}
+
 Ball.prototype.testHit = function() {
   // Hit an edge?
   // Left edge
-  // if (this.x <= )
+  if (this.x <= 0) {
 
-  // // Right edge
-  // if (this.x >= )
+  }
 
-  // // Top edge
-  // if (this.y <= )
+  // Right edge
+  if (this.x - this.radius >= window.innerWidth) {
 
-  // // Bottom edge: die
-  // if (this.y >= )
+  }
+
+  // Top edge
+  if (this.y <= 0) {
+
+  }
+
+  // Bottom edge: die
+  if (this.y - this.radius >= window.innerHeight) {
+
+  }
 
   // Hit the paddle?
 

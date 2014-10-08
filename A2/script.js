@@ -19,6 +19,7 @@ document.getElementById('game-pause').onclick = function() {
 var canvas, ctx;
 
 var nav   = document.getElementById('game-nav');
+var lives = document.getElementById('game-score-lives');
 var score = document.getElementById('game-score-num');
 
 // GameState object

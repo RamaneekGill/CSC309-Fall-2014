@@ -1,7 +1,3 @@
-/**
- *
- */
-
 function Bricks(ctx, brickWidth, brickHeight) {
   this.ctx = ctx;
   this.brickWidth  = brickWidth;
@@ -21,6 +17,12 @@ function Bricks(ctx, brickWidth, brickHeight) {
   // Colours for the rows of bricks
   this.colours = ["#d63912", "#eda703", "#fbdd0b", "#64ac02",
                   "#04ce92", "#04a5fb", "#6f17ff", "#b501c9"];
+  // this.colours = ["#d63912", "#d63912", "#f5ad03", "#f5ad03",
+  //                 "#64ac02", "#64ac02", "#fbf537", "#fbf537"];
+
+  // yellow: 1, green: 3, orange: 5, red: 7
+  // paddle width shrinks to half size after ball broken through red row and hit the upper wall
+  // ball speed increases: 4 hits, 12 hits, contact w/ orange and red rows
 }
 
 Bricks.prototype.getBricks = function() {
