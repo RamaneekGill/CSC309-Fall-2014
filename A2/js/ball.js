@@ -5,11 +5,13 @@ function Ball(ctx, x, y, size) {
   this.size   = size;
   this.speed  = 1;
 
-  this.dx = 2;
-  this.dy = -4;
+  this.dx = 1;
+  this.dy = -2;
 
-  this.hits = 0;
-  this.hitTop = false;
+  this.hits      = 0;
+  this.hitTop    = false;
+  this.hitOrange = false;
+  this.hitRed    = false;
 }
 
 Ball.prototype.draw = function() {
@@ -45,7 +47,7 @@ Ball.prototype.testHit = function() {
   var row = Math.floor(this.y / rowheight);
   var col = Math.floor(this.x / colwidth);
 
-  if (this.y < 8 * rowheight + game.bricks.offset &&
+  if (this.y < game.bricks.row * rowheight + game.bricks.offset &&
         row >= 0 && col >= 0 &&
         game.bricks.bricks[row][col] == 1) {
 
@@ -57,11 +59,21 @@ Ball.prototype.testHit = function() {
       case 1:
         game.score += 7;
         game.updateScore();
+
+        if (!this.hitRed) {
+          hitRed = true;
+          this.speed *= 1.1;
+        }
         break;
       case 2:
       case 3:
         game.score += 5;
         game.updateScore();
+
+        if (!this.hitOrange) {
+          hitOrange = true;
+          this.speed *= 1.1;
+        }
         break;
       case 4:
       case 5:
@@ -75,27 +87,34 @@ Ball.prototype.testHit = function() {
         break;
     }
 
+    this.hits++;
+
+    if (this.hits == 4 || this.hits == 12) {
+      this.speed *= 1.1;
+    }
+
     if (game.bricks.isEmpty()) {
       if (game.level == 1) {
+        game.level = 2;
         game.bricks.resetBricks();
         game.paddle.reset();
       } else {
-        this.hits++;
-
-        if (this.hits == 4 || this.hits == 12) {
-          this.speed++;
-        }
+        alert('Game over!');
+        clearInterval(game.anim);
       }
     }
   }
-
-  // SPEED INCREASES: 4 hits, 12 hits, contact w/ orange and red rows
 
   // Bottom edge
   if (this.y + this.size > canvas.height - 3) {
     // Hit paddle: bounce
     if (this.x > game.paddle.x && this.x < game.paddle.x + game.paddle.width) {
       this.dy = -this.dy;
+
+      if (this.x > game.paddle.x && this.x < game.paddle.x + game.paddle.width / 2)
+        this.dx = -Math.abs(this.dx % 5);
+      else
+        this.dx = Math.abs(this.dx % 5);
     }
   }
 

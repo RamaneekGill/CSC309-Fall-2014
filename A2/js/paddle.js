@@ -7,6 +7,14 @@ function Paddle(ctx, x, y, width, height, ball) {
   this.ball   = ball;
 }
 
+Paddle.prototype.reset = function() {
+  this.x = canvas.width / 2 - (this.width / 2);
+
+  game.ball.x = canvas.width / 2;
+  game.ball.y = canvas.height - 16;
+}
+
+
 Paddle.prototype.draw = function() {
   var ctx = this.ctx;
 
@@ -23,11 +31,4 @@ Paddle.prototype.move = function(amount) {
   } else {
     this.x += amount;
   }
-}
-
-Paddle.prototype.reset = function() {
-  this.x = canvas.width / 2 - (this.width / 2);
-
-  game.ball.x = canvas.width / 2;
-  game.ball.y = canvas.height - 16;
 }

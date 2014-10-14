@@ -1,28 +1,29 @@
-function Bricks(ctx, brickWidth, brickHeight) {
+function Bricks(ctx, col, row, brickWidth, brickHeight) {
   this.ctx = ctx;
   this.brickWidth  = brickWidth;
   this.brickHeight = brickHeight;
   this.offset = this.brickHeight * 2;
 
+  this.col = col;
+  this.row = row;
+
   // Holds the status of the bricks (8 rows of 10 bricks each).
   // A 1 means that it's still there, 0 means it's been hit.
-  this.bricks = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]];
+  this.bricks = [];
+
+  for (var i = 0; i < this.row; i++) {
+    this.bricks.push([]);
+    for (var j = 0; j < this.col; j++) {
+      this.bricks[i].push(1);
+    }
+  }
 
   // Colours for the rows of bricks
-  // this.colours = ["#d63912", "#eda703", "#fbdd0b", "#64ac02",
-  //                 "#04ce92", "#04a5fb", "#6f17ff", "#b501c9"];
   this.colours = ["#d63912", "#d63912", "#f5ad03", "#f5ad03",
                   "#64ac02", "#64ac02", "#fbf537", "#fbf537"];
 }
 
-Bricks.prototype.resetBricks = function() {
+Bricks.prototype.reset = function() {
   for (var i = 0; i < this.bricks.length; i++) {
     for (var j = 0; j < this.bricks[j].length; j++) {
       this.bricks[i][j] = 1;

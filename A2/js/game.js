@@ -21,7 +21,8 @@ function GameState(canvas, ctx, interval, elLives, elScore) {
 
   // Initialize all the game elements (needs to be in this order!)
   this.bricks = new Bricks(ctx,
-                           window.innerWidth / 10,
+                           8, 8,
+                           window.innerWidth / 8,
                            this.cvsHeight / 25);
 
   this.ball   = new Ball(ctx,
@@ -44,6 +45,8 @@ GameState.prototype.restart = function() {
   this.level   = 1;
 
   this.updateScore();
+  this.bricks.reset();
+  this.paddle.reset();
 }
 
 GameState.prototype.updateScore = function() {
@@ -75,7 +78,7 @@ GameState.prototype.updateCanvasDim = function(canvas) {
   this.cvsWidth  = canvas.width;
   this.cvsHeight = canvas.height;
 
-  this.bricks.updateBricksDim(window.innerWidth / 10, this.cvsHeight / 25);
+  this.bricks.updateBricksDim(window.innerWidth / this.bricks.col, this.cvsHeight / 25);
 }
 
 GameState.prototype.clearCanvas = function() {
