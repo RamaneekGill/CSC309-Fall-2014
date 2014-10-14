@@ -17,15 +17,12 @@ document.getElementById('game-pause').onclick = function() {
 /**
  * Actual game canvas logic.
  */
-
 var canvas, ctx;
+var game;
 
 var nav   = document.getElementById('game-nav');
 var lives = document.getElementById('game-score-lives');
 var score = document.getElementById('game-score-num');
-
-// GameState object
-var game;
 
 
 /**
@@ -52,11 +49,11 @@ window.addEventListener('keydown', function(e) { keyEvent(e); }, false);
 function keyEvent(e) {
   var key = e.keyCode || e.which;
 
-  var cvsWidth    = game.getCanvasWidth();
-  var cvsHeight   = game.getCanvasHeight();
+  var cvsWidth    = game.cvsWidth;
+  var cvsHeight   = game.cvsHeight;
   var skip        = cvsWidth / 50;
-  var brickWidth  = game.getBricks().getBrickWidth();
-  var brickHeight = game.getBricks().getBrickHeight();
+  var brickWidth  = game.bricks.brickWidth;
+  var brickHeight = game.bricks.brickHeight;
 
   if (key == 13 || key == 27 || key == 32) {
     // Enter/Escape/Space keys
@@ -68,10 +65,10 @@ function keyEvent(e) {
   if (game.playing) {
     if (key == 37) {
       // Left arrow key
-      game.getPaddle().move(-skip);
+      game.paddle.move(-skip);
     } else if (key == 39) {
       // Right arrow key
-      game.getPaddle().move(skip);
+      game.paddle.move(skip);
     }
 
     game.draw();

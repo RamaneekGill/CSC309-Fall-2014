@@ -2,6 +2,7 @@ function Bricks(ctx, brickWidth, brickHeight) {
   this.ctx = ctx;
   this.brickWidth  = brickWidth;
   this.brickHeight = brickHeight;
+  this.offset = this.brickHeight * 2;
 
   // Holds the status of the bricks (8 rows of 10 bricks each).
   // A 1 means that it's still there, 0 means it's been hit.
@@ -15,26 +16,10 @@ function Bricks(ctx, brickWidth, brickHeight) {
                  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]];
 
   // Colours for the rows of bricks
-  this.colours = ["#d63912", "#eda703", "#fbdd0b", "#64ac02",
-                  "#04ce92", "#04a5fb", "#6f17ff", "#b501c9"];
-  // this.colours = ["#d63912", "#d63912", "#f5ad03", "#f5ad03",
-  //                 "#64ac02", "#64ac02", "#fbf537", "#fbf537"];
-
-  // yellow: 1, green: 3, orange: 5, red: 7
-  // paddle width shrinks to half size after ball broken through red row and hit the upper wall
-  // ball speed increases: 4 hits, 12 hits, contact w/ orange and red rows
-}
-
-Bricks.prototype.getBricks = function() {
-  return this.bricks;
-}
-
-Bricks.prototype.getBrickWidth = function() {
-  return this.brickWidth;
-}
-
-Bricks.prototype.getBrickHeight = function() {
-  return this.brickHeight;
+  // this.colours = ["#d63912", "#eda703", "#fbdd0b", "#64ac02",
+  //                 "#04ce92", "#04a5fb", "#6f17ff", "#b501c9"];
+  this.colours = ["#d63912", "#d63912", "#f5ad03", "#f5ad03",
+                  "#64ac02", "#64ac02", "#fbf537", "#fbf537"];
 }
 
 Bricks.prototype.resetBricks = function() {
@@ -43,6 +28,16 @@ Bricks.prototype.resetBricks = function() {
       this.bricks[i][j] = 1;
     }
   }
+}
+
+Bricks.prototype.isEmpty = function() {
+  for (var i = 0; i < this.bricks.length; i++) {
+    if (this.bricks[i].indexOf(1) > -1) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 Bricks.prototype.updateBricksDim = function(brickWidth, brickHeight) {
@@ -61,8 +56,8 @@ Bricks.prototype.draw = function() {
 
       // Only draw the bricks that haven't been hit!
       if (bricks[row][col] == 1) {
-        ctx.fillRect(col * this.brickWidth + (col + 1) * 10,
-                     row * this.brickHeight + (row + 1) * 10,
+        ctx.fillRect(col * this.brickWidth,
+                     row * this.brickHeight + this.offset,
                      this.brickWidth,
                      this.brickHeight);
       }
