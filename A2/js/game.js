@@ -48,6 +48,7 @@ GameState.prototype.restart = function() {
   this.updateScore();
   this.bricks.reset();
   this.paddle.reset();
+  this.ball.reset();
 }
 
 GameState.prototype.updateScore = function() {

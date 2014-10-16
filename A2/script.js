@@ -72,7 +72,7 @@ function keyEvent(e) {
 
   // R key
   if (key == 82) {
-    restartGame();
+    game.restart();
     document.body.className = 'game';
     game.playing = true;
   }

@@ -14,6 +14,17 @@ function Ball(ctx, x, y, size) {
   this.hitRed    = false;
 }
 
+Ball.prototype.reset = function() {
+  this.x = canvas.width / 2;
+  this.y = canvas.height - 16;
+  thie.speed = 1;
+
+  this.hits      = 0;
+  this.hitTop    = false;
+  this.hitOrange = false;
+  this.hitRed    = false;
+}
+
 Ball.prototype.draw = function() {
   this.ctx.fillStyle = "#777";
   this.ctx.fillRect(this.x, this.y, this.size, this.size);
