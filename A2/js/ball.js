@@ -17,7 +17,7 @@ function Ball(ctx, x, y, size) {
 Ball.prototype.reset = function() {
   this.x = canvas.width / 2;
   this.y = canvas.height - 16;
-  thie.speed = 1;
+  this.speed = 1;
 
   this.hits      = 0;
   this.hitTop    = false;
@@ -42,22 +42,23 @@ Ball.prototype.move = function() {
     this.y + dy - this.size < 0)
     this.dy = -this.dy;
 
-  this.x += dx;
-  this.y += dy;
-
-  this.testHit();
+  this.testHit(this.x, this.y, dx, dy);
 }
 
-Ball.prototype.testHit = function() {
+Ball.prototype.testHit = function(x, y, dx, dy) {
+  // New coordinates
+  var x = x + dx;
+  var y = y + dy;
 
   // Hit a brick?
   var rowheight = game.bricks.brickHeight;
   var colwidth  = game.bricks.brickWidth;
-  var row = Math.floor(this.y / rowheight);
-  var col = Math.floor(this.x / colwidth);
+  var row = Math.floor(y - game.bricks.offset / rowheight);
+  var col = Math.floor(x / colwidth);
 
-  if (this.y < game.bricks.row * rowheight + game.bricks.offset &&
-        row >= 0 && col >= 0 &&
+  if (y < game.bricks.row * rowheight &&
+        row >= 0 && row < game.bricks.row &&
+        col >= 0 && col < game.bricks.col &&
         game.bricks.bricks[row][col] == 1) {
 
     this.dy = -this.dy;
@@ -112,27 +113,23 @@ Ball.prototype.testHit = function() {
         clearInterval(game.anim);
       }
     }
-
-    return 0;
   }
 
   // Bottom edge
-  if (this.y + this.size > canvas.height - 3) {
+  if (y + this.size > canvas.height - 3) {
     // Hit paddle: bounce
-    if (this.x > game.paddle.x && this.x < game.paddle.x + game.paddle.width) {
+    if (x > game.paddle.x && x < game.paddle.x + game.paddle.width) {
       this.dy = -this.dy;
 
-      if (this.x > game.paddle.x && this.x < game.paddle.x + game.paddle.width / 2)
+      if (x > game.paddle.x && x < game.paddle.x + game.paddle.width / 2)
         this.dx = -Math.abs(this.dx % 5);
       else
         this.dx = Math.abs(this.dx % 5);
     }
-
-    return 0;
   }
 
   // Or die
-  if (this.y + this.size > canvas.height) {
+  if (y + this.size > canvas.height) {
     // Reset position
     game.paddle.reset();
 
@@ -150,13 +147,14 @@ Ball.prototype.testHit = function() {
     } else {
       setTimeout(function() { game.playing = true; }, 1000);
     }
-
-    return 0;
   }
 
   // Top edge: first time hitting this reduces the paddle with to half size
-  if (!this.hitTop && this.y - this.size < 0) {
+  if (!this.hitTop && y - this.size < 0) {
     this.hitTop = true;
     game.paddle.width /= 2;
   }
+
+  this.x += dx;
+  this.y += dy;
 }
