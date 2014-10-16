@@ -15,10 +15,8 @@ function Ball(ctx, x, y, size) {
 }
 
 Ball.prototype.draw = function() {
-  var ctx = this.ctx;
-
-  ctx.fillStyle = "#777777";
-  ctx.fillRect(this.x, this.y, this.size, this.size);
+  this.ctx.fillStyle = "#777";
+  this.ctx.fillRect(this.x, this.y, this.size, this.size);
 }
 
 Ball.prototype.move = function() {
@@ -87,11 +85,11 @@ Ball.prototype.testHit = function() {
         break;
     }
 
-    this.hits++;
+    if (this.hits < 12)
+      this.hits++;
 
-    if (this.hits == 4 || this.hits == 12) {
+    if (this.hits == 4 || this.hits == 12)
       this.speed *= 1.1;
-    }
 
     if (game.bricks.isEmpty()) {
       if (game.level == 1) {
@@ -103,6 +101,8 @@ Ball.prototype.testHit = function() {
         clearInterval(game.anim);
       }
     }
+
+    return 0;
   }
 
   // Bottom edge
@@ -116,6 +116,8 @@ Ball.prototype.testHit = function() {
       else
         this.dx = Math.abs(this.dx % 5);
     }
+
+    return 0;
   }
 
   // Or die
@@ -137,6 +139,8 @@ Ball.prototype.testHit = function() {
     } else {
       setTimeout(function() { game.playing = true; }, 1000);
     }
+
+    return 0;
   }
 
   // Top edge: first time hitting this reduces the paddle with to half size

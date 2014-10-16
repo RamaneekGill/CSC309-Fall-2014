@@ -48,19 +48,18 @@ Bricks.prototype.updateBricksDim = function(brickWidth, brickHeight) {
 
 Bricks.prototype.draw = function() {
   var bricks = this.bricks;
-  var ctx    = this.ctx;
 
   for (var row = 0; row < bricks.length; row++) {
-    ctx.fillStyle = this.colours[row];
+    this.ctx.fillStyle = this.colours[row];
 
     for (var col = 0; col < bricks[row].length; col++) {
 
       // Only draw the bricks that haven't been hit!
       if (bricks[row][col] == 1) {
-        ctx.fillRect(col * this.brickWidth,
-                     row * this.brickHeight + this.offset,
-                     this.brickWidth,
-                     this.brickHeight);
+        this.ctx.fillRect(col * this.brickWidth,
+                          row * this.brickHeight + this.offset,
+                          this.brickWidth,
+                          this.brickHeight);
       }
     }
   }

@@ -16,10 +16,8 @@ Paddle.prototype.reset = function() {
 
 
 Paddle.prototype.draw = function() {
-  var ctx = this.ctx;
-
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(this.x, this.y, this.width, this.height);
+  this.ctx.fillStyle = "#fff";
+  this.ctx.fillRect(this.x, this.y, this.width, this.height);
 }
 
 Paddle.prototype.move = function(amount) {
