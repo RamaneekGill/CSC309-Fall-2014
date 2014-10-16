@@ -25,7 +25,7 @@ function Bricks(ctx, col, row, brickWidth, brickHeight) {
 
 Bricks.prototype.reset = function() {
   for (var i = 0; i < this.bricks.length; i++) {
-    for (var j = 0; j < this.bricks[j].length; j++) {
+    for (var j = 0; j < this.bricks[i].length; j++) {
       this.bricks[i][j] = 1;
     }
   }

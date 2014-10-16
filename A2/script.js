@@ -1,16 +1,32 @@
 /**
  * Handle menu stuff.
  */
-var btnPlay = document.getElementById('game-menu-play');
+var btnPlay    = document.getElementById('game-menu-play');
+var btnResume  = document.getElementById('game-menu-resume');
+var btnRestart = document.getElementById('game-menu-restart');
 
-btnPlay.onclick = function() {
-  document.body.className = 'game';
-  game.playing = true;
+btnPlay.onclick   = toggleMenu;
+btnResume.onclick = toggleMenu;
+document.getElementById('game-pause').onclick = toggleMenu;
+
+function toggleMenu() {
+  var is_playing = document.body.className == '';
+  document.body.className = is_playing ? 'game' : '';
+  game.playing = is_playing;
+
+  if (!is_playing && !game.started) {
+    btnPlay.style.display = 'none';
+    document.getElementById('game-menu-restart').style.display = 'block';
+    document.getElementById('game-menu-resume').style.display = 'block';
+    game.started = true;
+  }
 }
 
-document.getElementById('game-pause').onclick = function() {
-  document.body.className = '';
-  game.playing = false;
+btnRestart.onclick = restartGame;
+
+function restartGame() {
+  game.restart();
+  toggleMenu();
 }
 
 
@@ -49,18 +65,19 @@ window.addEventListener('keydown', function(e) { keyEvent(e); }, false);
 function keyEvent(e) {
   var key = e.keyCode || e.which;
 
-  var cvsWidth    = game.cvsWidth;
-  var cvsHeight   = game.cvsHeight;
-  var skip        = cvsWidth / 50;
-  var brickWidth  = game.bricks.brickWidth;
-  var brickHeight = game.bricks.brickHeight;
-
+  // Enter/Escape/Space keys
   if (key == 13 || key == 27 || key == 32) {
-    // Enter/Escape/Space keys
-    var is_menu = document.body.className == '';
-    document.body.className = is_menu ? 'game' : '';
-    game.playing = is_menu;
+    toggleMenu();
   }
+
+  // R key
+  if (key == 82) {
+    restartGame();
+    document.body.className = 'game';
+    game.playing = true;
+  }
+
+  var skip = game.cvsWidth / 50;
 
   if (game.playing) {
     if (key == 37) {

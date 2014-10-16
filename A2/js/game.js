@@ -14,6 +14,7 @@ function GameState(canvas, ctx, interval, elLives, elScore) {
   this.elLives = elLives;
   this.elScore = elScore;
 
+  this.started = false;
   this.playing = false;
   this.lives   = 3;
   this.score   = 0;
