@@ -5,8 +5,8 @@ function Ball(ctx, x, y, size) {
   this.size   = size;
   this.speed  = 1;
 
-  this.dx = 1;
-  this.dy = -2;
+  this.dx = 2;
+  this.dy = -4;
 
   this.hits      = 0;
   this.hitTop    = false;
@@ -16,7 +16,7 @@ function Ball(ctx, x, y, size) {
 
 Ball.prototype.reset = function() {
   this.x = canvas.width / 2;
-  this.y = canvas.height - 16;
+  this.y = canvas.height - game.paddle.height;
   this.speed = 1;
 
   this.hits      = 0;
@@ -53,7 +53,7 @@ Ball.prototype.testHit = function(x, y, dx, dy) {
   // Hit a brick?
   var rowheight = game.bricks.brickHeight;
   var colwidth  = game.bricks.brickWidth;
-  var row = Math.floor(y - game.bricks.offset / rowheight);
+  var row = Math.floor(y / rowheight);
   var col = Math.floor(x / colwidth);
 
   if (y < game.bricks.row * rowheight &&
@@ -71,7 +71,7 @@ Ball.prototype.testHit = function(x, y, dx, dy) {
         game.updateScore();
 
         if (!this.hitRed) {
-          hitRed = true;
+          this.hitRed = true;
           this.speed *= 1.1;
         }
         break;
@@ -81,7 +81,7 @@ Ball.prototype.testHit = function(x, y, dx, dy) {
         game.updateScore();
 
         if (!this.hitOrange) {
-          hitOrange = true;
+          this.hitOrange = true;
           this.speed *= 1.1;
         }
         break;
@@ -116,7 +116,7 @@ Ball.prototype.testHit = function(x, y, dx, dy) {
   }
 
   // Bottom edge
-  if (y + this.size > canvas.height - 3) {
+  if (y + this.size > canvas.height - game.paddle.height) {
     // Hit paddle: bounce
     if (x > game.paddle.x && x < game.paddle.x + game.paddle.width) {
       this.dy = -this.dy;

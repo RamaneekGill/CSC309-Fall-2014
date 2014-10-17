@@ -11,7 +11,7 @@ Paddle.prototype.reset = function() {
   this.x = canvas.width / 2 - (this.width / 2);
 
   game.ball.x = canvas.width / 2;
-  game.ball.y = canvas.height - 16;
+  game.ball.y = canvas.height - this.height;
 }
 
 

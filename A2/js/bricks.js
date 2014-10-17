@@ -2,7 +2,6 @@ function Bricks(ctx, col, row, brickWidth, brickHeight) {
   this.ctx = ctx;
   this.brickWidth  = brickWidth;
   this.brickHeight = brickHeight;
-  this.offset = this.brickHeight * 2;
 
   this.col = col;
   this.row = row;
@@ -57,7 +56,7 @@ Bricks.prototype.draw = function() {
       // Only draw the bricks that haven't been hit!
       if (bricks[row][col] == 1) {
         this.ctx.fillRect(col * this.brickWidth,
-                          row * this.brickHeight + this.offset,
+                          row * this.brickHeight,
                           this.brickWidth,
                           this.brickHeight);
       }

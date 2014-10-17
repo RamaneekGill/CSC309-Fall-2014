@@ -112,7 +112,7 @@ if (!canvas.getContext) {
 
   // If all is well, let's get the context for the canvas and get on our way.
   ctx  = canvas.getContext('2d');
-  game = new GameState(canvas, ctx, 10, lives, score);
+  game = new GameState(canvas, ctx, 20, lives, score);
 
   resizeCanvas();
 }
