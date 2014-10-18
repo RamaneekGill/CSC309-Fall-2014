@@ -8,9 +8,10 @@ Ramaneek Gill            g3gillra
 ### AMI ID:
 
 
+
 ### Location of files:
 /var/www/html
-  - js/
+  - game/
     - ball.js
     - bricks.js
     - game.js
@@ -38,6 +39,13 @@ tested in Chrome 38 and Firefox 33 (in an Ubuntu-based distribution).
 
 ### Website documentation:
 
+The main user-defined objects used for the gameplay are in the game/ folder. The
+script.js file is used to handle UI elements, such as the menu, keyboard events (for
+moving the paddle), and window resizing.
 
-
-Include a brief explanations of how it all works, e.g., list of main user-defined objects, and datastructures.
+A GameState prototype (game.js) is used to keep track of general game information,
+including the bricks (bricks.js), ball (ball.js), paddle (paddle.js), lives, levels,
+and score. Each of the game-related prototypes contain draw() functions that handle
+the drawing of the respective items and resetting, which is used when the game is
+restarted, or the user dies and the ball/paddle is reset, or a new level is started
+(for the bricks).
