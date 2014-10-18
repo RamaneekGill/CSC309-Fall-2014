@@ -1,4 +1,4 @@
-CSC309 A1
+CSC309 A2
 =========
 2014-10-20
 Eugene Yue-Hin Cheung    g3cheunh
@@ -6,11 +6,11 @@ Ramaneek Gill            g3gillra
 
 
 ### AMI ID:
-
+ami-0b7a353b
 
 
 ### Location of files:
-/var/www/html
+/var/www/html/
   - game/
     - ball.js
     - bricks.js
