@@ -110,14 +110,15 @@ Ball.prototype.testHit = function(x, y, dx, dy) {
       this.speed *= 1.05;
 
     if (game.bricks.isEmpty()) {
-      if (game.level == 1) {
-        game.level = 2;
-        game.bricks.resetBricks();
-        game.paddle.reset();
-      } else {
-        alert('Game over!');
-        clearInterval(game.anim);
-      }
+      game.playing = false;
+
+      game.bricks.reset();
+      game.paddle.reset();
+
+      game.level++;
+      game.updateScore();
+
+      setTimeout(function() { game.playing = true; }, 1000);
     }
   }
 

@@ -78,7 +78,7 @@ function keyEvent(e) {
     game.playing = true;
   }
 
-  var skip = game.cvsWidth / (game.bricks.col * 2);
+  var skip = game.cvsWidth / 50;
 
   if (game.playing) {
     if (key == 37) {
