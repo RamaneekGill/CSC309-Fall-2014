@@ -2,7 +2,7 @@
  * Keeps track of the game state.
  */
 
-function GameState(canvas, ctx, interval, elLives, elScore) {
+function GameState(canvas, ctx, interval, elLives, elScore, elLevel) {
   this.cvsWidth  = canvas.width;
   this.cvsHeight = canvas.height;
   this.ctx = ctx;
@@ -13,6 +13,7 @@ function GameState(canvas, ctx, interval, elLives, elScore) {
 
   this.elLives = elLives;
   this.elScore = elScore;
+  this.elLevel = elLevel;
 
   this.started = false;
   this.playing = false;
@@ -22,7 +23,7 @@ function GameState(canvas, ctx, interval, elLives, elScore) {
 
   // Initialize all the game elements (needs to be in this order!)
   this.bricks = new Bricks(ctx,
-                           8, 8,
+                           14, 8,
                            window.innerWidth / 8,
                            this.cvsHeight / 25);
 
@@ -52,6 +53,7 @@ GameState.prototype.restart = function() {
 }
 
 GameState.prototype.updateScore = function() {
+  this.elLevel.innerHTML = this.level;
   this.elScore.innerHTML = this.score;
 
   switch (this.lives) {
@@ -81,21 +83,21 @@ GameState.prototype.updateCanvasDim = function(canvas) {
   this.cvsHeight = canvas.height;
 
   this.bricks.updateBricksDim(window.innerWidth / this.bricks.col, this.cvsHeight / 25);
+  this.paddle.y = this.cvsHeight - 6;
 }
 
 GameState.prototype.clearCanvas = function() {
   this.ctx.clearRect(0, 0, this.cvsWidth, this.cvsHeight);
 }
 
-
 GameState.prototype.draw = function() {
   if (this.playing) {
     this.ball.move();
+
+    this.clearCanvas();
+
+    this.bricks.draw();
+    this.paddle.draw();
+    this.ball.draw();
   }
-
-  this.clearCanvas();
-
-  this.bricks.draw();
-  this.paddle.draw();
-  this.ball.draw();
 }

@@ -39,6 +39,7 @@ var game;
 var nav   = document.getElementById('game-nav');
 var lives = document.getElementById('game-score-lives');
 var score = document.getElementById('game-score-num');
+var level = document.getElementById('game-score-level');
 
 
 /**
@@ -77,7 +78,7 @@ function keyEvent(e) {
     game.playing = true;
   }
 
-  var skip = game.cvsWidth / 50;
+  var skip = game.cvsWidth / (game.bricks.col * 2);
 
   if (game.playing) {
     if (key == 37) {
@@ -112,7 +113,7 @@ if (!canvas.getContext) {
 
   // If all is well, let's get the context for the canvas and get on our way.
   ctx  = canvas.getContext('2d');
-  game = new GameState(canvas, ctx, 20, lives, score);
+  game = new GameState(canvas, ctx, 20, lives, score, level);
 
   resizeCanvas();
 }

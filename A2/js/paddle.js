@@ -2,6 +2,7 @@ function Paddle(ctx, x, y, width, height, ball) {
   this.ctx    = ctx;
   this.x      = x;
   this.y      = y;
+  this.original_width = width;
   this.width  = width;
   this.height = height;
   this.ball   = ball;
@@ -9,11 +10,12 @@ function Paddle(ctx, x, y, width, height, ball) {
 
 Paddle.prototype.reset = function() {
   this.x = canvas.width / 2 - (this.width / 2);
+  this.width = this.original_width;
 
-  game.ball.x = canvas.width / 2;
-  game.ball.y = canvas.height - this.height;
+  // Move the ball too
+  game.ball.x = (canvas.width / 2) - (game.ball.size / 2) - 1;
+  game.ball.y = canvas.height - this.height - game.ball.size;
 }
-
 
 Paddle.prototype.draw = function() {
   this.ctx.fillStyle = "#fff";
