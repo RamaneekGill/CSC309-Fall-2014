@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Breakout</title>
-  <link href='http://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link href="http://fonts.googleapis.com/css?family=VT323" rel="stylesheet" type="text/css">
+  <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-
-  <div id="game-menu">
+  <!-- Full page menu -->
+  <section id="game-menu">
     <div id="game-menu-content">
       <h1>Breakout</h1>
       <h2>Created by Eugene Cheung (g3cheunh) and Ramaneek Gill (g3gillra)</h2>
@@ -17,9 +17,10 @@
       <a class="game-menu-btn" id="game-menu-resume">Resume [ENTER]</a>
       <a class="game-menu-btn" id="game-menu-restart">Restart [R]</a>
     </div>
-  </div>
+  </section>
 
-  <div id="game-content">
+  <!-- Full page game content, with a nav bar -->
+  <section id="game-content">
     <nav id="game-nav">
       <div id="game-pause">Menu [ENTER]</div>
       <div id="game-logo">Breakout</div>
@@ -31,13 +32,15 @@
     <canvas id="game">
       Your browser does not support HTML5 canvas.
     </canvas>
-  </div>
+  </section>
 
-  <!-- Game logic-related prototypes -->
-  <script type="text/javascript" src="js/bricks.js"></script>
-  <script type="text/javascript" src="js/ball.js"></script>
-  <script type="text/javascript" src="js/paddle.js"></script>
-  <script type="text/javascript" src="js/game.js"></script>
+  <!-- Game logic-related prototypes. -->
+  <script type="text/javascript" src="game/bricks.js"></script>
+  <script type="text/javascript" src="game/ball.js"></script>
+  <script type="text/javascript" src="game/paddle.js"></script>
+  <script type="text/javascript" src="game/game.js"></script>
+
+  <!-- The JS that instantiates everything and handles page-specific things. -->
   <script type="text/javascript" src="script.js"></script>
 </body>
 </html>
