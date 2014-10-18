@@ -9,7 +9,7 @@
 html,
 body {
   height: 100%;
-  overflow: hidden;
+  overflow: hidden;  /* To deal with the full page menu */
 }
 
 body {
@@ -101,7 +101,7 @@ a {
 
   #game-nav {
     background: #2c3e41;
-    font-size: 0;
+    font-size: 0;  /* To deal with inline-block issues */
     width: 100%;
   }
 
