@@ -1,4 +1,4 @@
-<h2>Edit Product</h2>
+<h2>Edit card: <?php echo $product->name ?></h2>
 
 <?php
   echo "<p>" . anchor('/catalogue', 'Back') . "</p>";

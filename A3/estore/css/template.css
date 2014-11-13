@@ -1,7 +1,18 @@
-body {
-  font-family: Arial, Verdana, sans-serif;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font: 400 16px/20px 'Open Sans', Arial, Verdana, sans-serif;
 }
 
 input,
@@ -9,39 +20,48 @@ label {
   display: block;
 }
 
+h1,
+h2,
+h3 {
+  font-weight: 300;
+}
+
 h1 {
   font-size: 2em;
-  color: green;
+  line-height: 1.5em;
 }
 
 h2 {
-  font-size: 1em;
-  color: blue;
+  font-size: 1.5em;
+  line-height: 1.5em;
 }
 
-#header {
-  font-size: 12px;
-  width: 700px;
-  height: 50px;
+table {
+  border-collapse: collapse;
 }
 
-#header > h1 {
+table,
+th,
+td {
+  border: 1px solid #777;
+}
+
+th,
+td {
+  padding: 0.25em 0.5em;
+}
+
+header {
+  background-color: #eee;
+  padding: 1em 2em;
+}
+
+footer {
+  background-color: #eee;
+  padding: 1em 2em;
   text-align: center;
 }
 
-#nav {
-  padding: 5pt;
-  position: absolute;
-  width: 130px;
-  height: 800px;
-  font-size: 10pt;
-  border: 1px solid #31363E;
-  background: #eee;
-}
-
-#main {
-  margin-left: 160px;
-  width: 540px;
-  height: 800px;
-  background: #fff;
+section#main {
+  padding: 2em;
 }

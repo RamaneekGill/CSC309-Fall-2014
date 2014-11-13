@@ -31,4 +31,4 @@ tested in Chrome 38 and Firefox 33 (in an Ubuntu-based distribution).
 
 ### Website documentation:
 
-You'll need to navigate to something like http://localhost/html/estore/index.php/view
+You'll need to navigate to something like http://localhost/estore/index.php/catalogue

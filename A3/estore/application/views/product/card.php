@@ -1,4 +1,4 @@
-<h2>Product Entry</h2>
+<h2>Card: <?php echo $product->name ?></h2>
 
 <?php
   echo "<p>" . anchor('/catalogue', 'Back') . "</p>";
