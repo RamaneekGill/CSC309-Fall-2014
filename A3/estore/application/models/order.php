@@ -1,4 +1,4 @@
-<?php
+<?
 class Order  {
   public $id;
   public $customer_id;

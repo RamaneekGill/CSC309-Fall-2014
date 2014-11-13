@@ -1,9 +1,7 @@
-<h2>Products</h2>
+<h2><? echo $title ?></h2>
 
 <p>
-  <?php
-    echo anchor('/add', 'Add New');
-  ?>
+  <? echo anchor('/add', 'Add New'); ?>
 </p>
 
 <table>

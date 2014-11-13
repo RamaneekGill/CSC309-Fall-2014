@@ -1,7 +1,7 @@
 <h2>New Product</h2>
 
 <?php
-  echo "<p>" . anchor('/view', 'Back') . "</p>";
+  echo "<p>" . anchor('/catalogue', 'Back') . "</p>";
 
   echo form_open_multipart('/create');
 

@@ -1,5 +1,5 @@
-<?php
-class Product_model extends CI_Model {
+<?
+class Product_Model extends CI_Model {
 
   function getAll() {
     $query = $this->db->get('products');
