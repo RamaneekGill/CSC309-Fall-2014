@@ -2,7 +2,7 @@
 
 <p>
   <?php
-    echo anchor('store/newForm','Add New');
+    echo anchor('/add', 'Add New');
   ?>
 </p>
 
@@ -24,9 +24,9 @@
       echo "<td>" . $product->price . "</td>";
       echo "<td><img src='" . base_url() . "images/product/" . $product->photo_url . "' width='100px' /></td>";
 
-      echo "<td>" . anchor("store/delete/$product->id",'Delete',"onClick='return confirm(\"Do you really want to delete this record?\");'") . "</td>";
-      echo "<td>" . anchor("store/editForm/$product->id",'Edit') . "</td>";
-      echo "<td>" . anchor("store/read/$product->id",'View') . "</td>";
+      echo "<td>" . anchor("/delete/$product->id",'Delete',"onClick='return confirm(\"Do you really want to delete this record?\");'") . "</td>";
+      echo "<td>" . anchor("/edit/$product->id",'Edit') . "</td>";
+      echo "<td>" . anchor("/card/$product->id",'View') . "</td>";
 
       echo "</tr>";
     }

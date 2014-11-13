@@ -1,9 +1,9 @@
 <h2>New Product</h2>
 
 <?php
-  echo "<p>" . anchor('store/index','Back') . "</p>";
+  echo "<p>" . anchor('/view', 'Back') . "</p>";
 
-  echo form_open_multipart('store/create');
+  echo form_open_multipart('/create');
 
   echo form_label('Name');
   echo form_error('name');

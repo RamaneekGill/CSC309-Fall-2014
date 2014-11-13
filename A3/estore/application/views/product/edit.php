@@ -1,9 +1,9 @@
 <h2>Edit Product</h2>
 
 <?php
-  echo "<p>" . anchor('store/index','Back') . "</p>";
+  echo "<p>" . anchor('/view', 'Back') . "</p>";
 
-  echo form_open("store/update/$product->id");
+  echo form_open("/update/$product->id");
 
   echo form_label('Name');
   echo form_error('name');

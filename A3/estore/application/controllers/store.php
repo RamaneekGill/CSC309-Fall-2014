@@ -15,15 +15,24 @@ class Store extends CI_Controller {
     $this->load->library('upload', $config);
   }
 
-  function index() {
+  function view() {
+    $data['title'] = 'List';
+
     $this->load->model('product_model');
     $products = $this->product_model->getAll();
     $data['products'] = $products;
-    $this->load->view('product/list.php',$data);
+
+    $this->load->view('templates/header.php', $data);
+    $this->load->view('product/list.php', $data);
+    $this->load->view('templates/footer.php', $data);
   }
 
-  function newForm() {
-    $this->load->view('product/newForm.php');
+  function add() {
+    $data['title'] = 'Add new card';
+
+    $this->load->view('templates/header.php', $data);
+    $this->load->view('product/new.php');
+    $this->load->view('templates/footer.php', $data);
   }
 
   function create() {
@@ -48,30 +57,45 @@ class Store extends CI_Controller {
       $this->product_model->insert($product);
 
       // Then we redirect to the index page again
-      redirect('store/index', 'refresh');
+      redirect('/view', 'refresh');
     } else {
-      if ( !$fileUploadSuccess) {
+      if (!$fileUploadSuccess) {
         $data['fileerror'] = $this->upload->display_errors();
-        $this->load->view('product/newForm.php',$data);
+
+        $this->load->view('templates/header.php', $data);
+        $this->load->view('product/new.php');
+        $this->load->view('templates/footer.php', $data);
         return;
       }
 
-      $this->load->view('product/newForm.php');
+      $this->load->view('templates/header.php', $data);
+      $this->load->view('product/new.php');
+      $this->load->view('templates/footer.php', $data);
     }
   }
 
-  function read($id) {
+  function card($id) {
     $this->load->model('product_model');
     $product = $this->product_model->get($id);
-    $data['product']=$product;
-    $this->load->view('product/read.php',$data);
+    $data['product'] = $product;
+
+    $data['title'] = $product->name;
+
+    $this->load->view('templates/header.php', $data);
+    $this->load->view('product/card.php', $data);
+    $this->load->view('templates/footer.php', $data);
   }
 
-  function editForm($id) {
+  function edit($id) {
     $this->load->model('product_model');
     $product = $this->product_model->get($id);
-    $data['product']=$product;
-    $this->load->view('product/editForm.php',$data);
+    $data['product'] = $product;
+
+    $data['title'] = 'Edit ' . $product->name;
+
+    $this->load->view('templates/header.php', $data);
+    $this->load->view('product/edit.php', $data);
+    $this->load->view('templates/footer.php', $data);
   }
 
   function update($id) {
@@ -91,7 +115,7 @@ class Store extends CI_Controller {
       $this->product_model->update($product);
 
       // Then we redirect to the index page again
-      redirect('store/index', 'refresh');
+      redirect('/view', 'refresh');
     } else {
       $product = new Product();
       $product->id = $id;
@@ -99,7 +123,10 @@ class Store extends CI_Controller {
       $product->description = set_value('description');
       $product->price = set_value('price');
       $data['product']=$product;
-      $this->load->view('product/editForm.php',$data);
+
+      $this->load->view('templates/header.php', $data);
+      $this->load->view('product/edit.php',$data);
+      $this->load->view('templates/footer.php', $data);
     }
   }
 
@@ -110,7 +137,7 @@ class Store extends CI_Controller {
       $this->product_model->delete($id);
 
     // Then we redirect to the index page again
-    redirect('store/index', 'refresh');
+    redirect('/view', 'refresh');
   }
 }
 ?>
