@@ -18,7 +18,7 @@ class Store extends CI_Controller {
   function index() {
     $this->load->model('product_model');
     $products = $this->product_model->getAll();
-    $data['products']=$products;
+    $data['products'] = $products;
     $this->load->view('product/list.php',$data);
   }
 

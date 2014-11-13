@@ -1,11 +1,22 @@
-<h2>Product Table</h2>
+<h2>Products</h2>
 
-<?php
-    echo "<p>" . anchor('store/newForm','Add New') . "</p>";
+<p>
+  <?php
+    echo anchor('store/newForm','Add New');
+  ?>
+</p>
 
-    echo "<table>";
-    echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th></tr>";
-
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Photo</th>
+    </tr>
+  </thead>
+  <tbody>
+  <?php
     foreach ($products as $product) {
       echo "<tr>";
       echo "<td>" . $product->name . "</td>";
@@ -19,5 +30,6 @@
 
       echo "</tr>";
     }
-    echo "<table>";
-?>
+  ?>
+  </tbody>
+</table>
