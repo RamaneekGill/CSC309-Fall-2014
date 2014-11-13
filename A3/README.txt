@@ -1,4 +1,4 @@
-CSC309 A2
+CSC309 A3
 =========
 2014-11-27
 Eugene Yue-Hin Cheung    g3cheunh
@@ -31,13 +31,4 @@ tested in Chrome 38 and Firefox 33 (in an Ubuntu-based distribution).
 
 ### Website documentation:
 
-The main user-defined objects used for the gameplay are in the game/ folder. The
-script.js file is used to handle UI elements, such as the menu, keyboard events (for
-moving the paddle), and window resizing.
-
-A GameState prototype (game.js) is used to keep track of general game information,
-including the bricks (bricks.js), ball (ball.js), paddle (paddle.js), lives, levels,
-and score. Each of the game-related prototypes contain draw() functions that handle
-the drawing of the respective items and resetting, which is used when the game is
-restarted, or the user dies and the ball/paddle is reset, or a new level is started
-(for the bricks).
+You'll need to navigate to something like http://localhost/html/estore/index.php/view
