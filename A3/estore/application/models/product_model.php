@@ -7,29 +7,28 @@ class Product_model extends CI_Model {
   }
 
   function get($id) {
-    $query = $this->db->get_where('products', array('id' => $id));
+    $query = $this->db->get_where('products',array('id' => $id));
 
     return $query->row(0,'Product');
   }
 
   function delete($id) {
-    return $this->db->delete('products', array('id' => $id ));
+    return $this->db->delete("products",array('id' => $id ));
   }
 
   function insert($product) {
-    return $this->db->insert('products',
-                             array('name' => $product->name,
-                             'description' => $product->description,
-                             'price' => $product->price,
-                             'photo_url' => $product->photo_url));
+    return $this->db->insert("products", array('name' => $product->name,
+                                          'description' => $product->description,
+                            'price' => $product->price,
+                          'photo_url' => $product->photo_url));
   }
 
   function update($product) {
     $this->db->where('id', $product->id);
-    return $this->db->update('products',
-                             array('name' => $product->name,
-                             'description' => $product->description,
-                             'price' => $product->price));
+    return $this->db->update("products", array('name' => $product->name,
+                                          'description' => $product->description,
+                            'price' => $product->price));
   }
+
 }
 ?>

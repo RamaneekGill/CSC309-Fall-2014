@@ -1,9 +1,9 @@
 <?php
 class Product  {
-  public $id;
-  public $name;
-  public $description;
-  public $photo_url;
-  public $price;
+	public $id;
+	public $name;
+	public $description;
+	public $price;
+	public $photo_url;
 }
 ?>
