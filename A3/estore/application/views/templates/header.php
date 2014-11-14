@@ -9,6 +9,9 @@
 <body>
   <header>
     <h1><?php echo anchor('/catalogue', 'Baseball Card Store') ?></h1>
+    <nav id="user">
+      <?php echo anchor('/cart', 'Shopping Cart'); ?>
+    </nav>
   </header>
 
   <section id="main">
