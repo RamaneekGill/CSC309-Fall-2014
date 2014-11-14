@@ -1,4 +1,4 @@
-<?
+<?php
 class Product_Model extends CI_Model {
 
   function getAll() {
@@ -31,4 +31,3 @@ class Product_Model extends CI_Model {
                              'price' => $product->price));
   }
 }
-?>

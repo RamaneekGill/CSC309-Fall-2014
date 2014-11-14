@@ -1,4 +1,4 @@
-<?
+<?php
 class Order  {
   public $id;
   public $customer_id;
@@ -9,4 +9,3 @@ class Order  {
   public $creditcard_month;
   public $creditcard_year;
 }
-?>

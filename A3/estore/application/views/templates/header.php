@@ -8,9 +8,12 @@
 </head>
 <body>
   <header>
-    <h1><?php echo anchor('/catalogue', 'Baseball Card Store') ?></h1>
+    <div id="logo">
+      <h1><?php echo anchor('/catalogue', 'Baseball Card Store') ?></h1>
+    </div>
     <nav id="user">
-      <?php echo anchor('/cart', 'Shopping Cart'); ?>
+      <?php echo anchor('/user/index', 'Login / Register') ?>
+      <?php echo anchor('/cart/view', 'Cart') . " (" . "0" . ")" ?>
     </nav>
   </header>
 

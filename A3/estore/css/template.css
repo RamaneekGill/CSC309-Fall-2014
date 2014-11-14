@@ -86,8 +86,19 @@ td {
 
 header {
   background-color: #eee;
+  height: 80px;
   padding: 1em 2em;
 }
+
+  #logo {
+    float: left;
+    width: 300px;
+  }
+
+  nav#user {
+    padding-top: 0.75em;
+    text-align: right;
+  }
 
 footer {
   background-color: #eee;
@@ -95,7 +106,15 @@ footer {
   text-align: center;
 }
 
+  #login-link {
+    display: block;
+    font-size: 0.9em;
+    margin-bottom: 1em;
+  }
+
 section#main {
+  margin: 0 auto;
+  max-width: 1000px;
   padding: 2em;
 }
 

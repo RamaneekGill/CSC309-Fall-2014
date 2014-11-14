@@ -1,4 +1,4 @@
-<?
+<?php
 class Customer  {
   public $id;
   public $first;
@@ -7,4 +7,3 @@ class Customer  {
   public $password;
   public $email;
 }
-?>

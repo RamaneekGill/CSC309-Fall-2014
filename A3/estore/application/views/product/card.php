@@ -3,10 +3,8 @@
   <?php echo anchor('/catalogue', 'Back') ?>
 </h2>
 
-<?php
-  echo "<p> ID = " . $product->id . "</p>";
-  echo "<p> NAME = " . $product->name . "</p>";
-  echo "<p> Description = " . $product->description . "</p>";
-  echo "<p> Price = " . $product->price . "</p>";
-  echo "<p><img src='" . base_url() . "images/product/" . $product->photo_url . "' width='100px'/></p>";
-?>
+<p>ID = <?php echo $product->id ?></p>
+<p>Name = <?php echo $product->name ?></p>
+<p>Description = <?php echo $product->description ?></p>
+<p>Price = <?php echo $product->price ?></p>
+<p><img src="<?php echo base_url() . "images/product/" . $product->photo_url ?>" width="100"></p>

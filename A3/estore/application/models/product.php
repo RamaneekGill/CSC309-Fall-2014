@@ -1,4 +1,4 @@
-<?
+<?php
 class Product  {
   public $id;
   public $name;
@@ -6,4 +6,3 @@ class Product  {
   public $price;
   public $photo_url;
 }
-?>
