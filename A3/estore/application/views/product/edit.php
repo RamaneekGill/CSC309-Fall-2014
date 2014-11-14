@@ -1,8 +1,9 @@
-<h2>Edit card: <?php echo $product->name ?></h2>
+<h2>
+  Edit card: <?php echo $product->name ?>
+  <?php echo anchor('/catalogue', 'Back') ?>
+</h2>
 
 <?php
-  echo "<p>" . anchor('/catalogue', 'Back') . "</p>";
-
   echo form_open("/update/$product->id");
 
   echo form_label('Name');

@@ -8,7 +8,7 @@
 </head>
 <body>
   <header>
-    <h1>Baseball Card Store</h1>
+    <h1><?php echo anchor('/catalogue', 'Baseball Card Store') ?></h1>
   </header>
 
   <section id="main">

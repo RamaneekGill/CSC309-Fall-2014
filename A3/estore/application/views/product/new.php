@@ -1,8 +1,9 @@
-<h2>New Product</h2>
+<h2>
+  Add new card
+  <?php echo anchor('/catalogue', 'Back'); ?>
+</h2>
 
 <?php
-  echo "<p>" . anchor('/catalogue', 'Back') . "</p>";
-
   echo form_open_multipart('/create');
 
   echo form_label('Name');

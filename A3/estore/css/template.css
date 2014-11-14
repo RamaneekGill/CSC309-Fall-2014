@@ -12,13 +12,38 @@ body {
 }
 
 body {
+  color: #000;
   font: 400 16px/20px 'Open Sans', Arial, Verdana, sans-serif;
+}
+
+a {;
+  color: #1d8cd1;
+  text-decoration: none;
 }
 
 input,
 label {
   display: block;
 }
+
+label {
+  margin-top: 1em;
+}
+
+input {
+  border: 1px solid #777;
+  border-radius: 4px;
+  font-family: 'Open Sans', Arial, Verdana, sans-serif;
+  padding: 0.25em 0.5em;
+}
+
+  label + input {
+    margin-top: 0.5em;
+  }
+
+  input[type='submit'] {
+    margin-top: 1em;
+  }
 
 h1,
 h2,
@@ -32,12 +57,20 @@ h1 {
 }
 
 h2 {
+  border-bottom: 1px solid #777;
   font-size: 1.5em;
   line-height: 1.5em;
+  margin-bottom: 1em;
 }
+
+  h2 a {
+    float: right;
+    font-size: 1rem;
+  }
 
 table {
   border-collapse: collapse;
+  width: 100%;
 }
 
 table,
@@ -64,4 +97,8 @@ footer {
 
 section#main {
   padding: 2em;
+}
+
+.table-actions a {
+  margin-right: 1em;
 }

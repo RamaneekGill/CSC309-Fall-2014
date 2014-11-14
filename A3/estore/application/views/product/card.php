@@ -1,8 +1,9 @@
-<h2>Card: <?php echo $product->name ?></h2>
+<h2>
+  Card: <?php echo $product->name ?>
+  <?php echo anchor('/catalogue', 'Back') ?>
+</h2>
 
 <?php
-  echo "<p>" . anchor('/catalogue', 'Back') . "</p>";
-
   echo "<p> ID = " . $product->id . "</p>";
   echo "<p> NAME = " . $product->name . "</p>";
   echo "<p> Description = " . $product->description . "</p>";
