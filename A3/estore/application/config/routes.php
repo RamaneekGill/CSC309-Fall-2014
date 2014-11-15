@@ -38,8 +38,8 @@
 |
 */
 
-$route['user/(:any)'] = 'user';
-$route['cart/(:any)'] = 'cart';
+$route['user/(:any)'] = 'user/$1';
+$route['cart/(:any)'] = 'shoppingcart/$1';
 $route['(:any)'] = 'store/$1';
 $route['default_controller'] = 'store';
 

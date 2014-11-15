@@ -26,6 +26,12 @@ class Store extends CI_Controller {
     $products = $this->product_model->getAll();
     $data['products'] = $products;
 
+    // if ($this->is_admin) {
+      $this->load->model('order_model');
+      $orders = $this->order_model->getAll();
+      $data['orders'] = $orders;
+    // }
+
     $this->load->view('templates/header.php', $data);
     $this->load->view('product/list.php', $data);
     $this->load->view('templates/footer.php', $data);

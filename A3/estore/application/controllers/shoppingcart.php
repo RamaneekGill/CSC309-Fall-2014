@@ -1,15 +1,21 @@
 <?php
-class Cart extends CI_Controller {
-
-  function __construct() {
-    parent::__construct();
-  }
+class ShoppingCart extends CI_Controller {
 
   function view() {
-    $data['title'] = 'Shopping Cart';
+    // $data['title'] = 'Shopping Cart';
+
+    // $this->load->view('templates/header.php', $data);
+    // $this->load->view('product/cart.php');
+    // $this->load->view('templates/footer.php', $data);
+
+    $data['title'] = 'Catalogue';
+
+    $this->load->model('product_model');
+    $products = $this->product_model->getAll();
+    $data['products'] = $products;
 
     $this->load->view('templates/header.php', $data);
-    $this->load->view('product/cart.php');
+    $this->load->view('product/list.php', $data);
     $this->load->view('templates/footer.php', $data);
   }
 

@@ -137,14 +137,15 @@ section#main {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
-  box-shadow: 0 2px 4px #777;
+  box-shadow: 0 2px 4px #aaa;
   float: left;
+  margin: 1em;
   padding: 1em;
   width: 250px;
 }
 
   .product-card:hover {
-    box-shadow: 0 2px 6px #777;
+    box-shadow: 0 2px 6px #888;
   }
 
   .product-card img {
@@ -178,3 +179,7 @@ section#main {
   clear: both;
   padding-top: 2em;
 }
+
+  #orders {
+    margin-bottom: 1em;
+  }
