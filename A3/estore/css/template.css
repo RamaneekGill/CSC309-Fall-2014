@@ -1,3 +1,5 @@
+/* Core styling */
+
 *,
 *::before,
 *::after {
@@ -84,6 +86,9 @@ td {
   padding: 0.25em 0.5em;
 }
 
+
+/* Header */
+
 header {
   background-color: #eee;
   height: 80px;
@@ -100,6 +105,9 @@ header {
     text-align: right;
   }
 
+
+/* Footer */
+
 footer {
   background-color: #eee;
   padding: 1em 2em;
@@ -112,12 +120,61 @@ footer {
     margin-bottom: 1em;
   }
 
+
+
+/* Content */
+
 section#main {
   margin: 0 auto;
   max-width: 1000px;
   padding: 2em;
 }
 
-.table-actions a {
-  margin-right: 1em;
+
+/* Catalogue page: product cards */
+
+.product-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px #777;
+  float: left;
+  padding: 1em;
+  width: 250px;
+}
+
+  .product-card:hover {
+    box-shadow: 0 2px 6px #777;
+  }
+
+  .product-card img {
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+  }
+
+  .product-card h2 {
+    border: none;
+    margin-bottom: 0;
+  }
+
+  .product-card a {
+    color: #000;
+  }
+
+  .product-card-actions {
+    margin-top: 1em;
+  }
+
+  .product-card-actions a {
+    color: #1d8cd1;
+    margin-right: 1em;
+  }
+
+
+/* Admin stuff */
+
+#admin-tasks {
+  clear: both;
+  padding-top: 2em;
 }

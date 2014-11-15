@@ -17,3 +17,9 @@ display a printable receipt (a simple example that shows how to print from JavaS
 
 Email receipt to customer. Documentation for sending email from CodeIgniter is available here (https://ellislab.com/codeigniter/user-guide/libraries/email.html).
 To use this feature you will need access to a public SMTP server. One possibility is to use the SMTP server provided by Gmail (https://www.digitalocean.com/community/tutorials/how-to-use-google-s-smtp-server).
+
+<h2>Creditcard information:</h2>
+Number:
+Expiry date:
+
+<button>Checkout</button>

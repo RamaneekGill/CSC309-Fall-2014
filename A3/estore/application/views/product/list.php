@@ -1,40 +1,32 @@
-<h2>
-  Catalogue
-  <?php echo anchor('/add', 'Add new card'); ?>
-</h2>
+<div id="cards-list">
+  <h2>
+    Catalogue
+    <?php echo anchor('/add', 'Add new card'); ?>
+  </h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Price</th>
-      <th>Photo</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php
-      foreach ($products as $product) {
-        echo "<tr>";
-        echo "<td>" . $product->name . "</td>";
-        echo "<td>" . $product->description . "</td>";
-        echo "<td>" . $product->price . "</td>";
-        echo "<td><img src='" . base_url() . "images/product/" . $product->photo_url . "' width='100px' /></td>";
+  <?php
+    foreach ($products as $product) {
+      echo anchor("/card/$product->id",
+        '<div class="product-card">
+           <img src=' . base_url() . 'images/product/' . $product->photo_url . ' />
+           <h2>' . $product->name . '</h2>
+           <p>$' . $product->price . '</p>
+           <p>' . $product->description . '</p>
+           <div class="product-card-actions"'
+             . anchor("/delete/$product->id", 'Delete', "onClick='return confirm(\"Do you really want to delete this record?\");'")
+             . anchor("/edit/$product->id", 'Edit')
+             . anchor("/cart/add/$product->id", 'Add to cart')
+           . '</div>
+        </div>');
+    }
+  ?>
+</div>
 
-        echo "<td class='table-actions'>";
-        echo anchor("/delete/$product->id", 'Delete', "onClick='return confirm(\"Do you really want to delete this record?\");'");
-        echo anchor("/edit/$product->id", 'Edit');
-        echo anchor("/card/$product->id", 'View');
+<div id="admin-tasks">
+  <h2>Admin tasks</h2>
+  <h3>Finalized orders:</h3>
+  Display all finalized orders
 
-        echo anchor("/cart/add/$product->id", 'Add to cart');
-        echo "</td>";
-        echo "</tr>";
-      }
-    ?>
-  </tbody>
-</table>
-
-Admin:
-Display all finalized orders
-Delete all customer and order information
+  <h3>Delete data:</h3>
+  <?php echo anchor('/customer/delete_all', 'Delete all customer and order information'); ?>
+</div>
