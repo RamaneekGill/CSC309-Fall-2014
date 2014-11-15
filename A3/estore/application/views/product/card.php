@@ -1,6 +1,6 @@
 <h2>
   Card: <?php echo $product->name ?>
-  <?php echo anchor('/catalogue', 'Back') ?>
+  <?php echo anchor('/', 'Back') ?>
 </h2>
 
 <p>ID = <?php echo $product->id ?></p>

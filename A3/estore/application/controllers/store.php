@@ -1,7 +1,7 @@
 <?php
 class Store extends CI_Controller {
 
-  function __construct() {
+  public function __construct() {
     parent::__construct();
 
     $config['upload_path'] = './images/product/';
@@ -19,7 +19,7 @@ class Store extends CI_Controller {
     return $this->session->userdata('logged_in');
   }
 
-  function catalogue() {
+  public function index() {
     $data['title'] = 'Catalogue';
 
     $this->load->model('product_model');
@@ -37,7 +37,7 @@ class Store extends CI_Controller {
     $this->load->view('templates/footer.php', $data);
   }
 
-  function add() {
+  public function add() {
     $data['title'] = 'Add new card';
 
     $this->load->view('templates/header.php', $data);
@@ -45,7 +45,7 @@ class Store extends CI_Controller {
     $this->load->view('templates/footer.php', $data);
   }
 
-  function create() {
+  public function create() {
     $this->load->library('form_validation');
     $this->form_validation->set_rules('name','Name','required|is_unique[products.name]');
     $this->form_validation->set_rules('description','Description','required');
@@ -84,7 +84,7 @@ class Store extends CI_Controller {
     }
   }
 
-  function card($id) {
+  public function card($id) {
     $this->load->model('product_model');
     $product = $this->product_model->get($id);
     $data['product'] = $product;
@@ -96,7 +96,7 @@ class Store extends CI_Controller {
     $this->load->view('templates/footer.php', $data);
   }
 
-  function edit($id) {
+  public function edit($id) {
     $this->load->model('product_model');
     $product = $this->product_model->get($id);
     $data['product'] = $product;
@@ -108,7 +108,7 @@ class Store extends CI_Controller {
     $this->load->view('templates/footer.php', $data);
   }
 
-  function update($id) {
+  public function update($id) {
     $this->load->library('form_validation');
     $this->form_validation->set_rules('name','Name','required');
     $this->form_validation->set_rules('description','Description','required');
@@ -140,7 +140,7 @@ class Store extends CI_Controller {
     }
   }
 
-  function delete($id) {
+  public function delete($id) {
     $this->load->model('product_model');
 
     if (isset($id))

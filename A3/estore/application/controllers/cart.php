@@ -1,7 +1,11 @@
 <?php
 class Cart extends CI_Controller {
 
-  function index() {
+  public function __construct() {
+    parent::__construct();
+  }
+
+  public function index() {
     $data['title'] = 'Shopping Cart';
 
     $this->load->view('templates/header.php', $data);
@@ -9,7 +13,7 @@ class Cart extends CI_Controller {
     $this->load->view('templates/footer.php', $data);
   }
 
-  function add($id) {
+  public function add($id) {
     // $this->load->model('order');
     // $product = $this->product_model->get($id);
     // $data['product'] = $product;
@@ -20,5 +24,5 @@ class Cart extends CI_Controller {
     // $this->load->view('product/card.php', $data);
     // $this->load->view('templates/footer.php', $data);
 
-    redirect('/cart', 'refresh');
+    // redirect('/cart', 'refresh');
   }

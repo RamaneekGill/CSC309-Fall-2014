@@ -38,10 +38,10 @@
 |
 */
 
-$route['user'] = 'user';
-$route['cart'] = 'cart';
-$route['(:any)'] = 'store/$1';
-$route['default_controller'] = 'store';
+$route['default_controller'] = "store";
+$route['user'] = "user";
+$route['cart'] = "cart";
+$route['(:any)'] = "store/$1";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

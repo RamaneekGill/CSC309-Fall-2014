@@ -12,8 +12,8 @@
       <h1><?php echo anchor('/catalogue', 'Baseball Card Store') ?></h1>
     </div>
     <nav id="user">
-      <?php echo anchor('/user/index', 'Login / Register') ?>
-      <?php echo anchor('/cart/index', 'Cart') . " (" . "0" . ")" ?>
+      <?php echo anchor('/user', 'Login / Register') ?>
+      <?php echo anchor('/cart', 'Cart') . " (" . "0" . ")" ?>
     </nav>
   </header>
 

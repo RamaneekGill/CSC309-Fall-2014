@@ -1,6 +1,6 @@
 <h2>
   Add new card
-  <?php echo anchor('/catalogue', 'Back'); ?>
+  <?php echo anchor('/', 'Back'); ?>
 </h2>
 
 <?php
