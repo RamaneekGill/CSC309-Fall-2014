@@ -4,7 +4,7 @@
 </h2>
 
 <?php
-  echo form_open_multipart('/user/userlogin');
+  echo form_open_multipart('/user/login');
 
   echo form_label('Username');
   echo form_error('username');
@@ -12,7 +12,7 @@
 
   echo form_label('Password');
   echo form_error('password');
-  echo form_password('description', set_value('password'), 'required');
+  echo form_password('password', set_value('password'), 'required');
 ?>
 
 <?php

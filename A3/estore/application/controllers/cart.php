@@ -9,7 +9,7 @@ class Cart extends CI_Controller {
     $data['title'] = 'Shopping Cart';
 
     $this->load->view('templates/header.php', $data);
-    $this->load->view('product/cart.php');
+    $this->load->view('product/cart.php', $data);
     $this->load->view('templates/footer.php', $data);
   }
 
@@ -24,5 +24,6 @@ class Cart extends CI_Controller {
     // $this->load->view('product/card.php', $data);
     // $this->load->view('templates/footer.php', $data);
 
-    // redirect('/cart', 'refresh');
+    redirect('/cart', 'refresh');
   }
+}

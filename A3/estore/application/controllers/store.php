@@ -1,22 +1,16 @@
 <?php
-class Store extends CI_Controller {
+class Store extends MY_Controller {
 
   public function __construct() {
     parent::__construct();
 
     $config['upload_path'] = './images/product/';
     $config['allowed_types'] = 'gif|jpg|png';
-    // $config['max_size'] = '100';
-    // $config['max_width'] = '1024';
-    // $config['max_height'] = '768';
 
     $this->is_admin = false;
 
     $this->load->library('upload', $config);
-  }
-
-  private function isLoggedIn(){
-    return $this->session->userdata('logged_in');
+    $this->load->library('session');
   }
 
   public function index() {
@@ -26,11 +20,13 @@ class Store extends CI_Controller {
     $products = $this->product_model->getAll();
     $data['products'] = $products;
 
-    // if ($this->is_admin) {
+    $data['logged_in'] = $this->isLoggedIn();
+    $data['is_admin'] = $this->isAdmin();
+    if ($this->isAdmin()) {
       $this->load->model('order_model');
       $orders = $this->order_model->getAll();
       $data['orders'] = $orders;
-    // }
+    }
 
     $this->load->view('templates/header.php', $data);
     $this->load->view('product/list.php', $data);
@@ -67,7 +63,7 @@ class Store extends CI_Controller {
       $this->product_model->insert($product);
 
       // Then we redirect to the index page again
-      redirect('/catalogue', 'refresh');
+      redirect('/', 'refresh');
     } else {
       if (!$fileUploadSuccess) {
         $data['fileerror'] = $this->upload->display_errors();
@@ -82,18 +78,6 @@ class Store extends CI_Controller {
       $this->load->view('product/new.php');
       $this->load->view('templates/footer.php', $data);
     }
-  }
-
-  public function card($id) {
-    $this->load->model('product_model');
-    $product = $this->product_model->get($id);
-    $data['product'] = $product;
-
-    $data['title'] = $product->name;
-
-    $this->load->view('templates/header.php', $data);
-    $this->load->view('product/card.php', $data);
-    $this->load->view('templates/footer.php', $data);
   }
 
   public function edit($id) {
@@ -125,14 +109,14 @@ class Store extends CI_Controller {
       $this->product_model->update($product);
 
       // Then we redirect to the index page again
-      redirect('/catalogue', 'refresh');
+      redirect('/', 'refresh');
     } else {
       $product = new Product();
       $product->id = $id;
       $product->name = set_value('name');
       $product->description = set_value('description');
       $product->price = set_value('price');
-      $data['product']=$product;
+      $data['product'] = $product;
 
       $this->load->view('templates/header.php', $data);
       $this->load->view('product/edit.php',$data);
@@ -147,6 +131,13 @@ class Store extends CI_Controller {
       $this->product_model->delete($id);
 
     // Then we redirect to the index page again
-    redirect('/catalogue', 'refresh');
+    redirect('/', 'refresh');
+  }
+
+  public function delete_data() {
+    if ($this->isAdmin()) {
+    }
+
+    redirect('/', 'refresh');
   }
 }

@@ -1,7 +1,3 @@
-Edit shopping cart content's (change item quantity, delete items)
-
-The shopping cart should show the total cost for the items selected.
-
 For unfinalized orders, store shopping cart information on the server using a PHP session.
 Store information in the provided database only once orders are finalized.
 All data provided by the user should be validated. Enforce the following validation rules:
@@ -17,6 +13,11 @@ display a printable receipt (a simple example that shows how to print from JavaS
 
 Email receipt to customer. Documentation for sending email from CodeIgniter is available here (https://ellislab.com/codeigniter/user-guide/libraries/email.html).
 To use this feature you will need access to a public SMTP server. One possibility is to use the SMTP server provided by Gmail (https://www.digitalocean.com/community/tutorials/how-to-use-google-s-smtp-server).
+
+<h2>Cards</h2>
+(change item quantity, delete items)
+
+Total cost:
 
 <h2>Creditcard information:</h2>
 Number:

@@ -9,11 +9,21 @@
 <body>
   <header>
     <div id="logo">
-      <h1><?php echo anchor('/catalogue', 'Baseball Card Store') ?></h1>
+      <h1><?php echo anchor('/', 'Baseball Card Store') ?></h1>
     </div>
     <nav id="user">
-      <?php echo anchor('/user', 'Login / Register') ?>
-      <?php echo anchor('/cart', 'Cart') . " (" . "0" . ")" ?>
+      <?php if (!$logged_in): ?>
+        <?php echo anchor('/login', 'Login') ?>
+        -
+        <?php echo anchor('/register', 'Register') ?>
+      <?php else: ?>
+        <?php echo "wat" ?>
+        <?php echo anchor('/logout', 'Logout') ?>
+      <?php endif; ?>
+      <?php if ($logged_in): ?>
+        -
+        <?php echo anchor('/cart', 'Cart') ?>
+      <?php endif; ?>
     </nav>
   </header>
 
