@@ -9,7 +9,7 @@ class Admin extends MY_Controller {
     $data['title'] = 'Admin Login';
 
     $this->load->view('templates/header.php', $data);
-    $this->load->view('product/adminlogin.php', $data);
+    $this->load->view('user/adminlogin.php', $data);
     $this->load->view('templates/footer.php', $data);
   }
 

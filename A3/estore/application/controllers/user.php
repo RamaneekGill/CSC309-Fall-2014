@@ -9,7 +9,7 @@ class User extends MY_Controller {
     $data['title'] = 'Login';
 
     $this->load->view('templates/header.php', $data);
-    $this->load->view('product/login.php', $data);
+    $this->load->view('user/login.php', $data);
     $this->load->view('templates/footer.php', $data);
   }
 
@@ -54,7 +54,7 @@ class User extends MY_Controller {
     $data['title'] = 'Register';
 
     $this->load->view('templates/header.php', $data);
-    $this->load->view('product/register.php', $data);
+    $this->load->view('user/register.php', $data);
     $this->load->view('templates/footer.php', $data);
   }
 
@@ -62,18 +62,12 @@ class User extends MY_Controller {
     $this->load->library('form_validation');
     $this->form_validation->set_rules('first', 'First name', 'required|max_length[24]');
     $this->form_validation->set_rules('last', 'Last name', 'requiredmax_length[24]');
-    $this->form_validation->set_rules('email', 'Email', 'required|valid_emailmax_length[45]');
+    $this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[45]');
     $this->form_validation->set_rules('login','Username','required|is_unique[customers.login]|max_length[16]');
-    $this->form_validation->set_rules('password', 'Password', 'required|matches[passconf]|max_length[16]');
+    $this->form_validation->set_rules('password', 'Password', 'required|matches[passconf]|min_length[6]|max_length[16]');
     $this->form_validation->set_rules('passconf', 'Password Confirmation', 'required');
 
-    if ($this->form_validation->run() == FALSE) {
-      $data['title'] = 'Register';
-
-      $this->load->view('templates/header.php', $data);
-      $this->load->view('product/register.php', $data);
-      $this->load->view('templates/footer.php', $data);
-    } else {
+    if ($this->form_validation->run() == TRUE) {
       $this->load->model('customer_model');
 
       $customer = new Customer();
@@ -86,7 +80,9 @@ class User extends MY_Controller {
       $this->customer_model->insert($customer);
 
       // Then we redirect to the index page again
-      redirect('/', 'refresh');
+      redirect('/login', 'refresh');
     }
+
+    $this->register();
   }
 }

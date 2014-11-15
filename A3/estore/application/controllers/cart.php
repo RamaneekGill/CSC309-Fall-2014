@@ -9,7 +9,7 @@ class Cart extends MY_Controller {
     $data['title'] = 'Shopping Cart';
 
     $this->load->view('templates/header.php', $data);
-    $this->load->view('product/cart.php', $data);
+    $this->load->view('cart/cart.php', $data);
     $this->load->view('templates/footer.php', $data);
   }
 
@@ -25,5 +25,10 @@ class Cart extends MY_Controller {
     // $this->load->view('templates/footer.php', $data);
 
     redirect('/cart', 'refresh');
+  }
+
+  public function checkout() {
+    $this->load->library('form_validation');
+    $this->form_validation->set_rules('card_number', 'Credit card number', 'required|length[16]');
   }
 }
