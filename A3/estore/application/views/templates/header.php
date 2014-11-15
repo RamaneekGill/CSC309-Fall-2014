@@ -13,7 +13,7 @@
     </div>
     <nav id="user">
       <?php echo anchor('/user/index', 'Login / Register') ?>
-      <?php echo anchor('/cart/view', 'Cart') . " (" . "0" . ")" ?>
+      <?php echo anchor('/cart/index', 'Cart') . " (" . "0" . ")" ?>
     </nav>
   </header>
 

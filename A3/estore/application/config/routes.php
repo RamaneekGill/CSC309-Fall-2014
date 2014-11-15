@@ -23,7 +23,7 @@
 | RESERVED ROUTES
 | -------------------------------------------------------------------------
 |
-| There area two reserved routes:
+| There are two reserved routes:
 |
 |	$route['default_controller'] = 'welcome';
 |
@@ -38,8 +38,8 @@
 |
 */
 
-$route['user/(:any)'] = 'user/$1';
-$route['cart/(:any)'] = 'shoppingcart/$1';
+$route['user'] = 'user';
+$route['cart'] = 'cart';
 $route['(:any)'] = 'store/$1';
 $route['default_controller'] = 'store';
 
