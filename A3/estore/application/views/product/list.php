@@ -1,7 +1,9 @@
 <div id='cards-list'>
   <h2>
     Catalogue
-    <?php echo anchor('/add', 'Add new card'); ?>
+    <?php if ($is_admin) {
+      echo anchor('/add', 'Add new card');
+    } ?>
   </h2>
 
   <?php foreach ($products as $product): ?>
@@ -9,7 +11,7 @@
       <img src='<?php echo base_url() ?>images/product/<?php echo $product->photo_url?>' />
       <h2><?php echo $product->name ?></h2>
       <p>$<?php echo $product->price ?></p>
-      <p><?php echo $product->description ?></p>
+      <p class="product-card-description"><?php echo $product->description ?></p>
       <div class="product-card-actions">
         <?php
           if ($is_admin) {
@@ -42,6 +44,6 @@
     </div>
 
     <h3>Delete data:</h3>
-    <?php echo anchor("/delete_data", 'Delete all customer and order information'); ?>
+    <?php echo anchor("/admin/delete_data", 'Delete all customer and order information'); ?>
   <?php endif; ?>
 </div>

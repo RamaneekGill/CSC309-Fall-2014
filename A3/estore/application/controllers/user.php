@@ -3,14 +3,10 @@ class User extends MY_Controller {
 
   public function __construct() {
     parent::__construct();
-
-    $this->load->library('session');
   }
 
   public function index() {
     $data['title'] = 'Login';
-
-    $data['logged_in'] = $this->isLoggedIn();
 
     $this->load->view('templates/header.php', $data);
     $this->load->view('product/login.php', $data);
@@ -22,15 +18,7 @@ class User extends MY_Controller {
     $this->form_validation->set_rules('username', 'Username', 'required');
     $this->form_validation->set_rules('password', 'Password', 'required');
 
-    if ($this->form_validation->run() == FALSE) {
-      $data['title'] = 'Login';
-
-      $data['logged_in'] = $this->isLoggedIn();
-
-      $this->load->view('templates/header.php', $data);
-      $this->load->view('product/login.php', $data);
-      $this->load->view('templates/footer.php', $data);
-    } else {
+    if ($this->form_validation->run() == TRUE) {
       $this->load->model('customer_model');
 
       $username = $this->input->get_post('username');
@@ -45,16 +33,10 @@ class User extends MY_Controller {
         $this->session->set_userdata($userdata);
 
         redirect('/', 'refresh');
-      } else {
-        $data['title'] = 'Login';
-
-        $data['logged_in'] = $this->isLoggedIn();
-
-        $this->load->view('templates/header.php', $data);
-        $this->load->view('product/login.php', $data);
-        $this->load->view('templates/footer.php', $data);
       }
     }
+
+    $this->index();
   }
 
   public function logout() {
@@ -70,8 +52,6 @@ class User extends MY_Controller {
 
   public function register() {
     $data['title'] = 'Register';
-
-    $data['logged_in'] = $this->isLoggedIn();
 
     $this->load->view('templates/header.php', $data);
     $this->load->view('product/register.php', $data);
@@ -89,8 +69,6 @@ class User extends MY_Controller {
 
     if ($this->form_validation->run() == FALSE) {
       $data['title'] = 'Register';
-
-      $data['logged_in'] = $this->isLoggedIn();
 
       $this->load->view('templates/header.php', $data);
       $this->load->view('product/register.php', $data);
@@ -110,34 +88,5 @@ class User extends MY_Controller {
       // Then we redirect to the index page again
       redirect('/', 'refresh');
     }
-  }
-
-  public function admin() {
-    $data['title'] = 'Admin Login';
-
-    $data['logged_in'] = $this->isLoggedIn();
-
-    $this->load->view('templates/header.php', $data);
-    $this->load->view('product/adminlogin.php', $data);
-    $this->load->view('templates/footer.php', $data);
-  }
-
-  public function adminlogin() {
-    $this->load->library('form_validation');
-    $this->form_validation->set_rules('username', 'Username', 'required');
-    $this->form_validation->set_rules('password', 'Password', 'required');
-
-    // if ($this->form_validation->run() == FALSE) {
-    //     $this->load->view('logincenter');
-    // }
-    // else {
-    //     $data['query'] = $this->db->get('users');
-    //         if ($this->_is_admin($data['query']->name)) {
-    //             $this->load->view('admin', $data);
-    //         }
-    //         else {
-    //             echo "err";
-    //         }
-    // }
   }
 }

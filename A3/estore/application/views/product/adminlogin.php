@@ -4,7 +4,7 @@
 </h2>
 
 <?php
-  echo form_open_multipart('/user/adminlogin');
+  echo form_open_multipart('/admin/admin_login');
 
   echo form_label('Username');
   echo form_error('username');

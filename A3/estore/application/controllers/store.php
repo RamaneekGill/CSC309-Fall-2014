@@ -133,11 +133,4 @@ class Store extends MY_Controller {
     // Then we redirect to the index page again
     redirect('/', 'refresh');
   }
-
-  public function delete_data() {
-    if ($this->isAdmin()) {
-    }
-
-    redirect('/', 'refresh');
-  }
 }

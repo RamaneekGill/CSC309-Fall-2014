@@ -150,7 +150,7 @@ section#main {
 
   .product-card img {
     display: block;
-    margin: 0 auto;
+    margin: 0 auto 1em;
     width: 200px;
   }
 
@@ -163,14 +163,19 @@ section#main {
     color: #000;
   }
 
+  .product-card-description {
+    font-size: 0.85em;
+    margin-top: 1em;
+  }
+
   .product-card-actions {
     margin-top: 1em;
   }
 
-  .product-card-actions a {
-    color: #1d8cd1;
-    margin-right: 1em;
-  }
+    .product-card-actions a {
+      color: #1d8cd1;
+      margin-right: 1em;
+    }
 
 
 /* Admin stuff */

@@ -12,16 +12,17 @@
       <h1><?php echo anchor('/', 'Baseball Card Store') ?></h1>
     </div>
     <nav id="user">
-      <?php if (!$this->session->userdata('logged_in')): ?>
-        <?php echo anchor('/login', 'Login') ?>
-        -
-        <?php echo anchor('/register', 'Register') ?>
-      <?php else: ?>
-        <?php echo $this->session->userdata('username') ?>:
-        <?php echo anchor('/logout', 'Logout') ?>
-        -
-        <?php echo anchor('/cart', 'Cart') ?>
-      <?php endif; ?>
+      <?php
+        if (!$this->session->userdata('logged_in') && !$this->session->userdata('admin_logged_in')) {
+          echo anchor('/login', 'Login') . ' - ' . anchor('/register', 'Register');
+        }
+        elseif ($this->session->userdata('logged_in')) {
+          echo $this->session->userdata('username') . ': ' . anchor('/logout', 'Logout') . ' - ' . anchor('/cart', 'Cart');
+        }
+        else {
+          echo 'Admin: ' . anchor('/admin/logout', 'Logout');
+        }
+      ?>
     </nav>
   </header>
 

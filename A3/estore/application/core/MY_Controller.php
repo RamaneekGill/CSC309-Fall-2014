@@ -9,7 +9,7 @@ class MY_Controller extends CI_Controller {
   }
 
   public function isAdmin() {
-    return $this->session->userdata('is_admin');
+    return $this->session->userdata('admin_logged_in');
   }
 
   public function isLoggedIn() {

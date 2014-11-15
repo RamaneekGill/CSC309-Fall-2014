@@ -42,8 +42,10 @@ $route['user/(:any)'] = "user/$1";
 $route['login'] = "user/index";
 $route['logout'] = "user/logout";
 $route['register'] = "user/register";
-$route['admin'] = "user/admin";
 $route['user'] = "user";
+
+$route['admin/(:any)'] = "admin/$1";
+$route['admin'] = "admin";
 
 $route['cart/(:any)'] = "cart/$1";
 $route['cart'] = "cart";
