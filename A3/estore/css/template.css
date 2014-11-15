@@ -110,14 +110,14 @@ header {
 
 footer {
   background-color: #eee;
+  font-size: 0.8em;
   padding: 1em 2em;
   text-align: center;
 }
 
   #login-link {
     display: block;
-    font-size: 0.9em;
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
   }
 
 

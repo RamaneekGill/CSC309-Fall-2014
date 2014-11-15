@@ -12,15 +12,13 @@
       <h1><?php echo anchor('/', 'Baseball Card Store') ?></h1>
     </div>
     <nav id="user">
-      <?php if (!$logged_in): ?>
+      <?php if (!$this->session->userdata('logged_in')): ?>
         <?php echo anchor('/login', 'Login') ?>
         -
         <?php echo anchor('/register', 'Register') ?>
       <?php else: ?>
-        <?php echo "wat" ?>
+        <?php echo $this->session->userdata('username') ?>:
         <?php echo anchor('/logout', 'Logout') ?>
-      <?php endif; ?>
-      <?php if ($logged_in): ?>
         -
         <?php echo anchor('/cart', 'Cart') ?>
       <?php endif; ?>

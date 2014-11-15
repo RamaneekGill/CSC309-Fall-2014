@@ -11,9 +11,15 @@
       <p>$<?php echo $product->price ?></p>
       <p><?php echo $product->description ?></p>
       <div class="product-card-actions">
-        <?php echo anchor("/delete/$product->id", 'Delete', "onClick='return confirm(\"Do you really want to delete this record?\");'") ?>
-        <?php echo anchor("/edit/$product->id", 'Edit') ?>
-        <?php echo anchor("/cart/add/$product->id", 'Add to cart') ?>
+        <?php
+          if ($is_admin) {
+            echo anchor("/delete/$product->id", 'Delete', "onClick='return confirm(\"Do you really want to delete this record?\");'");
+            echo anchor("/edit/$product->id", 'Edit');
+          }
+          if ($logged_in) {
+            echo anchor("/cart/add/$product->id", 'Add to cart');
+          }
+        ?>
       </div>
     </div>
   <?php endforeach; ?>
