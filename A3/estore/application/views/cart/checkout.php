@@ -18,6 +18,8 @@
 ?>
 
 
+Store information in the provided database only once orders are finalized.
+
 Checkout. This function should collect payment information (credit card number and expiry date) and
 display a printable receipt (a simple example that shows how to print from JavaScript is available http://www.javascripter.net/faq/printing.htm).
 

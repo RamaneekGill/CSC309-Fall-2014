@@ -17,7 +17,7 @@
           echo anchor('/login', 'Login') . ' - ' . anchor('/register', 'Register');
         }
         elseif ($this->session->userdata('logged_in')) {
-          echo $this->session->userdata('username') . ': ' . anchor('/logout', 'Logout') . ' - ' . anchor('/cart', 'Cart');
+          echo $this->session->userdata('username') . ': ' . anchor('/cart', 'Cart') . ' - ' . anchor('/logout', 'Logout');
         }
         else {
           echo 'Admin: ' . anchor('/admin/logout', 'Logout');
