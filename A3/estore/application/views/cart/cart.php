@@ -13,7 +13,7 @@
     </tr>
   </thead>
   <tbody>
-    <?php if (is_array($cart_items)): ?>
+    <?php if (is_array($cart_items) && !empty($cart_items)): ?>
       <?php foreach ($cart_items as $item): ?>
         <tr>
           <td><?php echo $item["name"] ?></td>

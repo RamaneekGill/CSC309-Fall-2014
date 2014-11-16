@@ -1,9 +1,11 @@
 <div id='cards-list'>
   <h2>
     Catalogue
-    <?php if ($is_admin) {
-      echo anchor('/add', 'Add new card');
-    } ?>
+    <?php
+      if ($is_admin) {
+        echo anchor('/add', 'Add new card');
+      }
+    ?>
   </h2>
 
   <?php foreach ($products as $product): ?>

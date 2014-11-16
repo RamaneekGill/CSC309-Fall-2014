@@ -1,16 +1,8 @@
 <?php
 class Admin extends MY_Controller {
 
-  public function __construct() {
-    parent::__construct();
-  }
-
   public function index() {
-    $data['title'] = 'Admin Login';
-
-    $this->load->view('templates/header.php', $data);
-    $this->load->view('user/adminlogin.php', $data);
-    $this->load->view('templates/footer.php', $data);
+    $this->loadView('Admin Login', 'user/adminlogin.php');
   }
 
   public function admin_login() {
@@ -18,7 +10,7 @@ class Admin extends MY_Controller {
     $this->form_validation->set_rules('username', 'Username', 'required');
     $this->form_validation->set_rules('password', 'Password', 'required');
 
-    if ($this->form_validation->run() == TRUE) {
+    if ($this->form_validation->run() === TRUE) {
       $username = $this->input->get_post('username');
       $password = $this->input->get_post('password');
 
@@ -29,7 +21,8 @@ class Admin extends MY_Controller {
       }
     }
 
-    $this->index();
+    $data['loginerror'] = 'Login error: incorrect credentials';
+    $this->loadView('Admin Login', 'user/adminlogin.php', $data);
   }
 
   public function logout() {
@@ -49,4 +42,5 @@ class Admin extends MY_Controller {
 
     redirect('/', 'refresh');
   }
+
 }

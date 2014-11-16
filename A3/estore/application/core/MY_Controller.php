@@ -1,6 +1,5 @@
 <?php
 class MY_Controller extends CI_Controller {
-  var $data;
 
   public function __construct() {
     parent::__construct();
@@ -15,4 +14,13 @@ class MY_Controller extends CI_Controller {
   public function isLoggedIn() {
     return $this->session->userdata('logged_in');
   }
+
+  public function loadView($title, $view, $data = NULL) {
+    $data['title'] = $title;
+
+    $this->load->view('templates/header.php', $data);
+    $this->load->view($view, $data);
+    $this->load->view('templates/footer.php', $data);
+  }
+
 }

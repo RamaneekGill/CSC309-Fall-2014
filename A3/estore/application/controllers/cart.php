@@ -1,13 +1,7 @@
 <?php
 class Cart extends MY_Controller {
 
-  public function __construct() {
-    parent::__construct();
-  }
-
   public function index() {
-    $data['title'] = 'Shopping Cart';
-
     $session_cart = $this->session->userdata('session_cart');
     $data['cart_items'] = array();
     $data['cart_total'] = 0.0;
@@ -32,9 +26,7 @@ class Cart extends MY_Controller {
       }
     }
 
-    $this->load->view('templates/header.php', $data);
-    $this->load->view('cart/cart.php', $data);
-    $this->load->view('templates/footer.php', $data);
+    $this->loadView('Shopping Cart', 'cart/cart.php', $data);
   }
 
   public function add($id) {
@@ -88,11 +80,7 @@ class Cart extends MY_Controller {
   }
 
   public function checkout() {
-    $data['title'] = 'Complete Purchase';
-
-    $this->load->view('templates/header.php', $data);
-    $this->load->view('cart/checkout.php', $data);
-    $this->load->view('templates/footer.php', $data);
+    $this->loadView('Complete Purchase', 'cart/checkout.php', $data);
   }
 
   public function purchase() {
