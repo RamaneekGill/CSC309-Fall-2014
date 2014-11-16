@@ -16,10 +16,10 @@
     <?php if (is_array($cart_items)): ?>
       <?php foreach ($cart_items as $item): ?>
         <tr>
-          <td><?php echo $item->name ?></td>
-          <td><?php echo $item->quantity ?></td>
-          <td><?php echo anchor("cart/remove/$item->id") ?></td>
-          <td><?php echo $item->price ?></td>
+          <td><?php echo $item["name"] ?></td>
+          <td><?php echo $item["quantity"] ?></td>
+          <td><?php echo anchor("cart/remove/$item[id]", 'Remove') ?></td>
+          <td>$<?php echo $item["price"] ?></td>
         </tr>
       <?php endforeach; ?>
     <?php else: ?>
@@ -36,6 +36,7 @@
   </tfoot>
 </table>
 
-<?php echo anchor('/cart/checkout', 'Checkout', 'id="checkout-btn"') ?>
-
-For unfinalized orders, store shopping cart information on the server using a PHP session.
+<div id="checkout-actions">
+  <?php echo anchor('/cart/clear', 'Clear cart', 'class="checkout-btn"') ?>
+  <?php echo anchor('/cart/checkout', 'Checkout', 'class="checkout-btn"') ?>
+</div>

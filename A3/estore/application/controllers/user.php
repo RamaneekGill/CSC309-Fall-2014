@@ -24,9 +24,12 @@ class User extends MY_Controller {
       $username = $this->input->get_post('username');
       $password = $this->input->get_post('password');
 
-      if ($this->customer_model->get($username, $password)) {
+      $customer = $this->customer_model->get($username, $password)
+
+      if ($customer) {
         $userdata = array(
                     'username'  => $username,
+                    'customer_id'  => $customer->id,
                     'logged_in' => TRUE
                    );
 

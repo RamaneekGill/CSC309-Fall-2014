@@ -184,10 +184,14 @@ section#main {
 
 /* Cart */
 
-#checkout-btn {
-  float: right;
-  margin-top: 1em;
+#checkout-actions {
+  margin-top: 2em;
+  text-align: right;
 }
+
+  .checkout-btn {
+    margin-left: 1em;
+  }
 
 
 /* Admin stuff */
