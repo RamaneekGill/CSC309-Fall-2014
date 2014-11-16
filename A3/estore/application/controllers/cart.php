@@ -10,6 +10,7 @@ class Cart extends MY_Controller {
 
     $session_cart = $this->session->userdata('session_cart');
     $data['cart_items'] = array();
+    $data['cart_total'] = 0.0;
 
     if (is_array($session_cart)) {
       foreach ($session_cart as $index=>$item) {
@@ -18,10 +19,14 @@ class Cart extends MY_Controller {
         $this->load->model('product_model');
         $product = $this->product_model->get($order_item->product_id);
 
+        $price = $order_item->quantity * $product->price;
+
         $cart_item = array('name' => $product->name,
                            'quantity' => $order_item->quantity,
                            'id' => $index,
-                           'price' => $product->price);
+                           'price' => $price);
+
+        $data['cart_total'] += $price;
 
         array_push($data['cart_items'], $cart_item);
       }
@@ -55,6 +60,23 @@ class Cart extends MY_Controller {
   public function remove($id) {
     $session_cart = $this->session->userdata('session_cart');
     unset($session_cart[(int) $id]);
+    $this->session->set_userdata('session_cart', $session_cart);
+
+    redirect('/cart', 'refresh');
+  }
+
+  public function update($id, $amount) {
+    $session_cart = $this->session->userdata('session_cart');
+    $order_item = unserialize($session_cart[(int) $id]);
+
+    if ($order_item->quantity == 0 && $amount == -1) {
+      redirect('/cart', 'refresh');
+    }
+
+    $order_item->quantity += (int) $amount;
+
+    $session_cart[(int) $id] = serialize($order_item);
+
     $this->session->set_userdata('session_cart', $session_cart);
 
     redirect('/cart', 'refresh');

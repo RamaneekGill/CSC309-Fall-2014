@@ -17,7 +17,7 @@
       <?php foreach ($cart_items as $item): ?>
         <tr>
           <td><?php echo $item["name"] ?></td>
-          <td><?php echo $item["quantity"] ?></td>
+          <td><?php echo $item["quantity"] ?> (<?php echo anchor("cart/update/$item[id]/1", '+1') ?> / <?php echo anchor("cart/update/$item[id]/-1", '-1') ?>)</td>
           <td><?php echo anchor("cart/remove/$item[id]", 'Remove') ?></td>
           <td>$<?php echo $item["price"] ?></td>
         </tr>
@@ -31,7 +31,7 @@
   <tfoot>
     <tr>
       <td colspan="3">Total</td>
-      <td>$0.00</td>
+      <td>$<?php echo $cart_total ?></td>
     </tr>
   </tfoot>
 </table>
