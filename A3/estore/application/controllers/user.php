@@ -20,6 +20,7 @@ class User extends MY_Controller {
       if ($customer) {
         $userdata = array(
                      'username'    => $username,
+                     'customer_id' => $customer->id,
                      'logged_in'   => TRUE
                     );
         $this->session->set_userdata($userdata);
@@ -34,8 +35,9 @@ class User extends MY_Controller {
 
   public function logout() {
     $userdata = array(
-                 'username'  => NULL,
-                 'logged_in' => FALSE
+                 'username'    => NULL,
+                 'customer_id' => NULL,
+                 'logged_in'   => FALSE
                 );
     $this->session->set_userdata($userdata);
 

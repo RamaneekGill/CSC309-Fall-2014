@@ -36,7 +36,7 @@
     <div id="orders">
       <?php
         foreach ($orders as $order) {
-          echo $order->id;
+          echo $order->total;
         }
 
         if (empty($orders)) {
