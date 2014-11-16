@@ -34,18 +34,36 @@
     <h2>Admin tasks</h2>
     <h3>Finalized orders:</h3>
     <div id="orders">
-      <?php
-        foreach ($orders as $order) {
-          echo $order->total;
-        }
+      <table>
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Order date/time</th>
+            <th>Total</th>
+            <th>Creditcard info</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if (is_array($orders) && !empty($orders)): ?>
+            <?php foreach ($orders as $order): ?>
+              <tr>
+                <td><?php echo $order->customer_id ?></td>
+                <td><?php echo $order->order_date . ' ' . $order->order_time ?></td>
+                <td>$<?php echo $order->total ?></td>
+                <td><?php echo $order->creditcard_number . ' (' . $order->creditcard_month . '/' . $order->creditcard_year . ')' ?></td>
+              </tr>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <tr>
+              <td colspan="4">No finalized orders</td>
+            </tr>
+          <?php endif; ?>
+        </tbody>
+      </table>
 
-        if (empty($orders)) {
-          echo '<p>No finalized orders</p>';
-        }
-      ?>
     </div>
 
     <h3>Delete data:</h3>
-    <?php echo anchor("/admin/delete_data", 'Delete all customer and order information'); ?>
+    <?php echo anchor("/admin/delete_data", 'Delete all customer and order information', "onClick='return confirm(\"Do you really want to delete all data?\");'"); ?>
   <?php endif; ?>
 </div>
