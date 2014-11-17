@@ -10,14 +10,14 @@ Ramaneek Gill            g3gillra
 
 
 ### Location of files:
-/var/www/html/estore
+/var/www/html/estore/
 
 
 ### Instructions for starting Apache:
 
-Apache is already installed, configured for the files in /var/www/html, and running!
+Apache is already installed, configured for the files in /var/www/html/estore, and running!
 Just launch the instance, configure it with a Custom TCP rule that allows anyone to
-connect to port 80, then visit the instance's Public DNS address in your local browser.
+connect to port 80, then visit the instance's Public DNS or IP address in your local browser. Visiting the root will bring you to the main page of the estore (e.g. http://<AMI.Public.IP.Address>/) -- no need to add "index.php" or anything afterwards.
 
 To SSH into the instance, you'll need to use the username "ubuntu", since the AMI is
 based on an Ubuntu instance.
@@ -25,10 +25,9 @@ based on an Ubuntu instance.
 
 ### Browser details:
 
-The game should work in relatively updated versions of both Chrome and Firefox. It was
-tested in Chrome 38 and Firefox 33 (in an Ubuntu-based distribution).
+The store should work fine in the latest versions of Chrome or Firefox.
 
 
 ### Website documentation:
 
-You'll need to navigate to something like http://localhost/estore/index.php/catalogue
+Wow
