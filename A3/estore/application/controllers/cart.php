@@ -104,9 +104,9 @@ class Cart extends MY_Controller {
 
   public function purchase() {
     $this->load->library('form_validation');
-    $this->form_validation->set_rules('card_number', 'Credit card number', 'required|numeric|length[16]');
-    $this->form_validation->set_rules('card_expiry_month', 'Credit card expiry date (month)', 'required|numeric|length[2]');
-    $this->form_validation->set_rules('card_expiry_year', 'Credit card expiry date (year)', 'required|numeric|length[2]');
+    $this->form_validation->set_rules('card_number', 'Creditcard number', 'required|numeric|length[16]');
+    $this->form_validation->set_rules('card_expiry_month', 'Creditcard expiry date (month)', 'required|numeric|length[2]');
+    $this->form_validation->set_rules('card_expiry_year', 'Creditcard expiry date (year)', 'required|numeric|length[2]');
 
     if ($this->form_validation->run() === TRUE) {
       $card_number       = $this->input->get_post('card_number');
@@ -126,20 +126,44 @@ class Cart extends MY_Controller {
 
       $this->order_model->insert($order);
 
-      redirect("/cart/receipt/$order->id", 'refresh');
+      $this->session->set_userdata('order', serialize($order));
+
+      redirect("/cart/receipt/", 'refresh');
     } else {
       $this->loadView('Complete Purchase', 'cart/checkout.php');
     }
   }
 
-  public function receipt($id) {
-    $this->load->model('order_model');
-    $order = $this->order_model->get($id);
+  public function receipt() {
+    $order = unserialize($this->session->userdata('order'));
     $data['order'] = $order;
+
+    $session_cart = $this->session->userdata('session_cart');
+    $data['cart_items'] = array();
+
+    if (is_array($session_cart)) {
+      foreach ($session_cart as $index=>$item) {
+        $order_item = unserialize($item);
+
+        $this->load->model('product_model');
+        $product = $this->product_model->get($order_item->product_id);
+
+        $price = $order_item->quantity * $product->price;
+
+        $cart_item = array(
+                       'name'     => $product->name,
+                       'quantity' => $order_item->quantity,
+                       'price'    => $price
+                     );
+
+        array_push($data['cart_items'], $cart_item);
+      }
+    }
 
     $this->loadView('Receipt', 'cart/receipt.php', $data);
 
-    $this->session->unset_userdata('session_cart');
+    // $this->session->unset_userdata('session_cart');
+    // $this->session->unset_userdata('order');
   }
 
 }

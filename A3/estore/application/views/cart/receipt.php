@@ -1,40 +1,36 @@
 <h1>Thank you!</h1>
 
+<h2>
+  Receipt
+  <a href="#" onclick="window.print();return false;">Print</a>
+</h2>
+
+<div id="receipt-info">
+  <p>Ordered at: <?php echo $order->order_date . " " . $order->order_time ?></p>
+  <p>Creditcard: XXXXXXXXXXXX<?php echo substr($order->creditcard_number, 12, 4) . " (Expires " . $order->creditcard_month . "/" . $order->creditcard_year . ")" ?></p>
+</div>
+
 <table>
   <thead>
     <tr>
       <th>Item</th>
       <th>Quantity</th>
-      <th>Remove</th>
       <th>Price</th>
     </tr>
   </thead>
   <tbody>
-    <?php if (is_array($cart_items) && !empty($cart_items)): ?>
-      <?php foreach ($cart_items as $item): ?>
-        <tr>
-          <td><?php echo $item["name"] ?></td>
-          <td><?php echo $item["quantity"] ?> (<?php echo anchor("cart/update/$item[id]/1", '+1') ?> / <?php echo anchor("cart/update/$item[id]/-1", '-1') ?>)</td>
-          <td><?php echo anchor("cart/remove/$item[id]", 'Remove') ?></td>
-          <td>$<?php echo $item["price"] ?></td>
-        </tr>
-      <?php endforeach; ?>
-    <?php else: ?>
+    <?php foreach ($cart_items as $item): ?>
       <tr>
-        <td colspan="4">No items in cart</td>
+        <td><?php echo $item["name"] ?></td>
+        <td><?php echo $item["quantity"] ?></td>
+        <td class="table-price">$<?php echo $item["price"] ?></td>
       </tr>
-    <?php endif; ?>
+    <?php endforeach; ?>
   </tbody>
   <tfoot>
     <tr>
-      <td colspan="3">Total</td>
-      <td>$<?php echo $cart_total ?></td>
+      <td colspan="2">Total</td>
+      <td>$<?php echo $order->total ?></td>
     </tr>
   </tfoot>
 </table>
-
-<h2>Receipt</h2>
-Email
-Print
-
-<?php echo $order->customer_id ?>

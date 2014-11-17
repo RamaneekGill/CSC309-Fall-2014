@@ -19,7 +19,7 @@
           <td><?php echo $item["name"] ?></td>
           <td><?php echo $item["quantity"] ?> (<?php echo anchor("cart/update/$item[id]/1", '+1') ?> / <?php echo anchor("cart/update/$item[id]/-1", '-1') ?>)</td>
           <td><?php echo anchor("cart/remove/$item[id]", 'Remove') ?></td>
-          <td>$<?php echo $item["price"] ?></td>
+          <td class="table-price">$<?php echo $item["price"] ?></td>
         </tr>
       <?php endforeach; ?>
     <?php else: ?>
