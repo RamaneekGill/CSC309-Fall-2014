@@ -222,6 +222,12 @@ section#main {
   margin-bottom: 1em;
 }
 
+@media print {
+  #print-btn {
+    display: none;
+  }
+}
+
 
 /* Admin stuff */
 

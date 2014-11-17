@@ -1,6 +1,11 @@
 <?php
 class Customer_Model extends CI_Model {
 
+  function get_id($id) {
+    $query = $this->db->get_where('customers', array('id' => $id));
+    return $query->row(0, 'Customer');
+  }
+
   function get($login, $password) {
     $query = $this->db->get_where('customers', array('login' => $login, 'password' => $password));
     return $query->row(0, 'Customer');

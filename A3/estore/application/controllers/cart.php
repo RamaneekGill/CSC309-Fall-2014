@@ -138,6 +138,10 @@ class Cart extends MY_Controller {
     $order = unserialize($this->session->userdata('order'));
     $data['order'] = $order;
 
+    $this->load->model('customer_model');
+    $customer = $this->customer_model->get_id($order->customer_id);
+    $data['customer_name'] = $customer->last . ", " . $customer->first;
+
     $session_cart = $this->session->userdata('session_cart');
     $data['cart_items'] = array();
 
@@ -160,6 +164,34 @@ class Cart extends MY_Controller {
       }
     }
 
+
+    // Send an email
+    // https://ellislab.com/codeigniter/user-guide/libraries/email.html
+    // https://www.digitalocean.com/community/tutorials/how-to-use-google-s-smtp-server
+
+    $config = Array(
+      'protocol'  => 'smtp',
+      'smtp_host' => 'ssl://smtp.googlemail.com',
+      'smtp_port' => 465,
+      'smtp_user' => 'eugycheung@gmail.com',
+      'smtp_pass' => 'eugy940101',
+      'mailtype'  => 'html',
+      'charset'   => 'iso-8859-1'
+    );
+
+    $this->load->library('email', $config);
+    $this->email->set_newline("\r\n");
+
+    $this->email->from('eugycheung@gmail.com', 'CSC309');
+    $this->email->to('eugycheung@gmail.com');
+
+    $this->email->subject('Email Test');
+    $this->email->message('Testing the email class.');
+
+    $this->email->send();
+
+
+    // Display receipt
     $this->loadView('Receipt', 'cart/receipt.php', $data);
 
     // $this->session->unset_userdata('session_cart');

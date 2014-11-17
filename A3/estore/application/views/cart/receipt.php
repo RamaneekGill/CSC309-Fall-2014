@@ -2,10 +2,11 @@
 
 <h2>
   Receipt
-  <a href="#" onclick="window.print();return false;">Print</a>
+  <a id="print-btn" href="#">Print</a>
 </h2>
 
 <div id="receipt-info">
+  <p><?php echo $customer_name ?></p>
   <p>Ordered at: <?php echo $order->order_date . " " . $order->order_time ?></p>
   <p>Creditcard: XXXXXXXXXXXX<?php echo substr($order->creditcard_number, 12, 4) . " (Expires " . $order->creditcard_month . "/" . $order->creditcard_year . ")" ?></p>
 </div>
@@ -34,3 +35,9 @@
     </tr>
   </tfoot>
 </table>
+
+<script type="text/javascript">
+  document.getElementById('print-btn').onclick = function() {
+    window.print();
+  }
+</script>

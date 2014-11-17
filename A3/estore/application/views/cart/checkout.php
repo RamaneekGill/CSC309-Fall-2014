@@ -20,10 +20,3 @@
   echo form_submit('submit', 'Complete checkout');
   echo form_close();
 ?>
-
-Display a printable receipt (a simple example that shows how to print from JavaScript is available http://www.javascripter.net/faq/printing.htm).
-
-Email receipt to customer.
-Documentation for sending email from CodeIgniter is available here (https://ellislab.com/codeigniter/user-guide/libraries/email.html).
-To use this feature you will need access to a public SMTP server.
-One possibility is to use the SMTP server provided by Gmail (https://www.digitalocean.com/community/tutorials/how-to-use-google-s-smtp-server).
