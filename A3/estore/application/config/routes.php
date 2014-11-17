@@ -39,16 +39,16 @@
 */
 
 $route['user/(:any)'] = "user/$1";
-$route['login'] = "user/index";
-$route['logout'] = "user/logout";
-$route['register'] = "user/register";
-$route['user'] = "user";
+$route['login']       = "user/index";
+$route['logout']      = "user/logout";
+$route['register']    = "user/register";
+$route['user']        = "user";
 
 $route['admin/(:any)'] = "admin/$1";
-$route['admin'] = "admin";
+$route['admin']        =  "admin";
 
 $route['cart/(:any)'] = "cart/$1";
-$route['cart'] = "cart";
+$route['cart']        = "cart";
 
 $route['(:any)'] = "store/$1";
 $route['default_controller'] = "store";

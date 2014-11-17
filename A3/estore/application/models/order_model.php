@@ -1,6 +1,11 @@
 <?php
 class Order_Model extends CI_Model {
 
+  function get($id) {
+    $query = $this->db->get_where('orders', array('id' => $id));
+    return $query->row(0, 'Order');
+  }
+
   function getAll() {
     $query = $this->db->get('orders');
     return $query->result('Order');

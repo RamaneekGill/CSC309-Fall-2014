@@ -60,7 +60,6 @@
           <?php endif; ?>
         </tbody>
       </table>
-
     </div>
 
     <h3>Delete data:</h3>

@@ -36,7 +36,9 @@
   </tfoot>
 </table>
 
-<div id="checkout-actions">
-  <?php echo anchor('/cart/clear', 'Clear cart', 'class="checkout-btn"') ?>
-  <?php echo anchor('/cart/checkout', 'Checkout', 'class="checkout-btn"') ?>
-</div>
+<?php if (is_array($cart_items) && !empty($cart_items)): ?>
+  <div id="checkout-actions">
+    <?php echo anchor('/cart/clear', 'Clear cart', 'class="checkout-btn"') ?>
+    <?php echo anchor('/cart/checkout', 'Checkout', 'class="checkout-btn"') ?>
+  </div>
+<?php endif; ?>

@@ -37,6 +37,22 @@ class Cart extends MY_Controller {
   public function add($id) {
     $session_cart = $this->session->userdata('session_cart');
 
+    // Check if already in cart
+    if (is_array($session_cart)) {
+      foreach ($session_cart as $index=>$item) {
+        $order_item = unserialize($item);
+
+        if ($order_item->product_id == (int) $id) {
+          $order_item->quantity += 1;
+          $session_cart[$index] = serialize($order_item);
+
+          $this->session->set_userdata('session_cart', $session_cart);
+
+          redirect('/cart', 'refresh');
+        }
+      }
+    }
+
     $order_item = new Order_Item();
     $order_item->order_id   = -1;
     $order_item->product_id = (int) $id;
@@ -110,9 +126,20 @@ class Cart extends MY_Controller {
 
       $this->order_model->insert($order);
 
-      redirect('/', 'refresh');
+      redirect("/cart/receipt/$order->id", 'refresh');
     } else {
       $this->loadView('Complete Purchase', 'cart/checkout.php');
     }
   }
+
+  public function receipt($id) {
+    $this->load->model('order_model');
+    $order = $this->order_model->get($id);
+    $data['order'] = $order;
+
+    $this->loadView('Receipt', 'cart/receipt.php', $data);
+
+    $this->session->unset_userdata('session_cart');
+  }
+
 }
