@@ -222,6 +222,12 @@ section#main {
   margin-bottom: 1em;
 }
 
+  #receipt-email-notice {
+    display: block;
+    font-size: 0.85em;
+    margin-top: 1.5em;
+  }
+
 @media print {
   #print-btn {
     display: none;

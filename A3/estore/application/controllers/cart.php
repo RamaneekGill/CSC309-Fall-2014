@@ -180,19 +180,21 @@ class Cart extends MY_Controller {
     // https://www.digitalocean.com/community/tutorials/how-to-use-google-s-smtp-server
 
     $config = Array(
-      'protocol'  => 'smtp',
-      'smtp_host' => 'ssl://smtp.googlemail.com',
+      'protocol'  => "smtp",
+      'smtp_host' => "ssl://smtp.googlemail.com",
       'smtp_port' => 465,
-      'smtp_user' => 'eugycheung@gmail.com',
-      'smtp_pass' => 'eugy940101',
-      'mailtype'  => 'html',
-      'charset'   => 'iso-8859-1'
+      'smtp_user' => "eugycheung@gmail.com",
+      'smtp_pass' => "eugy940101",
+      'charset'   => "utf-8",
+      'newline'   => "\r\n",
+      'crlf'      => "\r\n",
+      'wordwrap'  => FALSE
     );
 
     $this->load->library('email', $config);
-    $this->email->set_newline("\r\n");
+    $this->email->set_mailtype("html");
 
-    $this->email->from('eugycheung@gmail.com');
+    $this->email->from('eugycheung@gmail.com', 'Baseball Store admin');
 
     $this->load->model('customer_model');
     $customer = $this->customer_model->get_id($order->customer_id);
@@ -200,14 +202,14 @@ class Cart extends MY_Controller {
 
     $this->email->subject('Order receipt');
 
-    $message = $this->load->view('cart/receipt.php', $data, true);
+    $message = '<html><body>'.$this->load->view('cart/receipt_info.php', $data, true).'</body></html>';
     $this->email->message($message);
 
     if ($this->email->send()) {
-      $this->session->unset_userdata('session_cart');
-      $this->session->unset_userdata('order');
+      // $this->session->unset_userdata('session_cart');
+      // $this->session->unset_userdata('order');
     } else {
-      // show_error($this->email->print_debugger());
+      show_error($this->email->print_debugger());
     }
 
     // Display receipt

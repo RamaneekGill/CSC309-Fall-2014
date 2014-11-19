@@ -23,10 +23,10 @@ class User extends MY_Controller {
           $this->session->set_userdata('admin_logged_in', TRUE);
         } else {
           $userdata = array(
-                     'username'    => $username,
-                     'customer_id' => $customer->id,
-                     'logged_in'   => TRUE
-                    );
+                        'username'    => $username,
+                        'customer_id' => $user->id,
+                        'logged_in'   => TRUE
+                      );
           $this->session->set_userdata($userdata);
         }
 
@@ -43,9 +43,9 @@ class User extends MY_Controller {
       $this->session->set_userdata('admin_logged_in', FALSE);
     } else {
       $userdata = array(
-                   'username'    => NULL,
-                   'customer_id' => NULL,
-                   'logged_in'   => FALSE
+                    'username'    => NULL,
+                    'customer_id' => NULL,
+                    'logged_in'   => FALSE
                   );
       $this->session->set_userdata($userdata);
     }
