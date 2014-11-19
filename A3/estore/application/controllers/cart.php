@@ -137,7 +137,7 @@ class Cart extends MY_Controller {
 
         $this->session->set_userdata('order', serialize($order));
 
-        redirect("/cart/receipt/", 'refresh');
+        redirect('/cart/receipt/', 'refresh');
       }
     }
 
@@ -185,7 +185,6 @@ class Cart extends MY_Controller {
       'smtp_port' => 465,
       'smtp_user' => 'eugycheung@gmail.com',
       'smtp_pass' => 'eugy940101',
-      'smtp_timeout' => '5',
       'mailtype'  => 'html',
       'charset'   => 'iso-8859-1'
     );
@@ -199,7 +198,7 @@ class Cart extends MY_Controller {
     $customer = $this->customer_model->get_id($order->customer_id);
     $this->email->to($customer->email);
 
-    $this->email->subject('Email Test');
+    $this->email->subject('Order receipt');
 
     $message = $this->load->view('cart/receipt.php', $data, true);
     $this->email->message($message);
@@ -208,7 +207,7 @@ class Cart extends MY_Controller {
       $this->session->unset_userdata('session_cart');
       $this->session->unset_userdata('order');
     } else {
-      show_error($this->email->print_debugger());
+      // show_error($this->email->print_debugger());
     }
 
     // Display receipt

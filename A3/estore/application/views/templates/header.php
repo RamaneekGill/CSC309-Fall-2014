@@ -13,14 +13,14 @@
     </div>
     <nav id="user">
       <?php
-        if (!$this->session->userdata('logged_in') && !$this->session->userdata('admin_logged_in')) {
+        if (!$isLoggedIn && !$isAdmin) {
           echo anchor('/login', 'Login') . ' - ' . anchor('/register', 'Register');
         }
-        elseif ($this->session->userdata('logged_in')) {
+        elseif ($isLoggedIn) {
           echo $this->session->userdata('username') . ': ' . anchor('/cart', 'Cart') . ' - ' . anchor('/logout', 'Logout');
         }
         else {
-          echo 'Admin: ' . anchor('/admin/logout', 'Logout');
+          echo 'admin: ' . anchor('/admin/logout', 'Logout');
         }
       ?>
     </nav>

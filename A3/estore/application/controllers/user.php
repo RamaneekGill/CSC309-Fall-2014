@@ -16,14 +16,19 @@ class User extends MY_Controller {
       $username = $this->input->get_post('username');
       $password = $this->input->get_post('password');
 
-      $customer = $this->customer_model->get($username, $password);
-      if ($customer) {
-        $userdata = array(
+      $user = $this->customer_model->get($username, $password);
+
+      if ($user) {
+        if ($username == 'admin') {
+          $this->session->set_userdata('admin_logged_in', TRUE);
+        } else {
+          $userdata = array(
                      'username'    => $username,
                      'customer_id' => $customer->id,
                      'logged_in'   => TRUE
                     );
-        $this->session->set_userdata($userdata);
+          $this->session->set_userdata($userdata);
+        }
 
         redirect('/', 'refresh');
       }
@@ -34,12 +39,16 @@ class User extends MY_Controller {
   }
 
   public function logout() {
-    $userdata = array(
-                 'username'    => NULL,
-                 'customer_id' => NULL,
-                 'logged_in'   => FALSE
-                );
-    $this->session->set_userdata($userdata);
+    if ($this->isAdmin()) {
+      $this->session->set_userdata('admin_logged_in', FALSE);
+    } else {
+      $userdata = array(
+                   'username'    => NULL,
+                   'customer_id' => NULL,
+                   'logged_in'   => FALSE
+                  );
+      $this->session->set_userdata($userdata);
+    }
 
     redirect('/', 'refresh');
   }
@@ -73,6 +82,18 @@ class User extends MY_Controller {
     }
 
     $this->register();
+  }
+
+  public function delete_data() {
+    if ($this->isAdmin()) {
+      $this->load->model('customer_model');
+      $this->customer_model->delete_all_customers();
+
+      $this->load->model('order_model');
+      $this->order_model->delete_all();
+    }
+
+    redirect('/', 'refresh');
   }
 
 }

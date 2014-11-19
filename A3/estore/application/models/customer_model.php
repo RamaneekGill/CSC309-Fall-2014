@@ -1,7 +1,7 @@
 <?php
 class Customer_Model extends CI_Model {
 
-  function get_id($id) {
+  public function get_id($id) {
     $this->db->trans_start();
     $query = $this->db->get_where('customers', array('id' => $id));
     $this->db->trans_complete();
@@ -9,7 +9,7 @@ class Customer_Model extends CI_Model {
     return $query->row(0, 'Customer');
   }
 
-  function get($login, $password) {
+  public function get($login, $password) {
     $this->db->trans_start();
     $query = $this->db->get_where('customers', array('login' => $login, 'password' => $password));
     $this->db->trans_complete();
@@ -17,7 +17,7 @@ class Customer_Model extends CI_Model {
     return $query->row(0, 'Customer');
   }
 
-  function getAll() {
+  public function getAll() {
     $this->db->trans_start();
     $query = $this->db->get_where('customers', array('login !=' => 'admin'));
     $this->db->trans_complete();
@@ -25,7 +25,7 @@ class Customer_Model extends CI_Model {
     return $query->result('Customer');
   }
 
-  function delete($id) {
+  public function delete($id) {
     $this->db->trans_start();
     $result = $this->db->delete('customers', array('id' => $id));
     $this->db->trans_complete();
@@ -33,7 +33,7 @@ class Customer_Model extends CI_Model {
     return $result;
   }
 
-  function delete_all() {
+  public function delete_all() {
     $this->db->trans_start();
     $result = $this->db->empty_table('customers');
     $this->db->trans_complete();
@@ -41,16 +41,16 @@ class Customer_Model extends CI_Model {
     return $result;
   }
 
-  function delete_all_customers() {
+  public function delete_all_customers() {
     $this->db->trans_start();
-    $this->db->where('name !=', 'admin');
+    $this->db->where('login !=', 'admin');
     $result = $this->db->delete('customers');
     $this->db->trans_complete();
 
     return $result;
   }
 
-  function insert($customer) {
+  public function insert($customer) {
     $this->db->trans_start();
     $result = $this->db->insert('customers',
                                 array('first' => $customer->first,

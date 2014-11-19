@@ -2,7 +2,7 @@
   <h2>
     Catalogue
     <?php
-      if ($is_admin) {
+      if ($isAdmin) {
         echo anchor('/add', 'Add new card');
       }
     ?>
@@ -16,11 +16,11 @@
       <p class="product-card-description"><?php echo $product->description ?></p>
       <div class="product-card-actions">
         <?php
-          if ($is_admin) {
+          if ($isAdmin) {
             echo anchor("/delete/$product->id", 'Delete', "onClick='return confirm(\"Do you really want to delete this record?\");'");
             echo anchor("/edit/$product->id", 'Edit');
           }
-          if ($logged_in) {
+          if ($isLoggedIn) {
             echo anchor("/cart/add/$product->id", 'Add to cart');
           }
         ?>
@@ -30,7 +30,7 @@
 </div>
 
 <div id='admin-tasks'>
-  <?php if ($is_admin): ?>
+  <?php if ($isAdmin): ?>
     <h2>Admin tasks</h2>
     <h3>Finalized orders:</h3>
     <div class="admin-table">
@@ -93,6 +93,6 @@
     </div>
 
     <h3>Delete data:</h3>
-    <?php echo anchor("/admin/delete_data", 'Delete all customer and order information', "onClick='return confirm(\"Do you really want to delete all data?\");'"); ?>
+    <?php echo anchor("/user/delete_data", 'Delete all customer and order information', "onClick='return confirm(\"Do you really want to delete all data?\");'"); ?>
   <?php endif; ?>
 </div>

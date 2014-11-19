@@ -1,7 +1,7 @@
 <?php
 class Order_Item_Model extends CI_Model {
 
-  function getAll() {
+  public function getAll() {
     $this->db->trans_start();
     $query = $this->db->get('orders');
     $this->db->trans_complete();
@@ -9,7 +9,7 @@ class Order_Item_Model extends CI_Model {
     return $query->result('Order');
   }
 
-  function delete($id) {
+  public function delete($id) {
     $this->db->trans_start();
     $result = $this->db->delete('orders', array('id' => $id ));
     $this->db->trans_complete();
@@ -17,7 +17,7 @@ class Order_Item_Model extends CI_Model {
     return $result;
   }
 
-  function insert($order) {
+  public function insert($order) {
     $this->db->trans_start();
     $result= $this->db->insert('orders',
                                array('name' => $order->name,
@@ -29,7 +29,7 @@ class Order_Item_Model extends CI_Model {
     return $result;
   }
 
-  function update($order) {
+  public function update($order) {
     $this->db->trans_start();
     $this->db->where('id', $order->id);
     $result = $this->db->update('orders',

@@ -1,7 +1,7 @@
 <?php
 class Product_Model extends CI_Model {
 
-  function getAll() {
+  public function getAll() {
     $this->db->trans_start();
     $query = $this->db->get('products');
     $this->db->trans_complete();
@@ -9,7 +9,7 @@ class Product_Model extends CI_Model {
     return $query->result('Product');
   }
 
-  function get($id) {
+  public function get($id) {
     $this->db->trans_start();
     $query = $this->db->get_where('products', array('id' => $id));
     $this->db->trans_complete();
@@ -17,7 +17,7 @@ class Product_Model extends CI_Model {
     return $query->row(0,'Product');
   }
 
-  function delete($id) {
+  public function delete($id) {
     $this->db->trans_start();
     $result = $this->db->delete('products', array('id' => $id ));
     $this->db->trans_complete();
@@ -25,7 +25,7 @@ class Product_Model extends CI_Model {
     return $result;
   }
 
-  function insert($product) {
+  public function insert($product) {
     $this->db->trans_start();
     $result = $this->db->insert('products',
                                 array('name' => $product->name,
@@ -37,7 +37,7 @@ class Product_Model extends CI_Model {
     return $result;
   }
 
-  function update($product) {
+  public function update($product) {
     $this->db->trans_start();
     $this->db->where('id', $product->id);
     $result = $this->db->update('products',

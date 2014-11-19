@@ -16,7 +16,9 @@ class MY_Controller extends CI_Controller {
   }
 
   public function loadView($title, $view, $data = NULL) {
-    $data['title'] = $title;
+    $data['title']      = $title;
+    $data['isAdmin']    = $this->isAdmin();
+    $data['isLoggedIn'] = $this->isLoggedIn();
 
     $this->load->view('templates/header.php', $data);
     $this->load->view($view, $data);

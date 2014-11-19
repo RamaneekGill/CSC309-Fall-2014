@@ -15,8 +15,6 @@ class Store extends MY_Controller {
     $products = $this->product_model->getAll();
 
     $data['products']  = $products;
-    $data['logged_in'] = $this->isLoggedIn();
-    $data['is_admin']  = $this->isAdmin();
 
     if ($this->isAdmin()) {
       $this->load->model('order_model');
