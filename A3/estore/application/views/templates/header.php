@@ -20,7 +20,7 @@
           echo $this->session->userdata('username') . ': ' . anchor('/cart', 'Cart') . ' - ' . anchor('/logout', 'Logout');
         }
         else {
-          echo 'admin: ' . anchor('/admin/logout', 'Logout');
+          echo 'admin: ' . anchor('/logout', 'Logout');
         }
       ?>
     </nav>
