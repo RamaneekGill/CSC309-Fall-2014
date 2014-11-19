@@ -11,13 +11,17 @@ class Admin extends MY_Controller {
     $this->form_validation->set_rules('password', 'Password', 'required');
 
     if ($this->form_validation->run() === TRUE) {
+      $this->load->model('customer_model');
       $username = $this->input->get_post('username');
       $password = $this->input->get_post('password');
 
-      if ($username == 'admin' && $password == 'admin') {
-        $this->session->set_userdata('admin_logged_in', TRUE);
+      if ($username == 'admin') {
+        $admin = $this->customer_model->get($username, $password);
+        if ($admin) {
+          $this->session->set_userdata('admin_logged_in', TRUE);
 
-        redirect('/', 'refresh');
+          redirect('/', 'refresh');
+        }
       }
     }
 

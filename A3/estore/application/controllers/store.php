@@ -21,6 +21,9 @@ class Store extends MY_Controller {
     if ($this->isAdmin()) {
       $this->load->model('order_model');
       $data['orders'] = $this->order_model->getAll();
+
+      $this->load->model('customer_model');
+      $data['customers'] = $this->customer_model->getAll();
     }
 
     $this->loadView('Catalogue', 'product/list.php', $data);

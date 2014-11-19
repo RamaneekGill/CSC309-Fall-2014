@@ -33,11 +33,11 @@
   <?php if ($is_admin): ?>
     <h2>Admin tasks</h2>
     <h3>Finalized orders:</h3>
-    <div id="orders">
+    <div class="admin-table">
       <table>
         <thead>
           <tr>
-            <th>Customer</th>
+            <th>Customer ID</th>
             <th>Order date/time</th>
             <th>Total</th>
             <th>Creditcard info</th>
@@ -50,12 +50,42 @@
                 <td><?php echo $order->customer_id ?></td>
                 <td><?php echo $order->order_date . ' ' . $order->order_time ?></td>
                 <td>$<?php echo $order->total ?></td>
-                <td><?php echo $order->creditcard_number . ' (' . $order->creditcard_month . '/' . $order->creditcard_year . ')' ?></td>
+                <td><?php echo $order->creditcard_number . ' (Expires ' . $order->creditcard_month . '/' . $order->creditcard_year . ')' ?></td>
               </tr>
             <?php endforeach; ?>
           <?php else: ?>
             <tr>
               <td colspan="4">No finalized orders</td>
+            </tr>
+          <?php endif; ?>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Registered customers:</h3>
+    <div class="admin-table">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if (is_array($customers) && !empty($customers)): ?>
+            <?php foreach ($customers as $customer): ?>
+              <tr>
+                <td><?php echo $customer->id ?></td>
+                <td><?php echo $customer->login ?></td>
+                <td><?php echo $customer->last . ', ' . $customer->first ?></td>
+                <td><?php echo $customer->email ?></td>
+              </tr>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <tr>
+              <td colspan="4">No registered customers</td>
             </tr>
           <?php endif; ?>
         </tbody>

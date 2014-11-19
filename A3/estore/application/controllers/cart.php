@@ -81,7 +81,7 @@ class Cart extends MY_Controller {
     $session_cart = $this->session->userdata('session_cart');
     $order_item = unserialize($session_cart[(int) $id]);
 
-    if ($order_item->quantity == 0 && $amount == -1) {
+    if ($order_item->quantity == 1 && $amount == -1) {
       redirect('/cart', 'refresh');
     }
 
@@ -102,6 +102,13 @@ class Cart extends MY_Controller {
     $this->loadView('Complete Purchase', 'cart/checkout.php');
   }
 
+  private function is_expired($month, $year) {
+    $expires = \DateTime::createFromFormat('my', $month . $year);
+    $now     = new \DateTime();
+
+    return ($expires < $now);
+  }
+
   public function purchase() {
     $this->load->library('form_validation');
     $this->form_validation->set_rules('card_number', 'Creditcard number', 'required|numeric|length[16]');
@@ -113,25 +120,28 @@ class Cart extends MY_Controller {
       $card_expiry_month = $this->input->get_post('card_expiry_month');
       $card_expiry_year  = $this->input->get_post('card_expiry_year');
 
-      $this->load->model('order_model');
+      // Check expiry date
+      if (!$this->is_expired($card_expiry_month, $card_expiry_year)) {
+        $this->load->model('order_model');
 
-      $order = new Order();
-      $order->customer_id       = $this->session->userdata('customer_id');
-      $order->order_date        = date('Y-m-d');
-      $order->order_time        = date('H:i:s');
-      $order->total             = $this->session->userdata('cart_total');
-      $order->creditcard_number = $card_number;
-      $order->creditcard_month  = $card_expiry_month;
-      $order->creditcard_year   = $card_expiry_year;
+        $order = new Order();
+        $order->customer_id       = $this->session->userdata('customer_id');
+        $order->order_date        = date('Y-m-d');
+        $order->order_time        = date('H:i:s');
+        $order->total             = $this->session->userdata('cart_total');
+        $order->creditcard_number = $card_number;
+        $order->creditcard_month  = $card_expiry_month;
+        $order->creditcard_year   = $card_expiry_year;
 
-      $this->order_model->insert($order);
+        $this->order_model->insert($order);
 
-      $this->session->set_userdata('order', serialize($order));
+        $this->session->set_userdata('order', serialize($order));
 
-      redirect("/cart/receipt/", 'refresh');
-    } else {
-      $this->loadView('Complete Purchase', 'cart/checkout.php');
+        redirect("/cart/receipt/", 'refresh');
+      }
     }
+
+    $this->loadView('Complete Purchase', 'cart/checkout.php');
   }
 
   public function receipt() {
@@ -171,7 +181,7 @@ class Cart extends MY_Controller {
 
     $config = Array(
       'protocol'  => 'smtp',
-      'smtp_host' => 'ssl://smtp.googlemail.com',
+      'smtp_host' => 'ssl://smtp.gmail.com',
       'smtp_port' => 465,
       'smtp_user' => 'eugycheung@gmail.com',
       'smtp_pass' => 'eugy940101',
@@ -183,10 +193,15 @@ class Cart extends MY_Controller {
     $this->email->set_newline("\r\n");
 
     $this->email->from('eugycheung@gmail.com', 'CSC309');
-    $this->email->to('eugycheung@gmail.com');
+
+    $this->load->model('customer_model');
+    $customer = $this->customer_model->get_id($order->customer_id);
+    $this->email->to($customer->email);
 
     $this->email->subject('Email Test');
-    $this->email->message('Testing the email class.');
+
+    // $message = $this->load->view('Receipt', 'cart/receipt.php', $data);
+    // $this->email->message($message);
 
     $this->email->send();
 
