@@ -181,10 +181,11 @@ class Cart extends MY_Controller {
 
     $config = Array(
       'protocol'  => 'smtp',
-      'smtp_host' => 'ssl://smtp.gmail.com',
+      'smtp_host' => 'ssl://smtp.googlemail.com',
       'smtp_port' => 465,
       'smtp_user' => 'eugycheung@gmail.com',
       'smtp_pass' => 'eugy940101',
+      'smtp_timeout' => '5',
       'mailtype'  => 'html',
       'charset'   => 'iso-8859-1'
     );
@@ -192,7 +193,7 @@ class Cart extends MY_Controller {
     $this->load->library('email', $config);
     $this->email->set_newline("\r\n");
 
-    $this->email->from('eugycheung@gmail.com', 'CSC309');
+    $this->email->from('eugycheung@gmail.com');
 
     $this->load->model('customer_model');
     $customer = $this->customer_model->get_id($order->customer_id);
@@ -200,17 +201,18 @@ class Cart extends MY_Controller {
 
     $this->email->subject('Email Test');
 
-    // $message = $this->load->view('Receipt', 'cart/receipt.php', $data);
-    // $this->email->message($message);
+    $message = $this->load->view('cart/receipt.php', $data, true);
+    $this->email->message($message);
 
-    $this->email->send();
-
+    if ($this->email->send()) {
+      $this->session->unset_userdata('session_cart');
+      $this->session->unset_userdata('order');
+    } else {
+      show_error($this->email->print_debugger());
+    }
 
     // Display receipt
     $this->loadView('Receipt', 'cart/receipt.php', $data);
-
-    // $this->session->unset_userdata('session_cart');
-    // $this->session->unset_userdata('order');
   }
 
 }

@@ -38,7 +38,7 @@ class Admin extends MY_Controller {
   public function delete_data() {
     if ($this->isAdmin()) {
       $this->load->model('customer_model');
-      $this->customer_model->delete_all();
+      $this->customer_model->delete_all_customers();
 
       $this->load->model('order_model');
       $this->order_model->delete_all();

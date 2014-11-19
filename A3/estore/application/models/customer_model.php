@@ -41,6 +41,15 @@ class Customer_Model extends CI_Model {
     return $result;
   }
 
+  function delete_all_customers() {
+    $this->db->trans_start();
+    $this->db->where('name !=', 'admin');
+    $result = $this->db->delete('customers');
+    $this->db->trans_complete();
+
+    return $result;
+  }
+
   function insert($customer) {
     $this->db->trans_start();
     $result = $this->db->insert('customers',
