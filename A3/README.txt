@@ -43,3 +43,7 @@ admin), and the cart that is deals with customer's orders.
 
 Email credentials are defined in application/controllers/cart.php, within the
 `receipt` method.
+
+Keeping track of customer and admin logged in states is handled by using
+CodeIgniter sessions, along with the `isAdmin` and `isLoggedIn` methods in
+MY_Controller.
