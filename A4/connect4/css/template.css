@@ -1,53 +1,172 @@
- body{
- 	background-image:url('http://localhost/csc309db/images/dcs_logo.png');
-	background-repeat:no-repeat;
-	background-size:200px;
-    font-family: Arial, Verdana, sans-serif;
-    margin:0;
-    padding:0;
- }
-  
- 
- input,label {
- 	display: block;
- }
- 
- 
- h1 {
- 	font-size:2em;
- 	color: green;
- }
- 
- h2{
- 	font-size:1em;
- 	color: blue;
- }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
- #header{
-    font-size:12px;
-	width: 700px;
-	height: 50px;
- }
- 
- #header > h1 {
- 		text-align:center
- }
- 
- #nav{
- 	padding: 5pt;
-	position: absolute;	
-	width:130px;
-	height: 800px;
-	font-size: 10pt;
-    border:1px solid #31363E;
-    background: lightgray;
- }
- 
- #main{
-	margin-left:160px;
-    width:540px;
-    height:800px;
-	background: white;
- }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: url('../images/footer_lodyas.png');
+  color: #fff;
+  font: 400 16px/20px 'Open Sans', Arial, Verdana, sans-serif;
+}
+
+input,
+label {
+  display: block;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 300;
+}
+
+h1 {
+  font-size: 2em;
+  line-height: 1.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.5em;
+}
+
+a {
+  color: #0ae;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+label {
+  margin-bottom: 0.5em;
+}
+
+input,
+textarea {
+  border: 1px solid #0ae;
+  border-radius: 5px;
+  font-family: 'Open Sans', Arial, Verdana, sans-serif;
+  margin-bottom: 1em;
+  padding: 0.5em;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table,
+th,
+td {
+  border: 1px solid #777;
+}
+
+th,
+td {
+  padding: 0.25em 0.5em;
+}
+
+header,
+footer {
+  background-color: rgba(0,0,0,.5);
+  padding: 1em 2em;
+}
+
+footer {
+  font-size: 0.75em;
+  text-align: center;
+}
+
+main {
+  padding: 2em;
+}
 
 
+/* Login/Register/Password views */
+
+.account-form {
+  background-color: rgba(0,0,0,.5);
+  border-radius: 5px;
+  margin: auto;
+  padding: 1.5em 2em;
+  width: 340px;
+}
+
+  .account-form h1 {
+    margin-bottom: 0.5em;
+  }
+
+  .account-form input {
+    width: 272px;
+  }
+
+  .account-form input[type='submit'] {
+    margin-top: 2em;
+  }
+
+  #login-actions {
+    font-size: 0.8em;
+    text-align: center;
+  }
+
+
+/* Game area */
+
+#game-board,
+#game-chat {
+  display: inline-block;
+  vertical-align: top;
+}
+
+#game-board {
+  margin-right: 2em;
+}
+
+  #game-board td,
+  #game-board th {
+    height: 50px;
+    width: 50px;
+    text-align: center;
+  }
+
+  #game-board th {
+    cursor: pointer;
+  }
+
+  .piece-p1,
+  .piece-p2 {
+    border-radius: 50%;
+    margin: auto;
+    height: 30px;
+    width: 30px;
+  }
+
+  .piece-p1 {
+    background-color: yellow;
+  }
+
+  .piece-p2 {
+    background-color: red;
+  }
+
+#game-chat {
+
+}
+
+  #game-chat textarea {
+    margin-top: 1em;
+  }
+
+  #game-chat input {
+    display: inline-block;
+  }
+
+  #game-chat input[type='submit'] {
+    margin-left: 1em;
+  }

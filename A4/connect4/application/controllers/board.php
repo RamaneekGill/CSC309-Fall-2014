@@ -1,10 +1,5 @@
 <?php
-class Board extends CI_Controller {
-
-  function __construct() {
-    parent::__construct();
-    session_start();
-  }
+class Board extends MY_Controller {
 
   public function _remap($method, $params = array()) {
     // Enforce access control to protected functions
@@ -22,25 +17,36 @@ class Board extends CI_Controller {
     $this->load->model('match_model');
 
     $user = $this->user_model->get($user->login);
-
     $invite = $this->invite_model->get($user->invite_id);
 
     if ($user->user_status_id == User::WAITING) {
-      $invite = $this->invite_model->get($user->invite_id);
+      $invite    = $this->invite_model->get($user->invite_id);
       $otherUser = $this->user_model->getFromId($invite->user2_id);
     }
     else if ($user->user_status_id == User::PLAYING) {
       $match = $this->match_model->get($user->match_id);
+
+      $rows = array(
+                array(0, 0, 0, 0, 0, 0, 0),
+                array(0, 0, 0, 0, 0, 0, 0),
+                array(0, 0, 0, 0, 0, 0, 0),
+                array(0, 0, 0, 0, 0, 0, 0),
+                array(0, 0, 0, 0, 0, 0, 0),
+                array(0, 0, 0, 0, 0, 0, 0)
+              );
+      $this->match_model->updateBoardState($match->id, serialize($rows));
+      $data['rows'] = $rows;
+
       if ($match->user1_id == $user->id)
         $otherUser = $this->user_model->getFromId($match->user2_id);
       else
         $otherUser = $this->user_model->getFromId($match->user1_id);
     }
 
-    $data['user']=$user;
-    $data['otherUser']=$otherUser;
+    $data['user']      = $user;
+    $data['otherUser'] = $otherUser;
 
-    switch($user->user_status_id) {
+    switch ($user->user_status_id) {
       case User::PLAYING:
         $data['status'] = 'playing';
         break;
@@ -49,7 +55,88 @@ class Board extends CI_Controller {
         break;
     }
 
-    $this->load->view('match/board',$data);
+
+    $this->loadView('Match with ' . $otherUser->login, 'match/board', $data);
+  }
+
+  function drop($col) {
+    $this->load->model('user_model');
+    $this->load->model('match_model');
+    $user = $_SESSION['user'];
+
+    // start transactional mode
+    $this->db->trans_begin();
+
+    $user = $this->user_model->get($user->login);
+    $match = $this->match_model->getExclusive($user->match_id);
+
+    $board = unserialize($match->board_state);
+
+    if (!isset($board)) {
+      $errormsg = 'Get board error';
+      goto error;
+    }
+
+    for ($row = 5; $row >= 0; $row--) {
+      if ($board[$row][$col] == 0) {
+        $board[$row][$col] = 1;
+        break;
+      }
+    }
+
+    $this->match_model->updateBoardState($match->id, serialize($board));
+
+    if ($this->db->trans_status() === FALSE) {
+      $errormsg = "Transaction error";
+      goto transactionerror;
+    }
+
+    // if all went well commit changes
+    $this->db->trans_commit();
+
+    echo json_encode(array('status' => 'success', 'board' => $board));
+    return;
+
+    transactionerror:
+      $this->db->trans_rollback();
+
+    error:
+      echo json_encode(array('status' => 'failure', 'message' => $errormsg));
+  }
+
+  function getBoard() {
+    $this->load->model('user_model');
+    $this->load->model('match_model');
+
+    $user = $_SESSION['user'];
+
+    $user = $this->user_model->get($user->login);
+    if ($user->user_status_id != User::PLAYING) {
+      $errormsg = "Not in PLAYING state";
+      goto error;
+    }
+
+    // start transactional mode
+    $this->db->trans_begin();
+
+    $match = $this->match_model->getExclusive($user->match_id);
+
+    if ($this->db->trans_status() === FALSE) {
+      $errormsg = "Transaction error";
+      goto transactionerror;
+    }
+
+    // if all went well commit changes
+    $this->db->trans_commit();
+
+    echo json_encode(array('status' => 'success', 'board' => unserialize($match->board_state)));
+    return;
+
+    transactionerror:
+      $this->db->trans_rollback();
+
+    error:
+      echo json_encode(array('status' => 'failure', 'message' => $errormsg));
   }
 
   function postMsg() {
@@ -73,23 +160,22 @@ class Board extends CI_Controller {
       $msg = $this->input->post('msg');
 
       if ($match->user1_id == $user->id)  {
-        $msg = $match->u1_msg == ''? $msg :  $match->u1_msg . "\n" . $msg;
+        $msg = $match->u1_msg == '' ? $msg : $match->u1_msg . "\n" . $msg;
         $this->match_model->updateMsgU1($match->id, $msg);
       }
       else {
-        $msg = $match->u2_msg == ''? $msg :  $match->u2_msg . "\n" . $msg;
+        $msg = $match->u2_msg == '' ? $msg : $match->u2_msg . "\n" . $msg;
         $this->match_model->updateMsgU2($match->id, $msg);
       }
 
-      echo json_encode(array('status'=>'success'));
-
+      echo json_encode(array('status' => 'success'));
       return;
     }
 
-    $errormsg="Missing argument";
+    $errormsg = "Missing argument";
 
     error:
-      echo json_encode(array('status'=>'failure','message'=>$errormsg));
+      echo json_encode(array('status' => 'failure', 'message' => $errormsg));
   }
 
   function getMsg() {
@@ -100,9 +186,10 @@ class Board extends CI_Controller {
 
     $user = $this->user_model->get($user->login);
     if ($user->user_status_id != User::PLAYING) {
-      $errormsg="Not in PLAYING state";
+      $errormsg = "Not in PLAYING state";
       goto error;
     }
+
     // start transactional mode
     $this->db->trans_begin();
 
@@ -125,13 +212,13 @@ class Board extends CI_Controller {
     // if all went well commit changes
     $this->db->trans_commit();
 
-    echo json_encode(array('status'=>'success','message'=>$msg));
+    echo json_encode(array('status' => 'success', 'message' => $msg));
     return;
 
     transactionerror:
       $this->db->trans_rollback();
 
     error:
-      echo json_encode(array('status'=>'failure','message'=>$errormsg));
+      echo json_encode(array('status' => 'failure', 'message' => $errormsg));
   }
 }

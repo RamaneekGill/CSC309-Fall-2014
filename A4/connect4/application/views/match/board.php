@@ -1,87 +1,136 @@
+<h1>Game Area</h1>
 
-<!DOCTYPE html>
+<div id='game-board'>
+  <h2>Board</h2>
+  <table>
+    <thead>
+      <tr>
+        <?php
+          for ($i = 0; $i < 7; $i++) {
+            echo "<th class='drop' data-col='$i'>↓</th>";
+          }
+        ?>
+      </tr>
+    </thead>
+    <tbody id='board-content'>
+      <?php
+        if (isset($rows)) {
+          foreach ($rows as $row) {
+            echo '<tr>';
+            foreach ($row as $item) {
+              if ($item == 1) {
+                echo '<td><div class="piece-p1"></div></td>';
+              } else if ($item == 2) {
+                echo '<td><div class="piece-p2"></div></td>';
+              } else {
+                echo '<td></td>';
+              }
+            }
+            echo '</tr>';
+          }
+        }
+      ?>
+    </tbody>
+  </table>
+</div>
 
-<html>
-	<head>
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
-	<script src="<?= base_url() ?>/js/jquery.timers.js"></script>
-	<script>
+<div id='game-chat'>
+  <h2>Chat</h2>
+  <div id='status'>
+    <?php
+      if ($status == "playing")
+        echo "Playing " . $otherUser->login;
+      else
+        echo "Waiting on " . $otherUser->login;
+    ?>
+  </div>
 
-		var otherUser = "<?= $otherUser->login ?>";
-		var user = "<?= $user->login ?>";
-		var status = "<?= $status ?>";
-		
-		$(function(){
-			$('body').everyTime(2000,function(){
-					if (status == 'waiting') {
-						$.getJSON('<?= base_url() ?>arcade/checkInvitation',function(data, text, jqZHR){
-								if (data && data.status=='rejected') {
-									alert("Sorry, your invitation to play was declined!");
-									window.location.href = '<?= base_url() ?>arcade/index';
-								}
-								if (data && data.status=='accepted') {
-									status = 'playing';
-									$('#status').html('Playing ' + otherUser);
-								}
-								
-						});
-					}
-					var url = "<?= base_url() ?>board/getMsg";
-					$.getJSON(url, function (data,text,jqXHR){
-						if (data && data.status=='success') {
-							var conversation = $('[name=conversation]').val();
-							var msg = data.message;
-							if (msg.length > 0)
-								$('[name=conversation]').val(conversation + "\n" + otherUser + ": " + msg);
-						}
-					});
-			});
+  <?php
+    echo form_textarea(array('name' => 'conversation', 'readonly' => 'readonly'));
 
-			$('form').submit(function(){
-				var arguments = $(this).serialize();
-				var url = "<?= base_url() ?>board/postMsg";
-				$.post(url,arguments, function (data,textStatus,jqXHR){
-						var conversation = $('[name=conversation]').val();
-						var msg = $('[name=msg]').val();
-						$('[name=conversation]').val(conversation + "\n" + user + ": " + msg);
-						});
-				return false;
-				});	
-		});
-	
-	</script>
-	</head> 
-<body>  
-	<h1>Game Area</h1>
+    echo form_open();
+    echo form_input('msg');
+    echo form_submit('Send','Send');
+    echo form_close();
+  ?>
+</div>
 
-	<div>
-	Hello <?= $user->fullName() ?>  <?= anchor('account/logout','(Logout)') ?>  
-	</div>
-	
-	<div id='status'> 
-	<?php 
-		if ($status == "playing")
-			echo "Playing " . $otherUser->login;
-		else
-			echo "Wating on " . $otherUser->login;
-	?>
-	</div>
-	
-<?php 
-	
-	echo form_textarea('conversation');
-	
-	echo form_open();
-	echo form_input('msg');
-	echo form_submit('Send','Send');
-	echo form_close();
-	
-?>
-	
-	
-	
-	
-</body>
+<script src="<?= base_url() ?>/js/jquery.timers.js"></script>
+<script src="<?= base_url() ?>/js/arcade/board.js"></script>
+<script>
+  var otherUser = "<?= $otherUser->login ?>";
+  var user      = "<?= $user->login ?>";
+  var status    = "<?= $status ?>";
 
-</html>
+  $(function(){
+    $('body').everyTime(2000, function() {
+      if (status == 'waiting') {
+        $.getJSON('<?= base_url() ?>arcade/checkInvitation', function (data, text, jqZHR) {
+            if (data && data.status=='rejected') {
+              alert("Sorry, your invitation to play was declined!");
+              window.location.href = '<?= base_url() ?>arcade/index';
+            }
 
+            if (data && data.status=='accepted') {
+              status = 'playing';
+              $('#status').html('Playing ' + otherUser);
+            }
+        });
+      }
+
+      $.getJSON("<?= base_url() ?>board/getMsg", function (data, text, jqXHR) {
+        if (data && data.status == 'success') {
+          var conversation = $('[name=conversation]').val();
+          var msg = data.message;
+          if (msg.length > 0)
+            $('[name=conversation]').val(conversation + "\n" + otherUser + ": " + msg);
+        }
+      });
+
+      $.getJSON("<?= base_url() ?>board/getBoard", function (data, text, jqXHR) {
+        if (data && data.status == 'success') {
+
+        }
+      });
+    });
+
+    $('.drop').click(function() {
+      var col = this.dataset.col;
+      $.post("<?= base_url() ?>board/drop/" + col, function (data, text, jqXHR) {
+        var data  = JSON.parse(data);
+        if (data && data.status == 'success') {
+          updateBoard(data.board);
+        }
+      });
+    });
+
+    function updateBoard(rows) {
+      var $board = $('#board-content');
+      $board.html('');
+      for (var row = 0; row < rows.length; row++) {
+        $board.append('<tr>');
+        for (var col = 0; col < rows[row].length; col++) {
+          var item = rows[row][col];
+          if (item == 1) {
+            $board.append('<td><div class="piece-p1"></div></td>')
+          } else if (item == 2) {
+            $board.append('<td><div class="piece-p2"></div></td>')
+          } else {
+            $board.append('<td></td>')
+          }
+        }
+        $board.append('</tr>');
+      }
+    }
+
+    $('form').submit(function() {
+      var arguments = $(this).serialize();
+      $.post("<?= base_url() ?>board/postMsg", arguments, function (data, text, jqXHR) {
+        var conversation = $('[name=conversation]').val();
+        var msg = $('[name=msg]').val();
+        $('[name=conversation]').val(conversation + "\n" + user + ": " + msg);
+      });
+      return false;
+    });
+  });
+</script>

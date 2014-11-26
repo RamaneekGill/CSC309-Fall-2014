@@ -1,10 +1,5 @@
 <?php
-class Account extends CI_Controller {
-
-  function __construct() {
-    parent::__construct();
-    session_start();
-  }
+class Account extends MY_Controller {
 
   public function _remap($method, $params = array()) {
     // Enforce access control to protected functions
@@ -17,7 +12,7 @@ class Account extends CI_Controller {
   }
 
   function loginForm() {
-    $this->load->view('account/loginForm');
+    $this->loadView('Login', 'account/loginForm');
   }
 
   function login() {
@@ -26,7 +21,7 @@ class Account extends CI_Controller {
     $this->form_validation->set_rules('password', 'Password', 'required');
 
     if ($this->form_validation->run() === FALSE) {
-      $this->load->view('account/loginForm');
+      $this->loadView('Login', 'account/loginForm');
     } else {
       $login = $this->input->post('username');
       $clearPassword = $this->input->post('password');
@@ -37,14 +32,14 @@ class Account extends CI_Controller {
 
       if (isset($user) && $user->comparePassword($clearPassword)) {
         $_SESSION['user'] = $user;
-        $data['user']=$user;
+        $data['user'] = $user;
 
         $this->user_model->updateStatus($user->id, User::AVAILABLE);
 
         redirect('arcade/index', 'refresh'); //redirect to the main application page
       } else {
         $data['errorMsg']='Incorrect username or password!';
-        $this->load->view('account/loginForm',$data);
+        $this->loadView('Login', 'account/loginForm', $data);
       }
     }
   }
@@ -58,19 +53,21 @@ class Account extends CI_Controller {
   }
 
   function newForm() {
-    $this->load->view('account/newForm');
+    $this->load->helper('html');
+    $this->loadView('Register', 'account/newForm');
   }
 
   function createNew() {
     $this->load->library('form_validation');
     $this->form_validation->set_rules('username', 'Username', 'required|is_unique[user.login]');
     $this->form_validation->set_rules('password', 'Password', 'required');
-    $this->form_validation->set_rules('first', 'First', "required");
-    $this->form_validation->set_rules('last', 'last', "required");
-    $this->form_validation->set_rules('email', 'Email', "required|is_unique[user.email]");
+    $this->form_validation->set_rules('first', 'First name', 'required');
+    $this->form_validation->set_rules('last', 'Last name', 'required');
+    $this->form_validation->set_rules('email', 'Email', 'required|is_unique[user.email]');
+    $this->form_validation->set_rules('captcha', 'Captcha', 'trim|required|callback__check_captcha');
 
     if ($this->form_validation->run() === FALSE) {
-      $this->load->view('account/newForm');
+      $this->loadView('Register', 'account/newForm');
     } else {
       $user = new User();
 
@@ -85,12 +82,37 @@ class Account extends CI_Controller {
 
       $error = $this->user_model->insert($user);
 
-      $this->load->view('account/loginForm');
+      $this->loadView('Login', 'account/loginForm');
+    }
+  }
+
+  public function securimage() {
+    $this->load->config('csecurimage');
+    $active = $this->config->item('si_active');
+    $allsettings = array_merge($this->config->item($active), $this->config->item('si_general'));
+
+    $this->load->library('securimage/securimage');
+    $img = new Securimage($allsettings);
+
+    //$img->captcha_type = Securimage::SI_CAPTCHA_MATHEMATIC;
+
+    $img->show('libraries/securimage/backgrounds/bg6.png');
+  }
+
+  public function _check_captcha() {
+    $this->load->library('securimage/securimage');
+    $securimage = new Securimage();
+
+    if (!$securimage->check($this->input->post('captcha'))) {
+      $this->form_validation->set_message('_check_captcha', 'The code you entered is invalid');
+      return FALSE;
+    } else {
+      return TRUE;
     }
   }
 
   function updatePasswordForm() {
-    $this->load->view('account/updatePasswordForm');
+    $this->loadView('Update Password', 'account/updatePasswordForm');
   }
 
   function updatePassword() {
@@ -98,8 +120,8 @@ class Account extends CI_Controller {
     $this->form_validation->set_rules('oldPassword', 'Old Password', 'required');
     $this->form_validation->set_rules('newPassword', 'New Password', 'required');
 
-    if ($this->form_validation->run() == FALSE) {
-      $this->load->view('account/updatePasswordForm');
+    if ($this->form_validation->run() === FALSE) {
+      $this->loadView('Update Password', 'account/updatePasswordForm');
     } else {
       $user = $_SESSION['user'];
 
@@ -112,14 +134,14 @@ class Account extends CI_Controller {
         $this->user_model->updatePassword($user);
         redirect('arcade/index', 'refresh');
       } else {
-        $data['errorMsg']="Incorrect password!";
-        $this->load->view('account/updatePasswordForm',$data);
+        $data['errorMsg']='Incorrect password!';
+        $this->loadView('Update Password', 'account/updatePasswordForm', $data);
       }
     }
   }
 
   function recoverPasswordForm() {
-    $this->load->view('account/recoverPasswordForm');
+    $this->loadView('Recover Password', 'account/recoverPasswordForm');
   }
 
   function recoverPassword() {
@@ -143,10 +165,10 @@ class Account extends CI_Controller {
         $config['smtp_host']    = 'ssl://smtp.gmail.com';
         $config['smtp_port']    = '465';
         $config['smtp_timeout'] = '7';
-        $config['smtp_user']    = 'your gmail user name';
-        $config['smtp_pass']    = 'your gmail password';
+        $config['smtp_user']    = 'eugycheung@gmail.com';
+        $config['smtp_pass']    = 'eugy940101';
         $config['charset']      = 'utf-8';
-        $config['newline']      = "\r\n";
+        $config['newline']      = '\r\n';
         $config['mailtype']     = 'text'; // or html
         $config['validation']   = TRUE; // bool whether to validate email or not
 
@@ -156,7 +178,7 @@ class Account extends CI_Controller {
         $this->email->to($user->email);
 
         $this->email->subject('Password recovery');
-        $this->email->message("Your new password is $newPassword");
+        $this->email->message('Your new password is $newPassword');
 
         $result = $this->email->send();
 
@@ -165,7 +187,7 @@ class Account extends CI_Controller {
         //$this->load->view('emailPage',$data);
         $this->load->view('account/emailPage');
       } else {
-        $data['errorMsg']="No record exists for this email!";
+        $data['errorMsg']='No record exists for this email!';
         $this->load->view('account/recoverPasswordForm',$data);
       }
     }

@@ -3,7 +3,7 @@ class Match_model extends CI_Model {
 
   function getExclusive($id) {
     $sql = "select * from `match` where id=? for update";
-    $query = $this->db->query($sql,array($id));
+    $query = $this->db->query($sql, array($id));
     if ($query && $query->num_rows() > 0)
       return $query->row(0, 'Match');
     else
@@ -23,7 +23,12 @@ class Match_model extends CI_Model {
     return $this->db->insert('match', $match);
   }
 
-  function updateMsgU1($id,$msg) {
+  function updateBoardState($id, $board_state) {
+    $this->db->where('id', $id);
+    return $this->db->update('match', array('board_state' => $board_state));
+  }
+
+  function updateMsgU1($id, $msg) {
     $this->db->where('id', $id);
     return $this->db->update('match', array('u1_msg' => $msg));
   }

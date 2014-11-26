@@ -1,10 +1,5 @@
 <?php
-class Arcade extends CI_Controller {
-
-  function __construct() {
-    parent::__construct();
-    session_start();
-  }
+class Arcade extends MY_Controller {
 
   public function _remap($method, $params = array()) {
     // Enforce access control to protected functions
@@ -20,7 +15,8 @@ class Arcade extends CI_Controller {
       $data['errmsg']=  $_SESSION['errmsg'];
       unset($_SESSION['errmsg']);
     }
-    $this->load->view('arcade/mainPage',$data);
+
+    $this->loadView('Arcade', 'arcade/mainPage', $data);
   }
 
   function getAvailableUsers() {
@@ -28,7 +24,8 @@ class Arcade extends CI_Controller {
     $users = $this->user_model->getAvailableUsers();
     $data['users']=$users;
     $data['currentUser']=$_SESSION['user'];
-    $this->load->view('arcade/availableUsers',$data);
+
+    $this->load->view('arcade/availableUsers', $data);
   }
 
   function getInvitation() {
