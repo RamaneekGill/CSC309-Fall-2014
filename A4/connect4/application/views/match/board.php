@@ -89,7 +89,7 @@
 
       $.getJSON("<?= base_url() ?>board/getBoard", function (data, text, jqXHR) {
         if (data && data.status == 'success') {
-
+          updateBoard(data.board);
         }
       });
     });
