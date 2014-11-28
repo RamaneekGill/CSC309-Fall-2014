@@ -2,6 +2,15 @@
 
 <div id='game-board'>
   <h2>Board</h2>
+  <div>
+    <?php
+      if ($status == "playing")
+        echo "Playing against ";
+      else
+        echo "Waiting on ";
+      echo $otherUser->first . " " . $otherUser->last . " (" . $otherUser->login . ")";
+    ?>
+  </div>
   <table>
     <thead>
       <tr>
@@ -39,9 +48,10 @@
   <div id='status'>
     <?php
       if ($status == "playing")
-        echo "Playing " . $otherUser->login;
+        echo "Playing against ";
       else
-        echo "Waiting on " . $otherUser->login;
+        echo "Waiting on ";
+      echo $otherUser->first . " " . $otherUser->last . " (" . $otherUser->login . ")";
     ?>
   </div>
 
@@ -50,7 +60,7 @@
 
     echo form_open();
     echo form_input('msg');
-    echo form_submit('Send','Send');
+    echo form_submit('Send', 'Send');
     echo form_close();
   ?>
 </div>
@@ -73,7 +83,7 @@
 
             if (data && data.status=='accepted') {
               status = 'playing';
-              $('#status').html('Playing ' + otherUser);
+              $('#status').html('Playing against ' + otherUser);
             }
         });
       }
@@ -124,12 +134,17 @@
     }
 
     $('form').submit(function() {
-      var arguments = $(this).serialize();
-      $.post("<?= base_url() ?>board/postMsg", arguments, function (data, text, jqXHR) {
-        var conversation = $('[name=conversation]').val();
-        var msg = $('[name=msg]').val();
-        $('[name=conversation]').val(conversation + "\n" + user + ": " + msg);
-      });
+      var $msg = $('[name=msg]');
+      var msg = $msg.val();
+
+      if (msg !== '') {
+        var arguments = $(this).serialize();
+        $.post("<?= base_url() ?>board/postMsg", arguments, function (data, text, jqXHR) {
+          var conversation = $('[name=conversation]').val();
+          $('[name=conversation]').val(conversation + "\n" + user + ": " + msg);
+          $msg.val('');
+        });
+      }
       return false;
     });
   });

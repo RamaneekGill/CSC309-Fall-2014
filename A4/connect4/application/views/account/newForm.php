@@ -29,7 +29,7 @@
     echo form_input('email',set_value('email'),"required");
 
     echo form_label('Captcha', 'Type the captcha code');
-    echo img(array('src' => site_url('secureimagetest/securimage'), 'alt' => 'Captcha', 'id' => 'captcha'));
+    echo img(array('src' => site_url('account/captcha'), 'alt' => 'Captcha', 'id' => 'captcha'));
     echo form_input(array('name' => 'captcha'));
     echo form_error('captcha');
     echo "<a id='reload'>New captcha</a>";
@@ -42,7 +42,7 @@
 <script>
   $(function(){
     $('#reload').click(function(){
-      $('#captcha').attr('src', '<?php echo site_url("secureimagetest/securimage");?>');
+      $('#captcha').attr('src', '<?php echo site_url("account/captcha"); ?>');
     });
   });
 

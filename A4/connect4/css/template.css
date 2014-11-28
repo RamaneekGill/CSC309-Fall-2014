@@ -1,3 +1,5 @@
+/* Core styling */
+
 *,
 *::before,
 *::after {
@@ -39,7 +41,7 @@ h2 {
 }
 
 a {
-  color: #0ae;
+  color: #0ad;
   cursor: pointer;
   text-decoration: none;
 }
@@ -50,7 +52,7 @@ label {
 
 input,
 textarea {
-  border: 1px solid #0ae;
+  border: 1px solid #0ad;
   border-radius: 5px;
   font-family: 'Open Sans', Arial, Verdana, sans-serif;
   margin-bottom: 1em;
@@ -58,19 +60,23 @@ textarea {
 }
 
 table {
+  background-color: rgba(0,0,0,.35);
   border-collapse: collapse;
 }
 
 table,
 th,
 td {
-  border: 1px solid #777;
+  border: 1px solid #0ad;
 }
 
 th,
 td {
   padding: 0.25em 0.5em;
 }
+
+
+/* Main view elements */
 
 header,
 footer {
@@ -79,12 +85,18 @@ footer {
 }
 
 footer {
+  height: 3.5em;
   font-size: 0.75em;
   text-align: center;
 }
 
 main {
   padding: 2em;
+}
+
+.content {
+  margin: 0 auto;
+  max-width: 800px;
 }
 
 
@@ -116,6 +128,13 @@ main {
   }
 
 
+/* Available users */
+
+#availableUsers table {
+  width: 100%;
+}
+
+
 /* Game area */
 
 #game-board,
@@ -125,8 +144,13 @@ main {
 }
 
 #game-board {
-  margin-right: 2em;
+  border-right: 1px solid #777;
+  padding-right: 2em;
 }
+
+  #game-board table {
+    margin-top: 0.75em;
+  }
 
   #game-board td,
   #game-board th {
@@ -136,6 +160,7 @@ main {
   }
 
   #game-board th {
+    border-bottom-width: 2px;
     cursor: pointer;
   }
 
@@ -148,16 +173,22 @@ main {
   }
 
   .piece-p1 {
-    background-color: yellow;
+    background-color: #ff0;
   }
 
   .piece-p2 {
-    background-color: red;
+    background-color: #f00;
   }
 
 #game-chat {
-
+  padding-left: 2em;
 }
+
+  #game-chat textarea,
+  #game-chat input[type='text'] {
+    background-color: rgba(0,0,0,.35);
+    color: #fff;
+  }
 
   #game-chat textarea {
     margin-top: 1em;

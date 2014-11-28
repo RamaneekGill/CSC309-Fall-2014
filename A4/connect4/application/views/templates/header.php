@@ -9,13 +9,16 @@
 </head>
 <body>
   <header>
-    <h1><a href='<? echo base_url(); ?>'>Connect 4</a></h1>
+    <div class="content">
+      <h1><a href='<? echo base_url(); ?>'>Connect 4</a></h1>
 
-    <?php if (isset($user)): ?>
-      <div>
-        Hello <?= $user->fullName() ?> <?= anchor('account/logout','(Logout)') ?> <?= anchor('account/updatePasswordForm','(Change Password)') ?>
-      </div>
-    <?php endif; ?>
+      <?php if (isset($user)): ?>
+        <div>
+          Hello <?= $user->fullName() ?> <?= anchor('account/logout','(Logout)') ?> <?= anchor('account/updatePasswordForm','(Change Password)') ?>
+        </div>
+      <?php endif; ?>
+    </div>
   </header>
 
   <main id="main">
+    <div class="content">

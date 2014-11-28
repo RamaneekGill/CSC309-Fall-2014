@@ -11,11 +11,11 @@ class Account extends MY_Controller {
     return call_user_func_array(array($this, $method), $params);
   }
 
-  function loginForm() {
+  public function loginForm() {
     $this->loadView('Login', 'account/loginForm');
   }
 
-  function login() {
+  public function login() {
     $this->load->library('form_validation');
     $this->form_validation->set_rules('username', 'Username', 'required');
     $this->form_validation->set_rules('password', 'Password', 'required');
@@ -44,7 +44,7 @@ class Account extends MY_Controller {
     }
   }
 
-  function logout() {
+  public function logout() {
     $user = $_SESSION['user'];
     $this->load->model('user_model');
     $this->user_model->updateStatus($user->id, User::OFFLINE);
@@ -52,12 +52,13 @@ class Account extends MY_Controller {
     redirect('account/index', 'refresh'); //Then we redirect to the index page again
   }
 
-  function newForm() {
+  public function newForm() {
     $this->load->helper('html');
+    $this->load->library('securimage');
     $this->loadView('Register', 'account/newForm');
   }
 
-  function createNew() {
+  public function createNew() {
     $this->load->library('form_validation');
     $this->form_validation->set_rules('username', 'Username', 'required|is_unique[user.login]');
     $this->form_validation->set_rules('password', 'Password', 'required');
@@ -67,6 +68,7 @@ class Account extends MY_Controller {
     $this->form_validation->set_rules('captcha', 'Captcha', 'trim|required|callback__check_captcha');
 
     if ($this->form_validation->run() === FALSE) {
+      $this->load->helper('html');
       $this->loadView('Register', 'account/newForm');
     } else {
       $user = new User();
@@ -86,21 +88,18 @@ class Account extends MY_Controller {
     }
   }
 
-  public function securimage() {
+  public function captcha() {
     $this->load->config('csecurimage');
     $active = $this->config->item('si_active');
     $allsettings = array_merge($this->config->item($active), $this->config->item('si_general'));
 
-    $this->load->library('securimage/securimage');
+    $this->load->library('securimage');
     $img = new Securimage($allsettings);
-
-    //$img->captcha_type = Securimage::SI_CAPTCHA_MATHEMATIC;
-
-    $img->show('libraries/securimage/backgrounds/bg6.png');
+    $img->show();
   }
 
   public function _check_captcha() {
-    $this->load->library('securimage/securimage');
+    $this->load->library('securimage');
     $securimage = new Securimage();
 
     if (!$securimage->check($this->input->post('captcha'))) {
@@ -111,11 +110,11 @@ class Account extends MY_Controller {
     }
   }
 
-  function updatePasswordForm() {
+  public function updatePasswordForm() {
     $this->loadView('Update Password', 'account/updatePasswordForm');
   }
 
-  function updatePassword() {
+  public function updatePassword() {
     $this->load->library('form_validation');
     $this->form_validation->set_rules('oldPassword', 'Old Password', 'required');
     $this->form_validation->set_rules('newPassword', 'New Password', 'required');
@@ -140,11 +139,11 @@ class Account extends MY_Controller {
     }
   }
 
-  function recoverPasswordForm() {
+  public function recoverPasswordForm() {
     $this->loadView('Recover Password', 'account/recoverPasswordForm');
   }
 
-  function recoverPassword() {
+  public function recoverPassword() {
     $this->load->library('form_validation');
     $this->form_validation->set_rules('email', 'email', 'required');
 

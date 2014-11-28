@@ -53,7 +53,6 @@ class User_model extends CI_Model {
     return $this->db->update('user', array('match_id' => $matchId));
   }
 
-
   function getAvailableUsers() {
     $this->db->where('user_status_id', User::AVAILABLE);
     $query = $this->db->get('user');
