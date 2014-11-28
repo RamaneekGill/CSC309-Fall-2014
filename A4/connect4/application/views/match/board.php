@@ -2,13 +2,12 @@
 
 <div id='game-board'>
   <h2>Board</h2>
-  <div>
+  <div id='turn'>
     <?php
       if ($status == "playing")
-        echo "Playing against ";
+        echo "Your turn";
       else
-        echo "Waiting on ";
-      echo $otherUser->first . " " . $otherUser->last . " (" . $otherUser->login . ")";
+        echo $otherUser->login . "'s turn";
     ?>
   </div>
   <table>
@@ -66,7 +65,6 @@
 </div>
 
 <script src="<?= base_url() ?>/js/jquery.timers.js"></script>
-<script src="<?= base_url() ?>/js/arcade/board.js"></script>
 <script>
   var otherUser = "<?= $otherUser->login ?>";
   var user      = "<?= $user->login ?>";
@@ -100,6 +98,10 @@
       $.getJSON("<?= base_url() ?>board/getBoard", function (data, text, jqXHR) {
         if (data && data.status == 'success') {
           updateBoard(data.board);
+          if (data.turn == 1)
+            $('#turn').html('Your turn');
+          else
+            $('#turn').html(otherUser + "'s turn");
         }
       });
     });
@@ -107,7 +109,7 @@
     $('.drop').click(function() {
       var col = this.dataset.col;
       $.post("<?= base_url() ?>board/drop/" + col, function (data, text, jqXHR) {
-        var data  = JSON.parse(data);
+        var data = JSON.parse(data);
         if (data && data.status == 'success') {
           updateBoard(data.board);
         }

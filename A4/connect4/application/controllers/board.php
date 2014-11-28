@@ -26,16 +26,19 @@ class Board extends MY_Controller {
     else if ($user->user_status_id == User::PLAYING) {
       $match = $this->match_model->get($user->match_id);
 
-      $rows = array(
-                array(0, 0, 0, 0, 0, 0, 0),
-                array(0, 0, 0, 0, 0, 0, 0),
-                array(0, 0, 0, 0, 0, 0, 0),
-                array(0, 0, 0, 0, 0, 0, 0),
-                array(0, 0, 0, 0, 0, 0, 0),
-                array(0, 0, 0, 0, 0, 0, 0)
-              );
-      $this->match_model->updateBoardState($match->id, serialize($rows));
-      $data['rows'] = $rows;
+      $state = array(
+                 'turn' => 1,
+                 'board' => array(
+                   array(0, 0, 0, 0, 0, 0, 0),
+                   array(0, 0, 0, 0, 0, 0, 0),
+                   array(0, 0, 0, 0, 0, 0, 0),
+                   array(0, 0, 0, 0, 0, 0, 0),
+                   array(0, 0, 0, 0, 0, 0, 0),
+                   array(0, 0, 0, 0, 0, 0, 0)
+                 )
+               );
+      $this->match_model->updateBoardState($match->id, serialize($state));
+      $data['rows'] = $state['board'];
 
       if ($match->user1_id == $user->id)
         $otherUser = $this->user_model->getFromId($match->user2_id);
@@ -55,7 +58,6 @@ class Board extends MY_Controller {
         break;
     }
 
-
     $this->loadView('Match with ' . $otherUser->login, 'match/board', $data);
   }
 
@@ -70,21 +72,25 @@ class Board extends MY_Controller {
     $user = $this->user_model->get($user->login);
     $match = $this->match_model->getExclusive($user->match_id);
 
-    $board = unserialize($match->board_state);
+    $state = unserialize($match->board_state);
 
-    if (!isset($board)) {
+    if (!isset($state)) {
       $errormsg = 'Get board error';
       goto error;
     }
 
+    $turn = $state['turn'];
+
     for ($row = 5; $row >= 0; $row--) {
-      if ($board[$row][$col] == 0) {
-        $board[$row][$col] = 1;
+      if ($state['board'][$row][$col] == 0) {
+        $state['board'][$row][$col] = $turn;
         break;
       }
     }
 
-    $this->match_model->updateBoardState($match->id, serialize($board));
+    $state['turn'] = ($turn == 1) ? 2 : 1;
+
+    $this->match_model->updateBoardState($match->id, serialize($state));
 
     if ($this->db->trans_status() === FALSE) {
       $errormsg = "Transaction error";
@@ -94,7 +100,7 @@ class Board extends MY_Controller {
     // if all went well commit changes
     $this->db->trans_commit();
 
-    echo json_encode(array('status' => 'success', 'board' => $board));
+    echo json_encode(array('status' => 'success', 'board' => $board, 'turn' => $state['turn']));
     return;
 
     transactionerror:
@@ -129,7 +135,11 @@ class Board extends MY_Controller {
     // if all went well commit changes
     $this->db->trans_commit();
 
-    echo json_encode(array('status' => 'success', 'board' => unserialize($match->board_state)));
+    $state = unserialize($match->board_state);
+    $board = $state['board'];
+    $turn  = $state['turn'];
+
+    echo json_encode(array('status' => 'success', 'board' => $board, 'turn' => $turn));
     return;
 
     transactionerror:
