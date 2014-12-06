@@ -49,7 +49,7 @@
       if ($status == "playing")
         echo "Playing against ";
       else
-        echo "Waiting on ";
+        echo "Waiting for ";
       echo $otherUser->first . " " . $otherUser->last . " (" . $otherUser->login . ")";
     ?>
   </div>
@@ -74,7 +74,7 @@
   var status      = "<?= $status ?>";
   var turn        = "<?= $turn ?>";
 
-  $(function(){
+  $(function() {
     $('body').everyTime(1000, 'body_timer', function() {
       if (status == 'waiting') {
         $.getJSON('<?= base_url() ?>arcade/checkInvitation', function (data, text, jqZHR) {
@@ -109,7 +109,8 @@
           else
             $('#turn').html(otherUser + "'s turn");
 
-          if (data.winner !== -1) {
+          // 1 == ACTIVE
+          if (data.winner !== 1) {
             winState(data.winner);
           }
         }
@@ -124,7 +125,10 @@
           if (data && data.status == 'success') {
             updateBoard(data.board);
 
-            if (data.winner !== -1) {
+            alert(data.winner);
+
+            // 1 == ACTIVE
+            if (data.winner !== 1) {
               winState(data.winner);
             }
           }
@@ -133,13 +137,26 @@
     });
 
     function winState(state) {
-      // $('body').stopTime('body_timer');
+      $('body').stopTime('body_timer');
 
-      if (state === userID) {
-        alert("You win!");
-      } else if (state === otherUserID) {
-        alert("You lost!");
-      } else if (state === -2) {
+      // U1WIN
+      if (state === 2) {
+        if (userID === matchUser1)
+          alert("You win!");
+        else
+          alert("You lost!");
+      }
+
+      // U2WIN
+      else if (state === 3) {
+        if (userID !== matchUser1)
+          alert("You win!");
+        else
+          alert("You lost!");
+      }
+
+      // TIE
+      else if (state === 4) {
         alert("Tie game!");
       }
     }

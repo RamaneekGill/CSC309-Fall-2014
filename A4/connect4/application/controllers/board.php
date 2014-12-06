@@ -165,17 +165,17 @@ class Board extends MY_Controller {
       echo json_encode(array('status' => 'failure', 'message' => $errormsg));
   }
 
-  // -1: keep playing
-  // -2: tie
-  // User ID: they won
   private function _checkWin($board) {
     $user = $_SESSION['user'];
 
     $this->load->model('user_model');
-    $this->load->model('invite_model');
     $this->load->model('match_model');
 
-    return Match::TIE;
+    // MATCH::U1WIN;
+    // MATCH::U2WIN;
+    // MATCH::TIE;
+
+    return Match::ACTIVE;
   }
 
   function _winning($board, $id, $cur, $d, $pieces) {
