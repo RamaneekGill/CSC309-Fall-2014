@@ -4,10 +4,14 @@
   <h2>Board</h2>
   <div id='turn'>
     <?php
-      if ($user->id == $turn)
-        echo "Your turn";
-      else
-        echo $otherUser->login . "'s turn";
+      if (isset($turn)) {
+        if ($user->id == $turn)
+          echo "Your turn";
+        else
+          echo $otherUser->login . "'s turn";
+      } else {
+        echo "Waiting";
+      }
     ?>
   </div>
   <table>
@@ -70,9 +74,9 @@
   var otherUserID = "<?= $otherUser->id ?>";
   var user        = "<?= $user->login ?>";
   var userID      = "<?= $user->id ?>"
-  var matchUser1  = "<?= $matchUser1 ?>";
   var status      = "<?= $status ?>";
-  var turn        = "<?= $turn ?>";
+  var matchUser1;
+  var turn;
 
   $(function() {
     $('body').everyTime(1000, 'body_timer', function() {
@@ -94,7 +98,7 @@
         if (data && data.status == 'success') {
           var conversation = $('[name=conversation]').val();
           var msg = data.message;
-          if (msg.length > 0)
+          if (msg && msg.length > 0)
             $('[name=conversation]').val(conversation + "\n" + otherUser + ": " + msg);
         }
       });
@@ -125,10 +129,8 @@
           if (data && data.status == 'success') {
             updateBoard(data.board);
 
-            alert(data.winner);
-
             // 1 == ACTIVE
-            if (data.winner !== 1) {
+            if (data.winner != 1) {
               winState(data.winner);
             }
           }
@@ -137,27 +139,34 @@
     });
 
     function winState(state) {
-      $('body').stopTime('body_timer');
+      // $('body').stopTime('body_timer');
 
       // U1WIN
       if (state === 2) {
         if (userID === matchUser1)
-          alert("You win!");
+          goHome("You win!");
         else
-          alert("You lost!");
+          goHome("You lost!");
       }
 
       // U2WIN
       else if (state === 3) {
         if (userID !== matchUser1)
-          alert("You win!");
+          goHome("You win!");
         else
-          alert("You lost!");
+          goHome("You lost!");
       }
 
       // TIE
       else if (state === 4) {
-        alert("Tie game!");
+        goHome("Tie game!");
+      }
+    }
+
+    // Shows a confirmation message and redirects to home
+    function goHome(text) {
+      if (confirm(text)) {
+        window.location.href = "<?= base_url() ?>board/goHome/";
       }
     }
 
@@ -169,12 +178,12 @@
 
         for (var col = 0; col < rows[row].length; col++) {
           var item = rows[row][col];
-          if (item === 0) {
-            $board.append('<td></td>')
-          } else if (item === matchUser1) {
-            $board.append('<td><div class="piece-p1"></div></td>')
+          if (item === 1) {
+            $board.append('<td><div class="piece-p1"></div></td>');
+          } else if (item === 2) {
+            $board.append('<td><div class="piece-p2"></div></td>');
           } else {
-            $board.append('<td><div class="piece-p2"></div></td>')
+            $board.append('<td></td>');
           }
         }
 

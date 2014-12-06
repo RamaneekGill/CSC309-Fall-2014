@@ -49,6 +49,7 @@ class Board extends MY_Controller {
 
       $data['matchUser1'] = $match->user1_id;
     }
+
     $data['user']       = $user;
     $data['otherUser']  = $otherUser;
 
@@ -62,6 +63,17 @@ class Board extends MY_Controller {
     }
 
     $this->loadView('Match with ' . $otherUser->login, 'match/board', $data);
+  }
+
+  public function goHome() {
+    $user = $_SESSION['user'];
+    $this->load->model('user_model');
+    $this->load->model('match_model');
+
+    $user = $this->user_model->get($user->login);
+    $this->user_model->updateStatus($user->id, User::AVAILABLE);
+
+    redirect('arcade/index', 'refresh');
   }
 
   public function drop($col) {
@@ -81,19 +93,18 @@ class Board extends MY_Controller {
       goto error;
     }
 
-    $turn = $state['turn'];
+    if ($state['turn'] == $user->id) {
+      $piece = $state['turn'] == $match->user1_id ? 1 : 2;
 
-    if ($turn == $user->id) {
       for ($row = 5; $row >= 0; $row--) {
-        if ($state['board'][$row][$col] == 0) {
-          $state['board'][$row][$col] = $turn;
+        if ($state['board'][$row][$col] === 0) {
+          $state['board'][$row][$col] = $piece;
           break;
         }
       }
 
       $state['winner'] = $this->_checkWin($state['board']);
-
-      $state['turn'] = $match->user1_id == $user->id ? $match->user2_id : $match->user1_id;
+      $state['turn']   = $match->user1_id == $user->id ? $match->user2_id : $match->user1_id;
 
       $this->match_model->updateBoardState($match->id, serialize($state));
 
@@ -102,7 +113,7 @@ class Board extends MY_Controller {
         goto transactionerror;
       }
 
-      // if all went well commit changes
+      // If all went well commit changes
       $this->db->trans_commit();
 
       echo json_encode(array('status' => 'success',
@@ -112,8 +123,7 @@ class Board extends MY_Controller {
       return;
     } else {
       $errormsg = 'Wrong turn';
-      $this->db->trans_rollback();
-      goto error;
+      goto transactionerror;
     }
 
     transactionerror:
