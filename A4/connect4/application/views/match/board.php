@@ -4,7 +4,7 @@
   <h2>Board</h2>
   <div id='turn'>
     <?php
-      if ($status == "playing")
+      if ($user->id == $turn)
         echo "Your turn";
       else
         echo $otherUser->login . "'s turn";
@@ -22,8 +22,8 @@
     </thead>
     <tbody id='board-content'>
       <?php
-        if (isset($rows)) {
-          foreach ($rows as $row) {
+        if (isset($board)) {
+          foreach ($board as $row) {
             echo '<tr>';
             foreach ($row as $item) {
               if ($item == 1) {
@@ -66,12 +66,14 @@
 
 <script src="<?= base_url() ?>/js/jquery.timers.js"></script>
 <script>
-  var otherUser = "<?= $otherUser->login ?>";
-  var user      = "<?= $user->login ?>";
-  var status    = "<?= $status ?>";
+  var otherUser   = "<?= $otherUser->login ?>";
+  var user        = "<?= $user->login ?>";
+  var userID      = "<?= $user->id ?>"
+  var matchUser1  = "<?= $matchUser1 ?>";
+  var status      = "<?= $status ?>";
 
   $(function(){
-    $('body').everyTime(2000, function() {
+    $('body').everyTime(1000, function() {
       if (status == 'waiting') {
         $.getJSON('<?= base_url() ?>arcade/checkInvitation', function (data, text, jqZHR) {
             if (data && data.status=='rejected') {
@@ -79,7 +81,7 @@
               window.location.href = '<?= base_url() ?>arcade/index';
             }
 
-            if (data && data.status=='accepted') {
+            if (data && data.status == 'accepted') {
               status = 'playing';
               $('#status').html('Playing against ' + otherUser);
             }
@@ -98,7 +100,7 @@
       $.getJSON("<?= base_url() ?>board/getBoard", function (data, text, jqXHR) {
         if (data && data.status == 'success') {
           updateBoard(data.board);
-          if (data.turn == 1)
+          if (data.turn == userID)
             $('#turn').html('Your turn');
           else
             $('#turn').html(otherUser + "'s turn");
@@ -123,12 +125,12 @@
         $board.append('<tr>');
         for (var col = 0; col < rows[row].length; col++) {
           var item = rows[row][col];
-          if (item == 1) {
-            $board.append('<td><div class="piece-p1"></div></td>')
-          } else if (item == 2) {
-            $board.append('<td><div class="piece-p2"></div></td>')
-          } else {
+          if (item == 0) {
             $board.append('<td></td>')
+          } else if (item == matchUser1) {
+            $board.append('<td><div class="piece-p1"></div></td>')
+          } else {
+            $board.append('<td><div class="piece-p2"></div></td>')
           }
         }
         $board.append('</tr>');
