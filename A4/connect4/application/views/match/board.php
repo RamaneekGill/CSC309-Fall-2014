@@ -139,7 +139,7 @@
     });
 
     function winState(state) {
-      // $('body').stopTime('body_timer');
+      $('body').stopTime('body_timer');
 
       // U1WIN
       if (state === 2) {

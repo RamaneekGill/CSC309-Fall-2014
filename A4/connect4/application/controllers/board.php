@@ -95,15 +95,17 @@ class Board extends MY_Controller {
 
     if ($state['turn'] == $user->id) {
       $piece = $state['turn'] == $match->user1_id ? 1 : 2;
+      $new_row = 0;
 
       for ($row = 5; $row >= 0; $row--) {
         if ($state['board'][$row][$col] === 0) {
+          $new_row = $row;
           $state['board'][$row][$col] = $piece;
           break;
         }
       }
 
-      $state['winner'] = $this->_checkWin($state['board']);
+      $state['winner'] = $this->_checkWin($state['board'], $col, $new_row, $state['turn']);
       $state['turn']   = $match->user1_id == $user->id ? $match->user2_id : $match->user1_id;
 
       $this->match_model->updateBoardState($match->id, serialize($state));
@@ -134,10 +136,9 @@ class Board extends MY_Controller {
   }
 
   public function getBoard() {
+    $user = $_SESSION['user'];
     $this->load->model('user_model');
     $this->load->model('match_model');
-
-    $user = $_SESSION['user'];
 
     $user = $this->user_model->get($user->login);
     if ($user->user_status_id != User::PLAYING) {
@@ -175,30 +176,74 @@ class Board extends MY_Controller {
       echo json_encode(array('status' => 'failure', 'message' => $errormsg));
   }
 
-  private function _checkWin($board) {
+  private function _checkWin($board, $col, $row, $turn) {
     $user = $_SESSION['user'];
-
     $this->load->model('user_model');
     $this->load->model('match_model');
 
-    // MATCH::U1WIN;
-    // MATCH::U2WIN;
-    // MATCH::TIE;
+    $user  = $this->user_model->get($user->login);
+    $match = $this->match_model->getExclusive($user->match_id);
 
-    return Match::ACTIVE;
+    if ($this->_checkWinH($board, $row, $col) ||
+        $this->_checkWinV($board, $row, $col)) {
+
+      if ($turn === $match->user1_id) {
+        return Match::U1WIN;
+      } else {
+        return Match::U2WIN;
+      }
+    }
+
+    foreach ($board as $board_row) {
+      // There's still an empty spot: keep giong
+      if (in_array(0, $board_row))
+        return Match::ACTIVE;
+    }
+
+    // No win and no more spots: tie
+    return Match::TIE;
   }
 
-  function _winning($board, $id, $cur, $d, $pieces) {
-    if ($pieces == 4) {
-      return TRUE;
-    } else {
-      $next = array('row' => $cur['row'] + $d['row'], 'col' => $cur['col'] + $d['col']);
-      if ($board[$next['row']][$next['col']] && $board[$next['row']][$next['col']] == $id) {
-        return $this->_winning($board, $id, $next, $d, $pieces + 1);
-      } else {
+  private function _checkWinH($board, $row, $col) {
+    $piece = $board[$row][$col];
+    $pieces = 0;
+
+    // Count to the left
+    for ($i = $col; $i >= 0; $i--) {
+      if ($board[$row][$i] !== $piece) {
+        break;
+      }
+
+      $pieces++;
+    }
+
+    // Count to the right
+    for ($i = $col + 1; $i < 7; $i++) {
+      if ($board[$row][$i] !== $piece) {
+        break;
+      }
+
+      $pieces++;
+    }
+
+    return $pieces >= 4;
+  }
+
+  private function _checkWinV($board, $col, $col) {
+    if ($row > 2) {
+      return FALSE;
+    }
+
+    $piece = $board[$row][$col];
+
+    // Count downwards
+    for ($i = $row; $i < 6; $i++) {
+      if ($board[$i][$col] !== $piece) {
         return FALSE;
       }
     }
+
+    return TRUE;
   }
 
   public function postMsg() {
