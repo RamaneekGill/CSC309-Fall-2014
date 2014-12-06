@@ -184,7 +184,8 @@ class Board extends MY_Controller {
     $match = $this->match_model->getExclusive($user->match_id);
 
     if ($this->_checkWinH($board, $row, $col) ||
-        $this->_checkWinV($board, $row, $col)) {
+        $this->_checkWinV($board, $row, $col) ||
+        $this->_checkWinDiag($board, $row, $col)) {
 
       if ($turn === $match->user1_id) {
         return Match::U1WON;
@@ -229,6 +230,7 @@ class Board extends MY_Controller {
   }
 
   private function _checkWinV($board, $row, $col) {
+    // Not even high enough
     if ($row > 2) {
       return FALSE;
     }
@@ -243,6 +245,10 @@ class Board extends MY_Controller {
     }
 
     return TRUE;
+  }
+
+  private function _checkWinDiag($board, $row, $col) {
+    return FALSE;
   }
 
   public function postMsg() {
