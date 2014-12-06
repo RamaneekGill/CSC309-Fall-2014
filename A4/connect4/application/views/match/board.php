@@ -121,25 +121,8 @@
       });
     });
 
-    $('.drop').click(function() {
-      if (turn == userID) {
-        var col = this.dataset.col;
-        $.post("<?= base_url() ?>board/drop/" + col, function (data, text, jqXHR) {
-          var data = JSON.parse(data);
-          if (data && data.status == 'success') {
-            updateBoard(data.board);
-
-            // 1 == ACTIVE
-            if (data.winner != 1) {
-              winState(data.winner);
-            }
-          }
-        });
-      }
-    });
-
     function winState(state) {
-      $('body').stopTime('body_timer');
+      // $('body').stopTime('body_timer');
 
       // U1WON
       if (state === 2) {
@@ -169,6 +152,23 @@
         window.location.href = "<?= base_url() ?>board/goHome/";
       }
     }
+
+    $('.drop').click(function() {
+      if (turn == userID) {
+        var col = this.dataset.col;
+        $.post("<?= base_url() ?>board/drop/" + col, function (data, text, jqXHR) {
+          var data = JSON.parse(data);
+          if (data && data.status == 'success') {
+            updateBoard(data.board);
+
+            // 1 == ACTIVE
+            if (data.winner != 1) {
+              winState(data.winner);
+            }
+          }
+        });
+      }
+    });
 
     function updateBoard(rows) {
       var $board = $('#board-content');

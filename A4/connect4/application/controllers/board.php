@@ -229,7 +229,7 @@ class Board extends MY_Controller {
     return $pieces >= 4;
   }
 
-  private function _checkWinV($board, $col, $col) {
+  private function _checkWinV($board, $row, $col) {
     if ($row > 2) {
       return FALSE;
     }
