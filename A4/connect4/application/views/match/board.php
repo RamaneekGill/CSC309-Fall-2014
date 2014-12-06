@@ -107,6 +107,7 @@
         if (data && data.status == 'success') {
           updateBoard(data.board);
           turn = data.turn;
+          matchUser1 = data.matchUser1;
 
           if (data.turn == userID)
             $('#turn').html('Your turn');
@@ -122,10 +123,9 @@
     });
 
     function winState(state) {
-      // $('body').stopTime('body_timer');
-
       // U1WON
       if (state === 2) {
+        $('body').stopTime('body_timer');
         if (userID === matchUser1)
           goHome("You win!");
         else
@@ -134,6 +134,7 @@
 
       // U2WON
       else if (state === 3) {
+        $('body').stopTime('body_timer');
         if (userID !== matchUser1)
           goHome("You win!");
         else
@@ -142,6 +143,7 @@
 
       // TIE
       else if (state === 4) {
+        $('body').stopTime('body_timer');
         goHome("Tie game!");
       }
     }
@@ -162,7 +164,7 @@
             updateBoard(data.board);
 
             // 1 == ACTIVE
-            if (data.winner != 1) {
+            if (data.winner !== 1) {
               winState(data.winner);
             }
           }

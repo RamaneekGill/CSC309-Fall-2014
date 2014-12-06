@@ -46,8 +46,6 @@ class Board extends MY_Controller {
         $otherUser = $this->user_model->getFromId($match->user2_id);
       else
         $otherUser = $this->user_model->getFromId($match->user1_id);
-
-      $data['matchUser1'] = $match->user1_id;
     }
 
     $data['user']       = $user;
@@ -166,7 +164,8 @@ class Board extends MY_Controller {
     echo json_encode(array('status' => 'success',
                            'board'  => $state['board'],
                            'turn'   => $state['turn'],
-                           'winner' => $state['winner']));
+                           'winner' => $state['winner'],
+                           'matchUser1' => $match->user1_id));
     return;
 
     transactionerror:
