@@ -9,7 +9,7 @@ class Board extends MY_Controller {
     return call_user_func_array(array($this, $method), $params);
   }
 
-  function index() {
+  public function index() {
     $user = $_SESSION['user'];
 
     $this->load->model('user_model');
@@ -35,7 +35,8 @@ class Board extends MY_Controller {
                    array(0, 0, 0, 0, 0, 0, 0),
                    array(0, 0, 0, 0, 0, 0, 0),
                    array(0, 0, 0, 0, 0, 0, 0)
-                 )
+                 ),
+                 'winner' => -1
                );
       $this->match_model->updateBoardState($match->id, serialize($state));
       $data['turn']  = $state['turn'];
@@ -45,9 +46,9 @@ class Board extends MY_Controller {
         $otherUser = $this->user_model->getFromId($match->user2_id);
       else
         $otherUser = $this->user_model->getFromId($match->user1_id);
-    }
 
-    $data['matchUser1'] = $match->user1_id;
+      $data['matchUser1'] = $match->user1_id;
+    }
     $data['user']       = $user;
     $data['otherUser']  = $otherUser;
 
@@ -63,7 +64,7 @@ class Board extends MY_Controller {
     $this->loadView('Match with ' . $otherUser->login, 'match/board', $data);
   }
 
-  function drop($col) {
+  public function drop($col) {
     $this->load->model('user_model');
     $this->load->model('match_model');
     $user = $_SESSION['user'];
@@ -90,6 +91,8 @@ class Board extends MY_Controller {
         }
       }
 
+      $state['winner'] = $this->_checkWin($state['board']);
+
       $state['turn'] = $match->user1_id == $user->id ? $match->user2_id : $match->user1_id;
 
       $this->match_model->updateBoardState($match->id, serialize($state));
@@ -102,7 +105,10 @@ class Board extends MY_Controller {
       // if all went well commit changes
       $this->db->trans_commit();
 
-      echo json_encode(array('status' => 'success', 'board' => $state['board'], 'turn' => $state['turn']));
+      echo json_encode(array('status' => 'success',
+                             'board'  => $state['board'],
+                             'turn'   => $state['turn'],
+                             'winner' => $state['winner']));
       return;
     } else {
       $errormsg = 'Wrong turn';
@@ -117,7 +123,7 @@ class Board extends MY_Controller {
       echo json_encode(array('status' => 'failure', 'message' => $errormsg));
   }
 
-  function getBoard() {
+  public function getBoard() {
     $this->load->model('user_model');
     $this->load->model('match_model');
 
@@ -146,7 +152,10 @@ class Board extends MY_Controller {
     $board = $state['board'];
     $turn  = $state['turn'];
 
-    echo json_encode(array('status' => 'success', 'board' => $board, 'turn' => $turn));
+    echo json_encode(array('status' => 'success',
+                           'board'  => $state['board'],
+                           'turn'   => $state['turn'],
+                           'winner' => $state['winner']));
     return;
 
     transactionerror:
@@ -154,6 +163,19 @@ class Board extends MY_Controller {
 
     error:
       echo json_encode(array('status' => 'failure', 'message' => $errormsg));
+  }
+
+  // -1: keep playing
+  // -2: tie
+  // User ID: they won
+  private function _checkWin($board) {
+    $user = $_SESSION['user'];
+
+    $this->load->model('user_model');
+    $this->load->model('invite_model');
+    $this->load->model('match_model');
+
+    return Match::TIE;
   }
 
   function _winning($board, $id, $cur, $d, $pieces) {
@@ -169,7 +191,7 @@ class Board extends MY_Controller {
     }
   }
 
-  function postMsg() {
+  public function postMsg() {
     $this->load->library('form_validation');
     $this->form_validation->set_rules('msg', 'Message', 'required');
 
@@ -208,7 +230,7 @@ class Board extends MY_Controller {
       echo json_encode(array('status' => 'failure', 'message' => $errormsg));
   }
 
-  function getMsg() {
+  public function getMsg() {
     $this->load->model('user_model');
     $this->load->model('match_model');
 
