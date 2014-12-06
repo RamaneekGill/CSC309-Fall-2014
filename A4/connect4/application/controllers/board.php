@@ -188,9 +188,9 @@ class Board extends MY_Controller {
         $this->_checkWinV($board, $row, $col)) {
 
       if ($turn === $match->user1_id) {
-        return Match::U1WIN;
+        return Match::U1WON;
       } else {
-        return Match::U2WIN;
+        return Match::U2WON;
       }
     }
 

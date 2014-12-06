@@ -141,7 +141,7 @@
     function winState(state) {
       $('body').stopTime('body_timer');
 
-      // U1WIN
+      // U1WON
       if (state === 2) {
         if (userID === matchUser1)
           goHome("You win!");
@@ -149,7 +149,7 @@
           goHome("You lost!");
       }
 
-      // U2WIN
+      // U2WON
       else if (state === 3) {
         if (userID !== matchUser1)
           goHome("You win!");
